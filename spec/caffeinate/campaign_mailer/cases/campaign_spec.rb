@@ -7,8 +7,7 @@ describe ::Caffeinate::CampaignMailer::Campaign do
   class CampaignTestCampaignMailer < ::Caffeinate::CampaignMailer::Base
     campaign :campaign_test_campaign_mailer
   end
-  class NoCampaignTestCampaignMailer < ::Caffeinate::CampaignMailer::Base
-  end
+  class NoCampaignTestCampaignMailer < ::Caffeinate::CampaignMailer::Base; end
 
   context '.campaign' do
     it 'returns campaign' do
@@ -26,7 +25,7 @@ describe ::Caffeinate::CampaignMailer::Campaign do
     it 'raises ArgumentError' do
       expect do
         NoCampaignTestCampaignMailer.caffeinate_campaign
-      end.to raise_error(ArgumentError)
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

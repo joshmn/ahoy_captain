@@ -21,7 +21,11 @@ module Caffeinate
         #     campaign :order_drip
         #   end
         #
-        # @param [Symbol] slug The slug of a persisted `Caffeinate::Campaign`
+        # If this is not explicitly set, we will infer it with
+        #
+        #   self.name.delete_suffix("Campaign").underscore
+        #
+        # @param [Symbol] slug The slug of a persisted `Caffeinate::Campaign`.
         def campaign(slug)
           @caffeinate_campaign = nil
           @_campaign_slug = slug.to_sym
@@ -30,12 +34,17 @@ module Caffeinate
 
         # @private
         def caffeinate_campaign
-          @caffeinate_campaign ||= ::Caffeinate::Campaign.find_by(slug: campaign_slug)
+          return @caffeinate_campaign if @caffeinate_campaign.present?
+
+          @caffeinate_campaign = ::Caffeinate::Campaign.find_by(slug: campaign_slug)
+          return @caffeinate_campaign if @caffeinate_campaign
+
+          raise(::ActiveRecord::RecordNotFound, "Unable to find ::Caffeinate::Campaign with slug #{campaign_slug}.")
         end
 
         # @private
         def campaign_slug
-          @_campaign_slug || raise(ArgumentError, 'no defined campaign. Please define it in your campaign mailer')
+          @_campaign_slug || self.name.delete_suffix("Campaign")
         end
       end
     end
