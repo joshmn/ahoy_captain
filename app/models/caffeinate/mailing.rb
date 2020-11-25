@@ -13,6 +13,26 @@ module Caffeinate
     scope :skipped, -> { where.not(skipped_at: nil) }
     scope :unskipped, -> { where(skipped_at: nil) }
 
+    def pending?
+      unskipped? && unsent?
+    end
+
+    def skipped?
+      skipped_at.present?
+    end
+
+    def unskipped?
+      !!!skipped?
+    end
+
+    def sent?
+      sent_at.present?
+    end
+
+    def unsent?
+      !!!sent?
+    end
+
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
     end
