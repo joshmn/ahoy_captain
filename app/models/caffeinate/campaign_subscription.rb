@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   class CampaignSubscription < ApplicationRecord
     self.table_name = 'caffeinate_campaign_subscriptions'
@@ -50,9 +52,8 @@ module Caffeinate
     def set_token!
       loop do
         self.token = SecureRandom.uuid
-        break unless self.class.exists?(token: self.token)
+        break unless self.class.exists?(token: token)
       end
     end
-
   end
 end

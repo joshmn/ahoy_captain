@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Caffeinate.setup do |config|
   # == Mailer processor
   #

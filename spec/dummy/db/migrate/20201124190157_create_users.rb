@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[6.0]
   def change
     drop_table :users if table_exists?(:users)

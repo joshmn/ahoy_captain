@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 
 require 'bundler/setup'
 
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../dummy/config/environment.rb', __FILE__)
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+require File.expand_path('dummy/config/environment.rb', __dir__)
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'rspec/rails'
 require 'factory_bot'

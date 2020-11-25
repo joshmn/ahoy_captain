@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'caffeinate/campaign_mailer/drip'
 require 'caffeinate/campaign_mailer/callbacks'
 require 'caffeinate/campaign_mailer/defaults'

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module CampaignMailer
     # The Drip DSL for registering a drip
     module Drip
-
       # A collection of Drip objects for a `Caffeinate::CampaignMailer`
       class DripCollection
         include Enumerable
@@ -52,9 +53,7 @@ module Caffeinate
           options[:mailer_class] ||= defaults[:mailer_class]
           options[:step] ||= drips.size + 1
 
-          if options[:delay].nil?
-            raise ArgumentError, "delay pls"
-          end
+          raise ArgumentError, 'delay pls' if options[:delay].nil?
 
           drips.register(action_name, options, &block)
         end

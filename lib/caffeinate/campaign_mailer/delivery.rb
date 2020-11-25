@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module CampaignMailer
     # Handles delivery of a Caffeinate::Mailer for a Caffeinate::CampaignMailer

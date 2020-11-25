@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ::Caffeinate::CampaignMailer::Subscriber do
-  let!(:campaign) { create(:caffeinate_campaign, slug: "caffeinate_subscriber_campaign_mailer_test")}
+  let!(:campaign) { create(:caffeinate_campaign, slug: 'caffeinate_subscriber_campaign_mailer_test') }
   class SubscriberCampaignMailer < ::Caffeinate::CampaignMailer::Base
     campaign :caffeinate_subscriber_campaign_mailer_test
 

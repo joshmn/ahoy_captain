@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module CampaignMailer
     # Handles subscribing records to a campaign.
@@ -34,7 +36,7 @@ module Caffeinate
 
         # @private
         def subscribing_block
-          raise(NotImplementedError, "Define subscribing") unless @subscribing_block
+          raise(NotImplementedError, 'Define subscribing') unless @subscribing_block
 
           @subscribing_block
         end

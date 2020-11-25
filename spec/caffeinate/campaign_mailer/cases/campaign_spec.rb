@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ::Caffeinate::CampaignMailer::Campaign do
-  let!(:campaign) { create(:caffeinate_campaign, slug: "campaign_test_campaign_mailer") }
+  let!(:campaign) { create(:caffeinate_campaign, slug: 'campaign_test_campaign_mailer') }
   class CampaignTestCampaignMailer < ::Caffeinate::CampaignMailer::Base
     campaign :campaign_test_campaign_mailer
   end
@@ -22,9 +24,9 @@ describe ::Caffeinate::CampaignMailer::Campaign do
 
   context 'without a campaign slug' do
     it 'raises ArgumentError' do
-      expect {
+      expect do
         NoCampaignTestCampaignMailer.caffeinate_campaign
-      }.to raise_error(ArgumentError)
+      end.to raise_error(ArgumentError)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   class Mailing < ApplicationRecord
     self.table_name = 'caffeinate_mailings'

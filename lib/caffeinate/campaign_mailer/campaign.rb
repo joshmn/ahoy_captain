@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module CampaignMailer
     module Campaign
@@ -23,7 +25,7 @@ module Caffeinate
         def campaign(slug)
           @caffeinated_campaign = nil
           @_campaign_slug = slug.to_sym
-          Caffeinate.register_campaign_mailer(@_campaign_slug, self.name)
+          Caffeinate.register_campaign_mailer(@_campaign_slug, name)
         end
 
         # @private
@@ -33,7 +35,7 @@ module Caffeinate
 
         # @private
         def campaign_slug
-          @_campaign_slug || raise(ArgumentError, "no defined campaign. Please define it in your campaign mailer")
+          @_campaign_slug || raise(ArgumentError, 'no defined campaign. Please define it in your campaign mailer')
         end
       end
     end

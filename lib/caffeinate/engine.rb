@@ -1,4 +1,6 @@
-require "caffeinate/action_mailer"
+# frozen_string_literal: true
+
+require 'caffeinate/action_mailer'
 
 module Caffeinate
   # @private

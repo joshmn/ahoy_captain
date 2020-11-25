@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ::Caffeinate::CampaignMailer::Callbacks do
@@ -21,8 +23,8 @@ describe ::Caffeinate::CampaignMailer::Callbacks do
     end
   end
 
-  let!(:campaign_one) { create(:caffeinate_campaign, slug: :callbacks_test_one)}
-  let!(:campaign_two) { create(:caffeinate_campaign, slug: :callbacks_test_two)}
+  let!(:campaign_one) { create(:caffeinate_campaign, slug: :callbacks_test_one) }
+  let!(:campaign_two) { create(:caffeinate_campaign, slug: :callbacks_test_two) }
 
   context '.on_subscribe' do
     it 'works' do

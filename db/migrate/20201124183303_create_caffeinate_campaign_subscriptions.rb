@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
   def change
     drop_table :caffeinate_campaign_subscriptions if table_exists?(:caffeinate_campaign_subscriptions)
@@ -15,6 +17,6 @@ class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
       t.timestamps
     end
     add_index :caffeinate_campaign_subscriptions, :token, unique: true
-    add_index :caffeinate_campaign_subscriptions, [:subscriber_id, :subscriber_type, :user_id, :user_type], name: :index_caffeinate_campaign_subscriptions
+    add_index :caffeinate_campaign_subscriptions, %i[subscriber_id subscriber_type user_id user_type], name: :index_caffeinate_campaign_subscriptions
   end
 end
