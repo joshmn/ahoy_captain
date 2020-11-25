@@ -36,12 +36,27 @@ module Caffeinate
       self
     end
 
+    def process!
+      if ::Caffeinate.config.async_delivery?
+        deliver_later!
+      else
+        deliver!
+      end
+    end
+
     def deliver!
       caffeinate_campaign_subscription.deliver!(self)
     end
 
     def deliver_later!
-      caffeinate_campaign_subscription.deliver!(self)
+      klass = ::Caffeinate.config.mailing_job_class
+      if klass.respond_to?(:perform_later)
+        klass.perform_later(self.id)
+      elsif klass.respond_to?(:perform_async)
+        klass.perform_async(self.id)
+      else
+        raise NoMethodError, "Neither perform_later or perform_async are defined on #{klass}."
+      end
     end
   end
 end
