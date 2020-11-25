@@ -15,14 +15,20 @@ module Caffeinate
         instance_eval(&block)
       end
 
-      # Ends the mailing.
+      # Ends the CampaignSubscription
       def end!
         mailing.caffeinate_campaign_subscription.end!
         false
       end
 
+      # Unsubscribes the CampaignSubscription
       def unsubscribe!
         mailing.caffeinate_campaign_subscription.unsubscribe!
+        false
+      end
+
+      def skip!
+        mailing.skip!
         false
       end
     end

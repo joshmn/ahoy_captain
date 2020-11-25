@@ -7,7 +7,7 @@ describe ::Caffeinate::CampaignMailer::Subscriber do
   class SubscriberCampaignMailer < ::Caffeinate::CampaignMailer::Base
     campaign :caffeinate_subscriber_campaign_mailer_test
 
-    subscribing do
+    subscribes do
       Company.all.includes(:user).each do |company|
         subscribe(company, user: company.user)
       end

@@ -14,7 +14,7 @@ module Caffeinate
         #
         #   OrderCampaignMailer.subscribe!
         def subscribe!
-          subscribing_block.call
+          subscribes_block.call
         end
 
         # Returns the campaign's `Caffeinate::CampaignSubscriber`
@@ -35,28 +35,30 @@ module Caffeinate
         end
 
         # @private
-        def subscribing_block
-          raise(NotImplementedError, 'Define subscribing') unless @subscribing_block
+        def subscribes_block
+          raise(NotImplementedError, 'Define subscribes') unless @subscribes_block
 
-          @subscribing_block
+          @subscribes_block
         end
 
         # The subscriber block. Used to create `::Caffeinate::CampaignSubscribers` subscribers.
         #
-        #   subscribing do
+        #   subscribes do
         #     Cart.left_joins(:cart_items)
         #         .includes(:user)
         #         .where(completed_at: nil)
         #         .where(updated_at: 1.day.ago..2.days.ago)
-        #         .having('count(cart_items.id) = 0').each do |cart|
+        #         .having('count(cart_items.id) > 0').each do |cart|
         #       subscribe(cart, user: cart.user)
         #     end
         #   end
         #
         # No need to worry about checking if the given subscriber being already subscribed.
         # The `subscribe` method does that for you.
-        def subscribing(&block)
-          @subscribing_block = block
+        #
+        # Optionally, can subscribe a user manually via `Caffeinate::Campaign#subscribe`
+        def subscribes(&block)
+          @subscribes_block = block
         end
       end
     end

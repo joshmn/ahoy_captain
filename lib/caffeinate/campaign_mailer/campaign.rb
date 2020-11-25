@@ -23,14 +23,14 @@ module Caffeinate
         #
         # @param [Symbol] slug The slug of a persisted `Caffeinate::Campaign`
         def campaign(slug)
-          @caffeinated_campaign = nil
+          @caffeinate_campaign = nil
           @_campaign_slug = slug.to_sym
           Caffeinate.register_campaign_mailer(@_campaign_slug, name)
         end
 
         # @private
         def caffeinate_campaign
-          @caffeinated_campaign ||= ::Caffeinate::Campaign.find_by(slug: campaign_slug)
+          @caffeinate_campaign ||= ::Caffeinate::Campaign.find_by(slug: campaign_slug)
         end
 
         # @private

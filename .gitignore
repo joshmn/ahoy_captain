@@ -8,3 +8,5 @@ spec/dummy/log/*.log
 spec/dummy/storage/
 spec/dummy/tmp/
 .idea/
+tmp/
+.DS_Store

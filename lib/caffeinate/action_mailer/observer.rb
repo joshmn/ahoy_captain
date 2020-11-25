@@ -9,7 +9,7 @@ module Caffeinate
         mailing = Thread.current[:current_caffeinate_mailing]
         return unless mailing
 
-        mailing.update!(sent_at: Time.current) if message.perform_deliveries
+        mailing.update!(sent_at: Caffeinate.config.time_now) if message.perform_deliveries
         mailing.caffeinate_campaign.to_mailer.run_callbacks(:after_send, mailing, message)
       end
     end

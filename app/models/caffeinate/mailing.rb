@@ -7,8 +7,15 @@ module Caffeinate
     belongs_to :caffeinate_campaign_subscription, class_name: 'Caffeinate::CampaignSubscription'
     has_one :caffeinate_campaign, through: :caffeinate_campaign_subscription
 
-    scope :upcoming, -> { where('send_at < ?', Time.current).order('send_at asc') }
-    scope :unsent, -> { where(sent_at: nil) }
+    scope :upcoming, -> { unsent.unskipped.where('send_at < ?', ::Caffeinate.config.time_now).order('send_at asc') }
+    scope :unsent, -> { unskipped.where(sent_at: nil) }
+    scope :sent, -> { unskipped.where.not(sent_at: nil) }
+    scope :skipped, -> { where.not(skipped_at: nil) }
+    scope :unskipped, -> { where(skipped_at: nil) }
+
+    def skip!
+      update!(skipped_at: Caffeinate.config.time_now)
+    end
 
     def drip
       @drip ||= caffeinate_campaign.to_mailer.drips.find { |drip| drip.action.to_s == mailer_action }

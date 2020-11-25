@@ -34,7 +34,7 @@ class AbandonedCartCampaignMailer < Caffeinated::CampaignMailer::Base
   # A block to subscribe your users automatically 
   # You can invoke this by calling `AbandonedCartCampaignMailer.subscribe!`,
   # probably in a background process, run at a given interval 
-  subscribing do 
+  subscribes do 
     Cart.left_joins(:cart_items)
         .includes(:user)
         .where(completed_at: nil)

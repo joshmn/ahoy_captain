@@ -28,13 +28,13 @@ module Caffeinate
     end
 
     def end!
-      update!(ended_at: Time.current)
+      update!(ended_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_mailer.run_callbacks(:on_complete, self)
     end
 
     def unsubscribe!
-      update!(unsubscribed_at: Time.current)
+      update!(unsubscribed_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_mailer.run_callbacks(:on_unsubscribe, self)
     end
