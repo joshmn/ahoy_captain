@@ -27,7 +27,7 @@ Caffeinate::Campaign.create!(name: "Abandoned Cart", slug: "abandoned_cart")
 ### Create a Caffeinated::CampaignMailer
 
 ```ruby 
-class AbandonedCartCampaignMailer < Caffeinated::CampaignMailer
+class AbandonedCartCampaignMailer < Caffeinated::CampaignMailer::Base
   # This should match a Caffeinate::Campaign#slug
   campaign :abandoned_cart 
   
@@ -50,14 +50,20 @@ class AbandonedCartCampaignMailer < Caffeinated::CampaignMailer
   drip :selling_out_soon, mailer: "AbandonedCartMailer", delay: 8.hours do 
     cart = mailing.subscriber
     if cart.completed?
-      end! # you can also invoke `unsubscribe!`, `skip!`, or otherwise return `false` to not do this mailing
+      end! # you can also invoke `unsubscribe!` to cancel this mailing and all future mailings
       return false
     end 
   end 
 end 
 ```
 
-And then run run your campaign:
+Automatically subscribe eligible carts to it by running:
+
+```ruby 
+AbandonedCartCampaignMailer.subscribe!
+```
+
+And then, once it's done, start your engines!
 
 ```ruby 
 AbandonedCartCampaignMailer.perform!
