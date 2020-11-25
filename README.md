@@ -95,9 +95,12 @@ Followed by a migrate:
 $ rails db:migrate
 ```
 
-## Upcoming features
+## Upcoming features/todo
 
 * Ability to optionally use relative time when creating a step 
+* Logo
+* Wiki
+* Skip option
 
 ## Contributing
 
