@@ -3,6 +3,7 @@
 module Caffeinate
   module CampaignMailer
     module Campaign
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end
@@ -32,7 +33,7 @@ module Caffeinate
           Caffeinate.register_campaign_mailer(@_campaign_slug, name)
         end
 
-        # @private
+        # Returns the `Caffeinate::Campaign` object for the Campaign
         def caffeinate_campaign
           return @caffeinate_campaign if @caffeinate_campaign.present?
 
@@ -42,7 +43,7 @@ module Caffeinate
           raise(::ActiveRecord::RecordNotFound, "Unable to find ::Caffeinate::Campaign with slug #{campaign_slug}.")
         end
 
-        # @private
+        # The defined slug or the inferred slug
         def campaign_slug
           @_campaign_slug || self.name.delete_suffix("Campaign")
         end

@@ -4,7 +4,7 @@ module Caffeinate
   module CampaignMailer
     # Handles subscribing records to a campaign.
     module Subscriber
-      # @private
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end
@@ -34,7 +34,7 @@ module Caffeinate
           caffeinate_campaign.subscribe(subscriber, user: user)
         end
 
-        # @private
+        # :nodoc:
         def subscribes_block
           raise(NotImplementedError, 'Define subscribes') unless @subscribes_block
 

@@ -22,7 +22,7 @@ module Caffeinate
     end
 
     def unskipped?
-      !!!skipped?
+      !skipped?
     end
 
     def sent?
@@ -30,11 +30,13 @@ module Caffeinate
     end
 
     def unsent?
-      !!!sent?
+      !sent?
     end
 
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
+
+      caffeinate_campaign.to_mailer.run_callbacks(:on_skip, self.caffeinate_campaign_subscription, self)
     end
 
     def drip

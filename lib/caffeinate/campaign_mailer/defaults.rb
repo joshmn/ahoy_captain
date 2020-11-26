@@ -3,6 +3,7 @@
 module Caffeinate
   module CampaignMailer
     module Defaults
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end

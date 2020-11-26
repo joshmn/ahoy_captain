@@ -8,7 +8,7 @@ module Caffeinate
         mailing = Thread.current[:current_caffeinate_mailing]
         return unless mailing
 
-        mailing.caffeinate_campaign.to_mailer.run_callbacks(:before_send, mailing, message)
+        mailing.caffeinate_campaign.to_mailer.run_callbacks(:before_send, mailing.caffeinate_campaign_subscription, mailing, message)
         drip = mailing.drip
         message.perform_deliveries = drip.enabled?(mailing)
       end

@@ -8,13 +8,12 @@ module Caffeinate
       class DripCollection
         include Enumerable
 
-        # @private
         def initialize(campaign_mailer)
           @campaign_mailer = campaign_mailer
           @drips = []
         end
 
-        # @private
+        # Register the drip
         def register(action, options, &block)
           @drips << ::Caffeinate::Drip.new(@campaign_mailer, action, options, &block)
         end
@@ -28,7 +27,7 @@ module Caffeinate
         end
       end
 
-      # @private
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end

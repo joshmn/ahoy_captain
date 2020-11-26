@@ -4,12 +4,11 @@ require 'caffeinate/action_mailer'
 require 'caffeinate/active_record/extension'
 
 module Caffeinate
-  # @private
+  # :nodoc:
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
 
     ActiveSupport.on_load(:action_mailer) do
-      include ::Caffeinate::ActionMailer::Extension
       ::ActionMailer::Base.register_interceptor(::Caffeinate::ActionMailer::Interceptor)
       ::ActionMailer::Base.register_observer(::Caffeinate::ActionMailer::Observer)
     end

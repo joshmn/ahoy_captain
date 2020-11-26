@@ -2,16 +2,19 @@
 
 module Moist
   module Generators
+    # :nodoc:
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path('templates', __dir__)
       include ::Rails::Generators::Migration
 
       desc 'Creates a Caffeinate initializer and copies migrations to your application.'
 
+      # :nodoc:
       def copy_initializer
         template 'caffeinate.rb', 'config/initializers/caffeinate.rb'
       end
 
+      # :nodoc:
       def self.next_migration_number(_path)
         if @prev_migration_nr
           @prev_migration_nr += 1
@@ -21,6 +24,7 @@ module Moist
         @prev_migration_nr.to_s
       end
 
+      # :nodoc:
       def copy_migrations
         require 'rake'
         Rails.application.load_tasks

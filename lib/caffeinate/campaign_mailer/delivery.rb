@@ -4,7 +4,7 @@ module Caffeinate
   module CampaignMailer
     # Handles delivery of a Caffeinate::Mailer for a Caffeinate::CampaignMailer
     module Delivery
-      # @private
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end

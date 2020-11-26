@@ -14,14 +14,17 @@ module Caffeinate
       super
     end
 
+    # The current time, for database calls
     def time_now
       @now.call
     end
 
+    # If delivery is asyncronous
     def async_delivery?
       @async_delivery
     end
 
+    # The @mailing_job constantized. Only used if `async_delivery = true`
     def mailing_job_class
       @mailing_job.constantize
     end

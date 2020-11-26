@@ -4,7 +4,7 @@ module Caffeinate
   module CampaignMailer
     # Handles delivering a `Caffeinate::Mailing` for the `Caffeinate::CampaignMailer`
     module Perform
-      # @private
+      # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end
