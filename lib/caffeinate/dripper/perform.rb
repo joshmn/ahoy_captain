@@ -9,7 +9,7 @@ module Caffeinate
         klass.extend ClassMethods
       end
 
-      # Delivers the next_caffeinated_mailer for the campaign's subscribers.
+      # Delivers the next_caffeinate_mailer for the campaign's subscribers.
       #
       #   OrderDripper.new.perform!
       #

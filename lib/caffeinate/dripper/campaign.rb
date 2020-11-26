@@ -16,7 +16,7 @@ module Caffeinate
       end
 
       module ClassMethods
-        # Sets the campaign on the Dripper and resets any existing `@caffeinated_campaign`
+        # Sets the campaign on the Dripper and resets any existing `@caffeinate_campaign`
         #
         #   class OrdersDripper
         #     campaign :order_drip

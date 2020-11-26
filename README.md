@@ -28,10 +28,10 @@ end
 Caffeinate::Campaign.create!(name: "Abandoned Cart", slug: "abandoned_cart") 
 ```
 
-### Create a Caffeinated::Dripper
+### Create a Caffeinate::Dripper
 
 ```ruby 
-class AbandonedCartDripper < Caffeinated::Dripper::Base
+class AbandonedCartDripper < Caffeinate::Dripper::Base
   # This should match a Caffeinate::Campaign#slug
   campaign :abandoned_cart 
   

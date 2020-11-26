@@ -16,11 +16,11 @@ module Caffeinate
           end
         end
 
-        # Callback after a Caffeinate::CampaignSubscription is created, and after the Caffeinated::Mailings have
+        # Callback after a Caffeinate::CampaignSubscription is created, and after the Caffeinate::Mailings have
         # been created.
         #
         #   on_subscribe do |campaign_subscription|
-        #     Slack.notify(:caffeinated, "A new subscriber to #{campaign_subscription.campaign.name}!")
+        #     Slack.notify(:caffeinate, "A new subscriber to #{campaign_subscription.campaign.name}!")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -36,7 +36,7 @@ module Caffeinate
         # Callback before a Drip has called the mailer.
         #
         #   before_drip do |campaign_subscription, mailing, drip|
-        #     Slack.notify(:caffeinated, "#{drip.action_name} is starting")
+        #     Slack.notify(:caffeinate, "#{drip.action_name} is starting")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -54,7 +54,7 @@ module Caffeinate
         # Callback before a Mailing has been sent.
         #
         #   before_send do |campaign_subscription, mailing, message|
-        #     Slack.notify(:caffeinated, "A new subscriber to #{campaign_subscription.campaign.name}!")
+        #     Slack.notify(:caffeinate, "A new subscriber to #{campaign_subscription.campaign.name}!")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -72,7 +72,7 @@ module Caffeinate
         # Callback after a Mailing has been sent.
         #
         #   after_send do |campaign_subscription, mailing, message|
-        #     Slack.notify(:caffeinated, "A new subscriber to #{campaign_subscription.campaign.name}!")
+        #     Slack.notify(:caffeinate, "A new subscriber to #{campaign_subscription.campaign.name}!")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -90,7 +90,7 @@ module Caffeinate
         # Callback after a CampaignSubscriber has exhausted all their mailings.
         #
         #   on_complete do |campaign_sub|
-        #     Slack.notify(:caffeinated, "A subscriber completed #{campaign_sub.campaign.name}!")
+        #     Slack.notify(:caffeinate, "A subscriber completed #{campaign_sub.campaign.name}!")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -106,7 +106,7 @@ module Caffeinate
         # Callback after a CampaignSubscriber has unsubscribed.
         #
         #   on_unsubscribe do |campaign_sub|
-        #     Slack.notify(:caffeinated, "#{campaign_sub.id} has unsubscribed... sad day.")
+        #     Slack.notify(:caffeinate, "#{campaign_sub.id} has unsubscribed... sad day.")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription
@@ -122,7 +122,7 @@ module Caffeinate
         # Callback after a `Caffeinate::Mailing` is skipped.
         #
         #   on_skip do |campaign_subscription, mailing, message|
-        #     Slack.notify(:caffeinated, "#{campaign_sub.id} has unsubscribed... sad day.")
+        #     Slack.notify(:caffeinate, "#{campaign_sub.id} has unsubscribed... sad day.")
         #   end
         #
         # @yield Caffeinate::CampaignSubscription

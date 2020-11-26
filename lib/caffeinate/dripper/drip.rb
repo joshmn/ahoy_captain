@@ -33,7 +33,7 @@ module Caffeinate
       end
 
       module ClassMethods
-        # A collection of Drip objects associated with a given `Caffeinated::Dripper`
+        # A collection of Drip objects associated with a given `Caffeinate::Dripper`
         def drips
           @drips ||= DripCollection.new(self)
         end
