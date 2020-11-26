@@ -17,9 +17,9 @@ module Caffeinate
           Thread.current[:current_caffeinate_mailing] = mailing
 
           if mailing.drip.parameterized?
-            mailing.mailer_class.constantize.send(mailing.mailer_action).deliver
+            mailing.mailer_class.constantize.with(subscriber: mailing.subscriber, user: mailing.user).send(mailing.mailer_action).deliver
           else
-            mailing.mailer_class.constantize.send(mailing.mailer_action).deliver
+            mailing.mailer_class.constantize.send(mailing.mailer_action, mailing.subscriber).deliver
           end
         end
       end

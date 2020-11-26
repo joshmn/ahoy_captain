@@ -4,5 +4,5 @@
 
 - [Installation](0-installation.md)
 - [General Configuration](1-general-configuration.md)
-- [CampaignMailer Customization](2-campaign-mailer-customization.md)
-- [Managing Subscribers](4-managing-subscribers.md)
+- [Data Models](2-data-models.md)
+- [Campaign Customization](3-campaign-customization.md)

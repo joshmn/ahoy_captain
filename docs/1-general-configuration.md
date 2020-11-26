@@ -18,3 +18,32 @@ config.now = -> { DateTime.now }
 `config.now` must respond to `#call`; using a Proc or Lambda works here. 
 
 Now that you've configured Caffeinate, it's time to [create your first CampaignMailer](2-campaign-mailer-customization.md).
+
+## `async_delivery`
+
+By default, a Mailer is delivered in the current thread. You can queue it up to happen in the background if you'd like.
+
+```ruby
+config.async_delivery = true 
+config.mailing_job = 'MyJob' 
+```
+
+Assume you have `MyJob` defined in `app/jobs`. This job simply needs to implement `perform_later` or `perform_async` and 
+inherit `Caffeinate::DeliverAsync` like so:
+
+```ruby
+class MyJob < ApplicationJob
+  include Caffeinate::DeliveryAsync
+end 
+```
+
+Or using Sidekiq:
+
+```ruby
+class MyJob
+  include Sidekiq::Worker
+  include Caffeinate::DeliveryAsync
+end 
+```
+
+And you're done.

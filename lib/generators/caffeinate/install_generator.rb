@@ -15,6 +15,11 @@ module Moist
       end
 
       # :nodoc:
+      def copy_application_campaign
+        template 'application_campaign.rb', 'app/campaigns/application_campaign.rb'
+      end
+
+      # :nodoc:
       def self.next_migration_number(_path)
         if @prev_migration_nr
           @prev_migration_nr += 1

@@ -45,4 +45,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 end
 
+ActiveJob::Base.queue_adapter = :test
+
 class TestCampaign < ::Caffeinate::CampaignMailer::Base; end

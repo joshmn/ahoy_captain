@@ -5,6 +5,7 @@ require 'caffeinate/engine'
 require 'caffeinate/drip'
 require 'caffeinate/configuration'
 require 'caffeinate/campaign_mailer/base'
+require 'caffeinate/deliver_async'
 
 module Caffeinate
   # Caches the campaign to the campaign class

@@ -8,7 +8,7 @@ describe ::Caffeinate::CampaignMailer::Delivery do
       @thing = '123'
     end
 
-    def welcome
+    def welcome(_)
       mail(to: 'hello@example.com', from: 'bob@example.com', subject: 'sup') do |format|
         format.text { render plain: 'Hi' }
       end
@@ -20,7 +20,7 @@ describe ::Caffeinate::CampaignMailer::Delivery do
       end
     end
 
-    def goodbye
+    def goodbye(_)
       mail(to: 'hello@example.com', from: 'bob@example.com', subject: 'sup') do |format|
         format.text { render plain: 'Hi' }
       end

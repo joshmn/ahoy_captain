@@ -6,7 +6,7 @@ describe ::Caffeinate::CampaignMailer::Perform do
   let!(:campaign) { create(:caffeinate_campaign, slug: 'perform_campaign_mailer') }
 
   class PerformMailer < ApplicationMailer
-    def welcome
+    def welcome(_)
       mail(to: 'test@example.com', from: 'test@example.com', subject: 'hello') do |format|
         format.text { render plain: 'hello' }
       end

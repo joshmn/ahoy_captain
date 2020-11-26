@@ -16,7 +16,7 @@ module Caffeinate
       # @return nil
       def perform!
         campaign.caffeinate_campaign_subscriptions.joins(:next_caffeinate_mailing).includes(:next_caffeinate_mailing).each do |subscriber|
-          subscriber.next_caffeinate_mailing.deliver!
+          subscriber.next_caffeinate_mailing.process!
         end
         true
       end
