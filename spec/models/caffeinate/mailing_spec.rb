@@ -7,7 +7,7 @@ describe ::Caffeinate::Mailing do
   let!(:sent_mailings) { create_list(:caffeinate_mailing, 3, :sent, caffeinate_campaign_subscription: subscription) }
   let!(:skipped_mailings) { create_list(:caffeinate_mailing, 2, :skipped, caffeinate_campaign_subscription: subscription) }
 
-  class CaffeinateMailingTestCampaign < ::Caffeinate::CampaignMailer::Base
+  class CaffeinateMailingTestCampaign < ::Caffeinate::Dripper::Base
     campaign :caffeinate_active_record_extension
   end
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ::Caffeinate::CampaignMailer::Delivery do
+describe ::Caffeinate::Dripper::Delivery do
   class DeliveryTestMailer < ActionMailer::Base
     before_action do
       @thing = '123'
@@ -29,8 +29,8 @@ describe ::Caffeinate::CampaignMailer::Delivery do
     alias goodbye_unsubscribe goodbye
   end
 
-  class DeliveryTestCampaignMailer < ::Caffeinate::CampaignMailer::Base
-    campaign :delivery_test_campaign_mailer
+  class DeliveryTestDripper < ::Caffeinate::Dripper::Base
+    campaign :delivery_test_dripper
 
     default mailer_class: 'DeliveryTestMailer'
 
@@ -49,7 +49,7 @@ describe ::Caffeinate::CampaignMailer::Delivery do
     end
   end
 
-  let(:campaign) { create(:caffeinate_campaign, slug: 'delivery_test_campaign_mailer') }
+  let(:campaign) { create(:caffeinate_campaign, slug: 'delivery_test_dripper') }
   let(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
   let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'welcome') }
 
@@ -57,7 +57,7 @@ describe ::Caffeinate::CampaignMailer::Delivery do
     it 'sends it' do
       expect(mailing.sent_at).to be_nil
       expect do
-        DeliveryTestCampaignMailer.deliver!(mailing)
+        DeliveryTestDripper.deliver!(mailing)
       end.to change(::ActionMailer::Base.deliveries, :size).by(1)
       expect(mailing.sent_at).to be_present
     end
@@ -68,7 +68,7 @@ describe ::Caffeinate::CampaignMailer::Delivery do
     it 'using parameterized' do
       expect(mailing.sent_at).to be_nil
       expect do
-        DeliveryTestCampaignMailer.deliver!(mailing)
+        DeliveryTestDripper.deliver!(mailing)
       end.to change(::ActionMailer::Base.deliveries, :size).by(1)
       expect(mailing.sent_at).to be_present
       expect(::ActionMailer::Base.deliveries.last.subject).to eq('123')
@@ -99,13 +99,13 @@ describe ::Caffeinate::CampaignMailer::Delivery do
 
   context 'with a block that returns false' do
     let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'goodbye') }
-    let(:do_action) { DeliveryTestCampaignMailer.deliver!(mailing) }
+    let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
     it_behaves_like 'block that returns false'
   end
 
   context 'with a block that returns false' do
     let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'goodbye_end') }
-    let(:do_action) { DeliveryTestCampaignMailer.deliver!(mailing) }
+    let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
     it_behaves_like 'block that returns false and unsubscribes'
   end
 end

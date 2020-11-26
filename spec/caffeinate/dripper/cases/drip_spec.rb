@@ -2,22 +2,22 @@
 
 require 'rails_helper'
 
-describe ::Caffeinate::CampaignMailer::Drip do
-  class DripCampaignMailer < ::Caffeinate::CampaignMailer::Base
+describe ::Caffeinate::Dripper::Drip do
+  class DripDripper < ::Caffeinate::Dripper::Base
     drip :test, delay: 0.hours, step: 1, mailer_class: 'CoolMailer'
   end
 
   context '.drip' do
     it 'registers a drip with valid arguments' do
-      expect(DripCampaignMailer.drips.size).to eq(1)
-      expect(DripCampaignMailer.drips.first.options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer' })
+      expect(DripDripper.drips.size).to eq(1)
+      expect(DripDripper.drips.first.options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer' })
     end
   end
 
   context 'no delay' do
     it 'raises ArgumentError' do
       expect do
-        DripCampaignMailer.drip :welcome
+        DripDripper.drip :welcome
       end.to raise_error(ArgumentError)
     end
   end

@@ -6,7 +6,7 @@ describe ::Caffeinate::ActiveRecord::Extension do
     User.caffeinate_user
   end
 
-  class CaffeinateActiveRecordCampaign < ::Caffeinate::CampaignMailer::Base
+  class CaffeinateActiveRecordCampaign < ::Caffeinate::Dripper::Base
     campaign :caffeinate_active_record_extension
   end
 

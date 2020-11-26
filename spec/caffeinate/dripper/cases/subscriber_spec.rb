@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe ::Caffeinate::CampaignMailer::Subscriber do
-  let!(:campaign) { create(:caffeinate_campaign, slug: 'caffeinate_subscriber_campaign_mailer_test') }
-  class SubscriberCampaignMailer < ::Caffeinate::CampaignMailer::Base
-    campaign :caffeinate_subscriber_campaign_mailer_test
+describe ::Caffeinate::Dripper::Subscriber do
+  let!(:campaign) { create(:caffeinate_campaign, slug: 'caffeinate_subscriber_dripper_test') }
+  class SubscriberDripper < ::Caffeinate::Dripper::Base
+    campaign :caffeinate_subscriber_dripper_test
 
     subscribes do
       Company.all.includes(:user).each do |company|
@@ -21,7 +21,7 @@ describe ::Caffeinate::CampaignMailer::Subscriber do
 
     it 'sends a mail' do
       expect(campaign.caffeinate_campaign_subscriptions.count).to eq(0)
-      SubscriberCampaignMailer.subscribe!
+      SubscriberDripper.subscribe!
       expect(campaign.caffeinate_campaign_subscriptions.count).to eq(2)
       expect(campaign.caffeinate_campaign_subscriptions.where(user: user).count).to eq(1)
       expect(campaign.caffeinate_campaign_subscriptions.where(subscriber: company_2, user: user).count).to eq(1)

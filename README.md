@@ -28,15 +28,15 @@ end
 Caffeinate::Campaign.create!(name: "Abandoned Cart", slug: "abandoned_cart") 
 ```
 
-### Create a Caffeinated::CampaignMailer
+### Create a Caffeinated::Dripper
 
 ```ruby 
-class AbandonedCartCampaignMailer < Caffeinated::CampaignMailer::Base
+class AbandonedCartDripper < Caffeinated::Dripper::Base
   # This should match a Caffeinate::Campaign#slug
   campaign :abandoned_cart 
   
   # A block to subscribe your users automatically 
-  # You can invoke this by calling `AbandonedCartCampaignMailer.subscribe!`,
+  # You can invoke this by calling `AbandonedCartDripper.subscribe!`,
   # probably in a background process, run at a given interval 
   subscribes do 
     Cart.left_joins(:cart_items)
@@ -64,13 +64,13 @@ end
 Automatically subscribe eligible carts to it by running:
 
 ```ruby 
-AbandonedCartCampaignMailer.subscribe!
+AbandonedCartDripper.subscribe!
 ```
 
 And then, once it's done, start your engines!
 
 ```ruby 
-AbandonedCartCampaignMailer.perform!
+AbandonedCartDripper.perform!
 ```
 
 ## Installation

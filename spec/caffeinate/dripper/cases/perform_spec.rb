@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe ::Caffeinate::CampaignMailer::Perform do
-  let!(:campaign) { create(:caffeinate_campaign, slug: 'perform_campaign_mailer') }
+describe ::Caffeinate::Dripper::Perform do
+  let!(:campaign) { create(:caffeinate_campaign, slug: 'perform_dripper') }
 
   class PerformMailer < ApplicationMailer
     def welcome(_)
@@ -13,8 +13,8 @@ describe ::Caffeinate::CampaignMailer::Perform do
     end
   end
 
-  class PerformCampaignMailer < ::Caffeinate::CampaignMailer::Base
-    campaign :perform_campaign_mailer
+  class PerformDripper < ::Caffeinate::Dripper::Base
+    campaign :perform_dripper
     default mailer_class: 'PerformMailer'
 
     drip :welcome, delay: 1.hour
@@ -25,7 +25,7 @@ describe ::Caffeinate::CampaignMailer::Perform do
 
     it 'sends a mail' do
       expect do
-        PerformCampaignMailer.perform!
+        PerformDripper.perform!
       end.to change(ActionMailer::Base.deliveries, :size).by(1)
     end
   end

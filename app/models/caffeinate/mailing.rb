@@ -43,13 +43,13 @@ module Caffeinate
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
 
-      caffeinate_campaign.to_mailer.run_callbacks(:on_skip, self.caffeinate_campaign_subscription, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_skip, self.caffeinate_campaign_subscription, self)
     end
 
     # The associated drip
     # @todo This can be optimized with a better cache
     def drip
-      @drip ||= caffeinate_campaign.to_mailer.drips.find { |drip| drip.action.to_s == mailer_action }
+      @drip ||= caffeinate_campaign.to_dripper.drips.find { |drip| drip.action.to_s == mailer_action }
     end
 
     # The associated Subscriber from `::Caffeinate::CampaignSubscription`

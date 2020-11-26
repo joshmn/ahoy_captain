@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
-    # Handles delivering a `Caffeinate::Mailing` for the `Caffeinate::CampaignMailer`
+  module Dripper
+    # Handles delivering a `Caffeinate::Mailing` for the `Caffeinate::Dripper`
     module Perform
       # :nodoc:
       def self.included(klass)
@@ -11,7 +11,7 @@ module Caffeinate
 
       # Delivers the next_caffeinated_mailer for the campaign's subscribers.
       #
-      #   OrderCampaignMailer.new.perform!
+      #   OrderDripper.new.perform!
       #
       # @return nil
       def perform!
@@ -22,7 +22,7 @@ module Caffeinate
       end
 
       module ClassMethods
-        # Convenience method for CampaignMailer::Base#perform
+        # Convenience method for Dripper::Base#perform
         def perform!
           new.perform!
         end

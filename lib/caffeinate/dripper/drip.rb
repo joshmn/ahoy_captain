@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
+  module Dripper
     # The Drip DSL for registering a drip
     module Drip
-      # A collection of Drip objects for a `Caffeinate::CampaignMailer`
+      # A collection of Drip objects for a `Caffeinate::Dripper`
       class DripCollection
         include Enumerable
 
-        def initialize(campaign_mailer)
-          @campaign_mailer = campaign_mailer
+        def initialize(dripper)
+          @dripper = dripper
           @drips = []
         end
 
         # Register the drip
         def register(action, options, &block)
-          @drips << ::Caffeinate::Drip.new(@campaign_mailer, action, options, &block)
+          @drips << ::Caffeinate::Drip.new(@dripper, action, options, &block)
         end
 
         def each(&block)
@@ -33,12 +33,12 @@ module Caffeinate
       end
 
       module ClassMethods
-        # A collection of Drip objects associated with a given `Caffeinated::CampaignMailer`
+        # A collection of Drip objects associated with a given `Caffeinated::Dripper`
         def drips
           @drips ||= DripCollection.new(self)
         end
 
-        # Register a drip on the CampaignMailer
+        # Register a drip on the Dripper
         #
         #   drip :mailer_action_name, mailer_class: "MailerClass", step: 1, delay: 1.hour
         #
@@ -48,11 +48,12 @@ module Caffeinate
         # @option options [Integer] :step The order in which the drip is executed
         # @option options [ActiveSupport::Duration] :delay When the drip should be ran
         def drip(action_name, options = {}, &block)
-          options.assert_valid_keys(:mailer_class, :step, :delay, :using)
-          options[:mailer_class] ||= defaults[:mailer_class]
+          options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
+          options[:mailer_class] ||= options[:mailer] || defaults[:mailer_class]
           options[:step] ||= drips.size + 1
 
-          raise ArgumentError, 'delay pls' if options[:delay].nil?
+          raise ArgumentError, "You must define :mailer_class or :mailer in the options for :#{action_name}" if options[:mailer_class].nil?
+          raise ArgumentError, "You must define :delay in the options for :#{action_name}" if options[:delay].nil?
 
           drips.register(action_name, options, &block)
         end

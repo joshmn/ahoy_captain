@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
+  module Dripper
     # Handles subscribing records to a campaign.
     module Subscriber
       # :nodoc:
@@ -12,7 +12,7 @@ module Caffeinate
       module ClassMethods
         # Runs the subscriber_block
         #
-        #   OrderCampaignMailer.subscribe!
+        #   OrderDripper.subscribe!
         def subscribe!
           subscribes_block.call
         end
@@ -24,7 +24,7 @@ module Caffeinate
 
         # Subscribes to the campaign.
         #
-        #   OrderCampaignMailer.subscribe(order, user: order.user)
+        #   OrderDripper.subscribe(order, user: order.user)
         #
         # @param [ActiveRecord::Base] subscriber The object subscribing
         # @option [ActiveRecord::Base] :user The associated user (optional)

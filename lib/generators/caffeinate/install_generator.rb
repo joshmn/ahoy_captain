@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Moist
+module Caffeinate
   module Generators
     # :nodoc:
     class InstallGenerator < Rails::Generators::Base
@@ -16,7 +16,7 @@ module Moist
 
       # :nodoc:
       def copy_application_campaign
-        template 'application_campaign.rb', 'app/campaigns/application_campaign.rb'
+        template 'application_dripper.rb', 'app/drippers/application_dripper.rb'
       end
 
       # :nodoc:

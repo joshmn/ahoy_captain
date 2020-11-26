@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
+  module Dripper
     module Campaign
       # :nodoc:
       def self.included(klass)
         klass.extend ClassMethods
       end
 
-      # The campaign for this CampaignMailer
+      # The campaign for this Dripper
       #
       # @return Caffeinate::Campaign
       def campaign
@@ -16,9 +16,9 @@ module Caffeinate
       end
 
       module ClassMethods
-        # Sets the campaign on the CampaignMailer and resets any existing `@caffeinated_campaign`
+        # Sets the campaign on the Dripper and resets any existing `@caffeinated_campaign`
         #
-        #   class OrdersCampaignMailer
+        #   class OrdersDripper
         #     campaign :order_drip
         #   end
         #
@@ -30,7 +30,7 @@ module Caffeinate
         def campaign(slug)
           @caffeinate_campaign = nil
           @_campaign_slug = slug.to_sym
-          Caffeinate.register_campaign_mailer(@_campaign_slug, name)
+          Caffeinate.register_dripper(@_campaign_slug, name)
         end
 
         # Returns the `Caffeinate::Campaign` object for the Campaign

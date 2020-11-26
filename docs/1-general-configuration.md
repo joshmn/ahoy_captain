@@ -17,7 +17,7 @@ config.now = -> { DateTime.now }
 
 `config.now` must respond to `#call`; using a Proc or Lambda works here. 
 
-Now that you've configured Caffeinate, it's time to [create your first CampaignMailer](2-campaign-mailer-customization.md).
+Now that you've configured Caffeinate, it's time to [create your first Dripper](2-campaign-mailer-customization.md).
 
 ## `async_delivery`
 

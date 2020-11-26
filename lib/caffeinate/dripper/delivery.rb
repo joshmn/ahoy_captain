@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
-    # Handles delivery of a Caffeinate::Mailer for a Caffeinate::CampaignMailer
+  module Dripper
+    # Handles delivery of a Caffeinate::Mailer for a Caffeinate::Dripper
     module Delivery
       # :nodoc:
       def self.included(klass)
@@ -17,9 +17,9 @@ module Caffeinate
           Thread.current[:current_caffeinate_mailing] = mailing
 
           if mailing.drip.parameterized?
-            mailing.mailer_class.constantize.with(subscriber: mailing.subscriber, user: mailing.user).send(mailing.mailer_action).deliver
+            mailing.mailer_class.constantize.with(mailing: mailing).send(mailing.mailer_action).deliver
           else
-            mailing.mailer_class.constantize.send(mailing.mailer_action, mailing.subscriber).deliver
+            mailing.mailer_class.constantize.send(mailing.mailer_action, mailing).deliver
           end
         end
       end

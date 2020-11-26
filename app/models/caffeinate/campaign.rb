@@ -8,8 +8,8 @@ module Caffeinate
     has_many :caffeinate_mailings, through: :caffeinate_campaign_subscriptions, class_name: 'Caffeinate::CampaignSubscriptions'
 
     # Poorly-named Campaign class resolver
-    def to_mailer
-      Caffeinate.campaign_mailer_to_campaign_class[slug.to_sym].constantize
+    def to_dripper
+      Caffeinate.dripper_to_campaign_class[slug.to_sym].constantize
     end
 
     # Subscribes an object to a campaign.

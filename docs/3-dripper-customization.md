@@ -1,11 +1,11 @@
 ---
-redirect_from: /docs/3-campaign-customization.html
+redirect_from: /docs/3-dripper-customization.html
 ---
 
-# Working with Campaigns
+# Working with Drippers
 
-Every Campaign resource corresponds to a `Caffeinate::Campaign` record. So before creating a
-CampaignMailer resource you must first create a `Caffeinate::Campaign` record for it.
+Every Dripper corresponds to a `Caffeinate::Campaign` record. So before creating a
+Dripper resource you must first create a `Caffeinate::Campaign` record for it.
 
 ## Creating a `Caffeinate::Campaign` Record
 
@@ -17,43 +17,43 @@ pry(main)> Caffeinate::Campaign.create(name: "Abandoned Cart", slug: "abandoned_
 
 **Note**: Make sure you note the `slug` attribute. You will use this later.
 
-## Creating the Campaign
+## Creating the Dripper
 
-Create a file in `app/campaigns` called `abandoned_cart_campaign.rb`:
+Create a file in `app/drippers` called `abandoned_cart_dripper.rb`:
 
 ```ruby
-class AbandonedCartCampaign < ApplicationCampaign
+class AbandonedCartDripper < ApplicationDripper 
 end 
 ```
 
 On the first line, you will want to specify what `Caffeinate::Campaign` record this campaign belongs to. By default,
-we assume there is a `Caffeinate::Campaign` record with a slug of the class name without "Campaign", underscored. 
+we assume there is a `Caffeinate::Campaign` record with a slug of the class name without "Dripper", underscored. 
 
 It's okay to be explicit though. Let's do that.
 
 ```ruby 
-class AbandonedCartCampaign < ApplicationCampaign
+class AbandonedCartDripper < ApplicationDripper
   campaign :abandoned_cart 
 end
 ```
 
 ## Setting defaults
 
-For this Campaign, we'll only be using the `AbandonedCartCampaignMailer` for each of the emails that we send. By default,
-Caffeinate assumes the mailer is going to be the class name with the suffix "Mailer". We can set this as a default option
+For this Campaign, we'll only be using the `AbandonedCartMailer` for each of the emails that we send. By default,
+Caffeinate assumes the mailer is going to be the Dripper class name with the suffix "Dripper". We can set this as a default option
 if we want to, too, just to remind other developers what they're working with.
 
 ```ruby 
-class AbandonedCartCampaign < ApplicationCampaign
+class AbandonedCartDripper < ApplicationDripper
   campaign :abandoned_cart
-  default mailer: "AbandonedCartCampaignMailer"
+  default mailer: "AbandonedCartMailer"
 end
 ``` 
 
 ## Defining Drips
 
-Now that we have our Campaign associated to a `Caffeinate::Campaign`, and we set our defaults, we can start making defining
-what drips are used in this Campaign.
+Now that we have our Dripper associated to a `Caffeinate::Campaign`, and we set our defaults, we can start making defining
+what drips are used in this Dripper.
 
 The definition for a drip is as follows:
 
@@ -103,7 +103,7 @@ AbandonedCartCampaign.subscribe(cart, user: cart.user)
 ```ruby
 class AbandonedCartCampaign < ApplicationCampaign
   campaign :abandoned_cart
-  default mailer: "AbandonedCartCampaignMailer"
+  default mailer: "AbandonedCartDripper"
   
   drip :are_you_still_there, delay: 48.hours do 
     if mailing.user.last_active_at > 4.hours.ago
@@ -181,11 +181,20 @@ Gets called after the `Caffeinate::Mailing#skip!` is called.
 Your mailer is just like every other mailer. Except, your action only receives one argument: the `Caffeinate::CampaignSubscription#subscriber`.
 
 ```ruby 
-class AbandonedCartCampaignMailer < ActionMailer::Base
-
-  def are_you_still_there(cart)
-    @cart = cart 
-    mail(to: @cart.user.email, from: "you@example.com", subject: "You still there?")
+class AbandonedCartDripper < ActionMailer::Base
+  def are_you_still_there(mailer)
+    @mailing = mailing
+    @cart = mailing.subscriber
+    @user = mailing.user 
+    mail(to: @user.email, from: "you@example.com", subject: "You still there?")
   end 
 end
 ```
+
+Using `ActionMailer::Parameterized`? You'll need to make one small change to your drip:
+
+```ruby
+drip :are_you_still_there, delay: 48.hours, using: :parameterized 
+```
+
+We'll send down `@mailing` as the `Caffeinate::Mailing` object.

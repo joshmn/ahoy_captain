@@ -35,9 +35,9 @@ module Caffeinate
       end
     end
 
-    attr_reader :campaign_mailer, :action, :options, :block
-    def initialize(campaign_mailer, action, options, &block)
-      @campaign_mailer = campaign_mailer
+    attr_reader :dripper, :action, :options, :block
+    def initialize(dripper, action, options, &block)
+      @dripper = dripper
       @action = action
       @options = options
       @block = block

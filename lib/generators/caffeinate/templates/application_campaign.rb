@@ -1,2 +1,2 @@
-class ApplicationCampaign < ::Caffeinate::CampaignMailer::Base
+class ApplicationDripper < ::Caffeinate::Dripper::Base
 end

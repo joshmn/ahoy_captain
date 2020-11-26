@@ -47,4 +47,4 @@ end
 
 ActiveJob::Base.queue_adapter = :test
 
-class TestCampaign < ::Caffeinate::CampaignMailer::Base; end
+class TestCampaign < ::Caffeinate::Dripper::Base; end

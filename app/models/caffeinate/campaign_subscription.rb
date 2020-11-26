@@ -18,7 +18,7 @@ module Caffeinate
 
     # Actually deliver and process the mail
     def deliver!(mailing)
-      caffeinate_campaign.to_mailer.deliver!(mailing)
+      caffeinate_campaign.to_dripper.deliver!(mailing)
     end
 
     # Checks if the subscription is not ended and not unsubscribed
@@ -40,25 +40,25 @@ module Caffeinate
     def end!
       update!(ended_at: ::Caffeinate.config.time_now)
 
-      caffeinate_campaign.to_mailer.run_callbacks(:on_complete, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_complete, self)
     end
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
     def unsubscribe!
       update!(unsubscribed_at: ::Caffeinate.config.time_now)
 
-      caffeinate_campaign.to_mailer.run_callbacks(:on_unsubscribe, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
     end
 
     private
 
     # Create mailings according to the drips registered in the Campaign
     def create_mailings!
-      caffeinate_campaign.to_mailer.drips.each do |drip|
+      caffeinate_campaign.to_dripper.drips.each do |drip|
         mailing = Caffeinate::Mailing.new(caffeinate_campaign_subscription: self).from_drip(drip)
         mailing.save!
       end
-      caffeinate_campaign.to_mailer.run_callbacks(:on_subscribe, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_subscribe, self)
     end
 
     def set_token!

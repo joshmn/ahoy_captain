@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
-  module CampaignMailer
+  module Dripper
     module Callbacks
       # :nodoc:
       def self.included(klass)
@@ -31,6 +31,24 @@ module Caffeinate
         # :nodoc:
         def on_subscribe_blocks
           @on_subscribe_blocks ||= []
+        end
+
+        # Callback before a Drip has called the mailer.
+        #
+        #   before_drip do |campaign_subscription, mailing, drip|
+        #     Slack.notify(:caffeinated, "#{drip.action_name} is starting")
+        #   end
+        #
+        # @yield Caffeinate::CampaignSubscription
+        # @yield Caffeinate::Mailing
+        # @yield Caffeinate::Drip current drip
+        def before_drip(&block)
+          before_drip_blocks << block
+        end
+
+        # :nodoc:
+        def before_drip_blocks
+          @before_drip_blocks ||= []
         end
 
         # Callback before a Mailing has been sent.
