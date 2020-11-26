@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
+  # CampaignSubscription associates an object and its optional user to a Campaign.
   class CampaignSubscription < ApplicationRecord
     self.table_name = 'caffeinate_campaign_subscriptions'
 
@@ -15,24 +16,34 @@ module Caffeinate
 
     after_commit :create_mailings!, on: :create
 
+    # Actually deliver and process the mail
     def deliver!(mailing)
       caffeinate_campaign.to_mailer.deliver!(mailing)
     end
 
+    # Checks if the subscription is not ended and not unsubscribed
     def subscribed?
-      ended_at.nil? && unsubscribed_at.nil?
+      !ended? && !unsubscribed?
     end
 
+    # Checks if the CampaignSubscription is not subscribed
     def unsubscribed?
       !subscribed?
     end
 
+    # Checks if the CampaignSubscription is ended
+    def ended?
+      ended_at.present?
+    end
+
+    # Updates `ended_at` and runs `on_complete` callbacks
     def end!
       update!(ended_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_mailer.run_callbacks(:on_complete, self)
     end
 
+    # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
     def unsubscribe!
       update!(unsubscribed_at: ::Caffeinate.config.time_now)
 
@@ -41,6 +52,7 @@ module Caffeinate
 
     private
 
+    # Create mailings according to the drips registered in the Campaign
     def create_mailings!
       caffeinate_campaign.to_mailer.drips.each do |drip|
         mailing = Caffeinate::Mailing.new(caffeinate_campaign_subscription: self).from_drip(drip)

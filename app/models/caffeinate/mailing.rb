@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
+  # Records of the mails sent and to be sent for a given `::Caffeinate::CampaignSubscriber`
   class Mailing < ApplicationRecord
     self.table_name = 'caffeinate_mailings'
 
@@ -13,44 +14,55 @@ module Caffeinate
     scope :skipped, -> { where.not(skipped_at: nil) }
     scope :unskipped, -> { where(skipped_at: nil) }
 
+    # Checks if the Mailing is not skipped and not sent
     def pending?
       unskipped? && unsent?
     end
 
+    # Checks if the Mailing is skipped
     def skipped?
       skipped_at.present?
     end
 
+    # Checks if the Mailing is not skipped
     def unskipped?
       !skipped?
     end
 
+    # Checks if the Mailing is sent
     def sent?
       sent_at.present?
     end
 
+    # Checks if the Mailing is not sent
     def unsent?
       !sent?
     end
 
+    # Updates `skipped_at and runs `on_skip` callbacks
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
 
       caffeinate_campaign.to_mailer.run_callbacks(:on_skip, self.caffeinate_campaign_subscription, self)
     end
 
+    # The associated drip
+    # @todo This can be optimized with a better cache
     def drip
       @drip ||= caffeinate_campaign.to_mailer.drips.find { |drip| drip.action.to_s == mailer_action }
     end
 
+    # The associated Subscriber from `::Caffeinate::CampaignSubscription`
     def subscriber
       caffeinate_campaign_subscription.subscriber
     end
 
+    # The associated Subscriber from `::Caffeinate::CampaignSubscription`
     def user
       caffeinate_campaign_subscription.user
     end
 
+    # Assigns attributes to the Mailing from the Drip
     def from_drip(drip)
       self.send_at = drip.options[:delay].from_now
       self.mailer_class = drip.options[:mailer_class]
@@ -58,6 +70,7 @@ module Caffeinate
       self
     end
 
+    # Handles the logic for delivery and delivers
     def process!
       if ::Caffeinate.config.async_delivery?
         deliver_later!
@@ -66,10 +79,12 @@ module Caffeinate
       end
     end
 
+    # Delivers the Mailing in the foreground
     def deliver!
       caffeinate_campaign_subscription.deliver!(self)
     end
 
+    # Delivers the Mailing in the background
     def deliver_later!
       klass = ::Caffeinate.config.mailing_job_class
       if klass.respond_to?(:perform_later)
