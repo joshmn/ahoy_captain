@@ -2,6 +2,10 @@
 
 A drip mailer and management for Ruby on Rails.
 
+## Docs
+
+[Since you asked](https://rubydoc.info/github/joshmn/caffeinate).
+
 ## Usage
 
 Given a mailer like this:
