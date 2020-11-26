@@ -52,7 +52,7 @@ end
 
 ## Defining Drips
 
-Now that we have our Campaign associated to a `Caffeinated::Campaign`, and we set our defaults, we can start making defining
+Now that we have our Campaign associated to a `Caffeinate::Campaign`, and we set our defaults, we can start making defining
 what drips are used in this Campaign.
 
 The definition for a drip is as follows:
@@ -77,7 +77,7 @@ drip :are_you_still_there, delay: 48.hours do
     end!
     return false  
   end 
-  return Time.current.hour.between?(14, 23)
+  true 
 end 
 ```
 
@@ -110,7 +110,7 @@ class AbandonedCartCampaign < ApplicationCampaign
       end!
       return false  
     end 
-    return Time.current.hour.between?(14, 23)
+    true 
   end 
 
   subscribes do 
@@ -176,4 +176,16 @@ Gets called after the a `Caffeinate::CampaignSubscription` unsubscribes from a c
 
 Gets called after the `Caffeinate::Mailing#skip!` is called.
 
+## Writing your mailer
 
+Your mailer is just like every other mailer. Except, your action only receives one argument: the `Caffeinate::CampaignSubscription#subscriber`.
+
+```ruby 
+class AbandonedCartCampaignMailer < ActionMailer::Base
+
+  def are_you_still_there(cart)
+    @cart = cart 
+    mail(to: @cart.user.email, from: "you@example.com", subject: "You still there?")
+  end 
+end
+```
