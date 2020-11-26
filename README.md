@@ -49,7 +49,7 @@ class AbandonedCartDripper < Caffeinate::Dripper::Base
   end 
   
   # Register your drips! Syntax is
-  # drip <mailer_action_name>, mailer_class: <MailerClass>, delay: <ActiveSupport::Interval>
+  # drip <mailer_action_name>, mailer: <MailerClass>, delay: <ActiveSupport::Interval>
   drip :you_forgot_something, mailer: "AbandonedCartMailer", delay: 1.hour 
   drip :selling_out_soon, mailer: "AbandonedCartMailer", delay: 8.hours do 
     cart = mailing.subscriber
@@ -67,11 +67,15 @@ Automatically subscribe eligible carts to it by running:
 AbandonedCartDripper.subscribe!
 ```
 
+This would typically run in a background job, queued up at a given interval.
+
 And then, once it's done, start your engines!
 
 ```ruby 
 AbandonedCartDripper.perform!
 ```
+
+This, too, would typically run in a background job, queued up at a given interval.
 
 ## Installation
 
@@ -101,10 +105,12 @@ $ rails db:migrate
 
 ## Upcoming features/todo
 
-* Ability to optionally use relative time when creating a step 
+* Ability to optionally use relative start time when creating a step 
 * Logo
-* Wiki
-* Skip option
+* Conversion tracking
+* Custom field support on CampaignSubscription
+* GUI (?)
+* REST API (?)
 
 ## Contributing
 
