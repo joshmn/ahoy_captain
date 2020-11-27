@@ -8,12 +8,6 @@ module Caffeinate
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
 
-    Rails.main_app.reloader.to_prepare do
-      Dir.glob(Rails.root.join("app/drippers/**/*.rb")).each do |file|
-        load file
-      end
-    end
-
     ActiveSupport.on_load(:action_mailer) do
       include ::Caffeinate::ActionMailer::Extension
       ::ActionMailer::Base.register_interceptor(::Caffeinate::ActionMailer::Interceptor)
