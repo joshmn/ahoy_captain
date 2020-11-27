@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'caffeinate/dripper/drip'
+require 'caffeinate/dripper/batching'
 require 'caffeinate/dripper/inferences'
 require 'caffeinate/dripper/callbacks'
 require 'caffeinate/dripper/defaults'
@@ -12,6 +13,7 @@ require 'caffeinate/dripper/delivery'
 module Caffeinate
   module Dripper
     class Base
+      include Batching
       include Callbacks
       include Campaign
       include Defaults

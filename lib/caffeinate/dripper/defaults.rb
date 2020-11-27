@@ -11,7 +11,7 @@ module Caffeinate
       module ClassMethods
         # The defaults set in the Campaign
         def defaults
-          @defaults ||= { mailer_class: inferred_mailer_class }
+          @defaults ||= { mailer_class: inferred_mailer_class, batch_size: ::Caffeinate.config.batch_size }
         end
 
         # The default options for the Campaign
@@ -23,7 +23,7 @@ module Caffeinate
         # @param [Hash] options The options to set defaults with
         # @option options [String] :mailer_class The mailer class
         def default(options = {})
-          options.assert_valid_keys(:mailer_class, :mailer, :using)
+          options.assert_valid_keys(:mailer_class, :mailer, :using, :batch_size)
           @defaults = options
         end
       end
