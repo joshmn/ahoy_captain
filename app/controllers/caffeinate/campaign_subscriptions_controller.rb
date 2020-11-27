@@ -18,12 +18,12 @@ module Caffeinate
 
     private
 
-    def caffeinate_subscribe_url
-      Caffeinate::Engine.routes.url_helpers.subscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
+    def caffeinate_subscribe_url(**options)
+      Caffeinate::Helpers.caffeinate_subscribe_url(@campaign_subscription, options)
     end
 
     def caffeinate_unsubscribe_url
-      Caffeinate::Engine.routes.url_helpers.unsubscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
+      Caffeinate::Helpers.caffeinate_unsubscribe_url(@campaign_subscription, options)
     end
 
     def find_campaign_subscription!
