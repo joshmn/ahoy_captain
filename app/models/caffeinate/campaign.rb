@@ -22,9 +22,29 @@ module Caffeinate
       Caffeinate.dripper_to_campaign_class[slug.to_sym].constantize
     end
 
+    def self.[](val)
+      find_by!(slug: val)
+    end
+
+    def subscriber(record, **args)
+      @subscriber ||= caffeinate_campaign_subscriptions.find_by(subscriber: record, **args)
+    end
+
+    def subscribes?(record, **args)
+      subscriber(record, **args).present?
+    end
+
     # Subscribes an object to a campaign.
     def subscribe(subscriber, **args)
       caffeinate_campaign_subscriptions.find_or_create_by(subscriber: subscriber, **args)
+    end
+
+    # Subscribes an object to a campaign.
+    def subscribe!(subscriber, **args)
+      subscription = subscribe(subscriber, **args)
+      return subscription if subscribe.persisted?
+
+      raise ActiveRecord::RecordInvalid, subscription
     end
   end
 end
