@@ -22,8 +22,8 @@ module Caffeinate
   class CampaignSubscription < ApplicationRecord
     self.table_name = 'caffeinate_campaign_subscriptions'
 
-    has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
-    has_one :next_caffeinate_mailing, -> { upcoming.unsent.limit(1).first }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
+    has_one :next_caffeinate_mailing, -> { upcoming.unsent }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
     belongs_to :subscriber, polymorphic: true
     belongs_to :user, polymorphic: true, optional: true
@@ -76,6 +76,13 @@ module Caffeinate
       update!(unsubscribed_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
+    end
+
+    # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks
+    def resubscribe!
+      update!(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
+
+      caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
     end
 
     private
