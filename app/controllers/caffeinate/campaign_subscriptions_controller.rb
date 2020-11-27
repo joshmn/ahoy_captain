@@ -2,18 +2,33 @@
 
 module Caffeinate
   class CampaignSubscriptionsController < ApplicationController
+    layout 'caffeinate'
+
+    helper_method :unsubscribe_url, :subscribe_url
+
     before_action :find_campaign_subscription!
 
     def unsubscribe
       @campaign_subscription.unsubscribe!
-      render plain: 'You have been unsubscribed.'
+    end
+
+    def subscribe
+      @campaign_subscription.subscribe!
     end
 
     private
 
+    def subscribe_url
+      Caffeinate::Engine.routes.url_helpers.subscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
+    end
+
+    def unsubscribe_url
+      Caffeinate::Engine.routes.url_helpers.unsubscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
+    end
+
     def find_campaign_subscription!
       @campaign_subscription = ::Caffeinate::CampaignSubscription.find_by(token: params[:token])
-      return render plain: '404' if @campaign_subscription.nil?
+      raise ::ActiveRecord::RecordNotFound if @campaign_subscription.nil?
     end
   end
 end

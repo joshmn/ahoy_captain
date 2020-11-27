@@ -1,0 +1,6 @@
+en:
+  caffeinate:
+    campaign_subscriptions:
+      subscribe: "You have been subscribed."
+      unsubscribe: "You have been unsubscribed."
+      changed_your_mind: "Change your mind?"

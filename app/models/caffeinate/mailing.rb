@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: caffeinate_mailings
+#
+#  id                                  :integer          not null, primary key
+#  caffeinate_campaign_subscription_id :integer          not null
+#  send_at                             :datetime
+#  sent_at                             :datetime
+#  skipped_at                          :datetime
+#  mailer_class                        :string           not null
+#  mailer_action                       :string           not null
+#  created_at                          :datetime         not null
+#  updated_at                          :datetime         not null
+#
 module Caffeinate
   # Records of the mails sent and to be sent for a given `::Caffeinate::CampaignSubscriber`
   class Mailing < ApplicationRecord

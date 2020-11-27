@@ -1,7 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: caffeinate_campaign_subscriptions
+#
+#  id                     :integer          not null, primary key
+#  caffeinate_campaign_id :integer          not null
+#  subscriber_type        :string           not null
+#  subscriber_id          :string           not null
+#  user_type              :string
+#  user_id                :string
+#  token                  :string           not null
+#  ended_at               :datetime
+#  unsubscribed_at        :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
 module Caffeinate
-  # CampaignSubscription associates an object and its optional user to a Campaign.
+  # CampaignSubscription associates an object and its optional user to a Campaign
+  # and its relevant Mailings.
   class CampaignSubscription < ApplicationRecord
     self.table_name = 'caffeinate_campaign_subscriptions'
 
@@ -37,12 +54,12 @@ module Caffeinate
       !ended? && !unsubscribed?
     end
 
-    # Checks if the CampaignSubscription is not subscribed
+    # Checks if the CampaignSubscription is not subscribed by checking the presence of `unsubscribed_at`
     def unsubscribed?
-      !subscribed?
+      unsubscribed_at.present?
     end
 
-    # Checks if the CampaignSubscription is ended
+    # Checks if the CampaignSubscription is ended by checking the presence of `ended_at`
     def ended?
       ended_at.present?
     end

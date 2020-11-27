@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: caffeinate_campaigns
+#
+#  id         :integer          not null, primary key
+#  name       :string           not null
+#  slug       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 module Caffeinate
-  # Campaign.
+  # Campaign ties together subscribers and mailings, and provides one core model for handling your Drippers.
   class Campaign < ApplicationRecord
     self.table_name = 'caffeinate_campaigns'
     has_many :caffeinate_campaign_subscriptions, class_name: 'Caffeinate::CampaignSubscription', foreign_key: :caffeinate_campaign_id
