@@ -71,3 +71,5 @@ Caffeinate provides `caffeinate_unsubscribe_url` and `caffeinate_unsubscribe_pat
 and `ActionView::Base`. They respect Rails' `default_url_options`, too.
 
 You can pull in these helpers yourself by `include Caffeinate::Helpers`.
+
+Additionally, you can use `Caffeinate::UrlHelpers` for quick and easy access to `Caffeinate::Helpers`.
