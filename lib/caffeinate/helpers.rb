@@ -1,4 +1,5 @@
 module Caffeinate
+  # URL helpers for accessing the mounted Caffeinate instance.
   module Helpers
     def caffeinate_unsubscribe_url(subscription, **options)
       opts = (::ActionMailer::Base.default_url_options || {}).merge(options)
