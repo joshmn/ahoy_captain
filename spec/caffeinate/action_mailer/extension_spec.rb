@@ -17,7 +17,7 @@ describe Caffeinate::ActionMailer::Extension do
     end
 
     it 'receives @mailing' do
-      Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] = 'Hello this is Bob'
+      Caffeinate.current_mailing = 'Hello this is Bob'
       expect(CaffeinateActionMailerExtensionMailer.test.subject).to eq('Hello this is Bob')
     end
   end

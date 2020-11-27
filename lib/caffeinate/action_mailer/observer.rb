@@ -2,11 +2,11 @@
 
 module Caffeinate
   module ActionMailer
-    # Handles updating the Caffeinate::Message if it's available in Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
+    # Handles updating the Caffeinate::Message if it's available in Caffeinate.current_mailing
     # and runs any associated callbacks
     class Observer
       def self.delivered_email(message)
-        mailing = Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
+        mailing = Caffeinate.current_mailing
         return unless mailing
 
         mailing.update!(sent_at: Caffeinate.config.time_now, skipped_at: nil) if message.perform_deliveries

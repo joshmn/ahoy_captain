@@ -14,7 +14,7 @@ module Caffeinate
         #
         # @param [Caffeinate::Mailing] mailing The mailing to deliver
         def deliver!(mailing)
-          Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] = mailing
+          Caffeinate.current_mailing = mailing
 
           if mailing.drip.parameterized?
             mailing.mailer_class.constantize.with(mailing: mailing).send(mailing.mailer_action).deliver

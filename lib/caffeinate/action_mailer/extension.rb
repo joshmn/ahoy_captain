@@ -5,7 +5,7 @@ module Caffeinate
     module Extension
       def self.included(klass)
         klass.before_action do
-          @mailing = Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] if Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
+          @mailing = Caffeinate.current_mailing if Caffeinate.current_mailing
         end
 
         klass.helper_method :caffeinate_unsubscribe_url, :caffeinate_subscribe_url
