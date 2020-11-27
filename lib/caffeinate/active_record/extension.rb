@@ -6,6 +6,20 @@ module Caffeinate
         has_many :caffeinate_campaign_subscriptions, as: :subscriber, class_name: '::Caffeinate::CampaignSubscription'
         has_many :caffeinate_campaigns, through: :caffeinate_campaign_subscriptions, class_name: '::Caffeinate::Campaign'
         has_many :caffeinate_mailings, through: :caffeinate_campaign_subscriptions, class_name: '::Caffeinate::Mailing'
+
+        scope :not_subscribed_to, -> (list) {
+            subscribed = ::Caffeinate::CampaignSubscription.select(:subscriber_id).joins(:caffeinate_campaign).where(caffeinate_campaigns: { slug: list }, subscriber_type: self.name)
+            where.not(id: subscribed)
+        }
+
+        scope :unsubscribed_from_campaign, -> (list) {
+          unsubscribed = ::Caffeinate::CampaignSubscription
+                             .unsubscribed
+                             .select(:subscriber_id)
+                             .joins(:caffeinate_campaign)
+                             .where(caffeinate_campaigns: { slug: list }, subscriber_type: self.name)
+          where(id: unsubscribed)
+        }
       end
 
       # Adds the associations for a user

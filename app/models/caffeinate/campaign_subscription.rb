@@ -11,6 +11,17 @@ module Caffeinate
     belongs_to :subscriber, polymorphic: true
     belongs_to :user, polymorphic: true, optional: true
 
+    # All CampaignSubscriptions that where `unsubscribed_at` is nil and `ended_at` is nil
+    scope :active, -> { where(unsubscribed_at: nil, ended_at: nil) }
+
+    # All CampaignSubscriptions that where `unsubscribed_at` is nil and `ended_at` is nil
+    scope :subscribed, -> { active }
+
+    scope :unsubscribed, -> { where.not(unsubscribed_at: nil) }
+
+    # All CampaignSubscriptions that where `ended_at` is not nil
+    scope :ended, -> { where.not(ended_at: nil) }
+
     before_validation :set_token!, on: [:create]
     validates :token, uniqueness: true, on: [:create]
 
