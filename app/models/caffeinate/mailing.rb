@@ -80,7 +80,7 @@ module Caffeinate
 
     # Assigns attributes to the Mailing from the Drip
     def from_drip(drip)
-      self.send_at = drip.options[:delay].from_now
+      self.send_at = drip.send_at
       self.mailer_class = drip.options[:mailer_class]
       self.mailer_action = drip.action
       self

@@ -4,7 +4,7 @@ module Caffeinate
   class CampaignSubscriptionsController < ApplicationController
     layout 'caffeinate'
 
-    helper_method :unsubscribe_url, :subscribe_url
+    helper_method :caffeinate_unsubscribe_url, :caffeinate_subscribe_url
 
     before_action :find_campaign_subscription!
 
@@ -18,11 +18,11 @@ module Caffeinate
 
     private
 
-    def subscribe_url
+    def caffeinate_subscribe_url
       Caffeinate::Engine.routes.url_helpers.subscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
     end
 
-    def unsubscribe_url
+    def caffeinate_unsubscribe_url
       Caffeinate::Engine.routes.url_helpers.unsubscribe_campaign_subscription_url(token: @campaign_subscription.token, **Rails.application.routes.default_url_options)
     end
 

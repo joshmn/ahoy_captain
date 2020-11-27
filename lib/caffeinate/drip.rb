@@ -19,6 +19,10 @@ module Caffeinate
       options[:using] == :parameterized
     end
 
+    def send_at
+      options[:delay].from_now
+    end
+
     # Checks if the drip is enabled
     def enabled?(mailing)
       DripEvaluator.new(mailing).call(&@block)
