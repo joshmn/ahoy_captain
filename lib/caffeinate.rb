@@ -3,6 +3,7 @@
 require 'rails/all'
 require 'caffeinate/engine'
 require 'caffeinate/drip'
+require 'caffeinate/url_helpers'
 require 'caffeinate/configuration'
 require 'caffeinate/dripper/base'
 require 'caffeinate/deliver_async'

@@ -4,9 +4,12 @@ require 'rails_helper'
 
 describe Caffeinate::ActionMailer do
   class HelpersTestMailer < ::ActionMailer::Base
-    def test(subscription)
+    before_action do
+      @mailing = params[:mailing]
+    end
+    def hello
       mail do |format|
-        format.text { render plain: Caffeinate::Engine.routes.url_helpers.unsubscribe_campaign_subscription_url(subscription.token, Rails.application.routes.default_url_options).to_s }
+        format.text { render plain: caffeinate_unsubscribe_url }
       end
     end
   end
@@ -14,8 +17,9 @@ describe Caffeinate::ActionMailer do
   context 'it works' do
     it 'works' do
       subscription = build_stubbed(:caffeinate_campaign_subscription)
+      mailing = ::Caffeinate::Mailing.new(caffeinate_campaign_subscription: subscription)
       subscription.token = 'jesus'
-      expect(HelpersTestMailer.test(subscription).body.to_s).to eq('http://localhost:3000/caffeinate/campaign_subscriptions/jesus/unsubscribe')
+      expect(HelpersTestMailer.with(mailing: mailing).hello.body.to_s).to eq('http://localhost:3000/caffeinate/campaign_subscriptions/jesus/unsubscribe')
     end
   end
 end
