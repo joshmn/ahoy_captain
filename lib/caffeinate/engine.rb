@@ -14,6 +14,14 @@ module Caffeinate
       ::ActionMailer::Base.register_observer(::Caffeinate::ActionMailer::Observer)
     end
 
+    unless config.eager_load
+      config.to_prepare do
+        Dir.glob("#{Rails.root}/app/drippers/**/*.rb").each do |f|
+          require f
+        end
+      end
+    end
+
     ActiveSupport.on_load(:active_record) do
       extend ::Caffeinate::ActiveRecord::Extension
     end
