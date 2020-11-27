@@ -10,20 +10,28 @@ module Caffeinate
 
         def initialize(dripper)
           @dripper = dripper
-          @drips = []
+          @drips = {}
         end
 
         # Register the drip
         def register(action, options, &block)
-          @drips << ::Caffeinate::Drip.new(@dripper, action, options, &block)
+          @drips[action.to_s] = ::Caffeinate::Drip.new(@dripper, action, options, &block)
         end
 
         def each(&block)
-          @drips.each { |drip| block.call(drip) }
+          @drips.each { |action_name, drip| block.call(action_name, drip) }
+        end
+
+        def values
+          @drips.values
         end
 
         def size
           @drips.size
+        end
+
+        def [](val)
+          @drips[val]
         end
       end
 
@@ -34,8 +42,13 @@ module Caffeinate
 
       module ClassMethods
         # A collection of Drip objects associated with a given `Caffeinate::Dripper`
+        def drip_collection
+          @drip_collection ||= DripCollection.new(self)
+        end
+
+        # A collection of Drip objects associated with a given `Caffeinate::Dripper`
         def drips
-          @drips ||= DripCollection.new(self)
+          drip_collection.values
         end
 
         # Register a drip on the Dripper
@@ -58,7 +71,7 @@ module Caffeinate
           end
           raise ArgumentError, "You must define :delay in the options for :#{action_name}" if options[:delay].nil?
 
-          drips.register(action_name, options, &block)
+          drip_collection.register(action_name, options, &block)
         end
       end
     end

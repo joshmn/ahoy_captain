@@ -45,7 +45,7 @@ module Caffeinate
 
         # The defined slug or the inferred slug
         def campaign_slug
-          @_campaign_slug || name.delete_suffix('Campaign')
+          @_campaign_slug || inferred_campaign_slug
         end
       end
     end

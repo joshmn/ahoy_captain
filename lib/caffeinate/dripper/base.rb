@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'caffeinate/dripper/drip'
+require 'caffeinate/dripper/inferences'
 require 'caffeinate/dripper/callbacks'
 require 'caffeinate/dripper/defaults'
 require 'caffeinate/dripper/subscriber'
@@ -16,18 +17,9 @@ module Caffeinate
       include Defaults
       include Delivery
       include Drip
+      include Inferences
       include Perform
       include Subscriber
-
-      # The inferred mailer class
-      def self.inferred_mailer_class
-        klass_name = "#{name.delete_suffix('Dripper')}Mailer"
-        klass = klass_name.safe_constantize
-        return nil unless klass
-        return klass_name if klass < ::ActionMailer::Base
-
-        nil
-      end
     end
   end
 end
