@@ -30,8 +30,8 @@ module Caffeinate
         # @option [ActiveRecord::Base] :user The associated user (optional)
         #
         # @return [Caffeinate::CampaignSubscriber] the created CampaignSubscriber
-        def subscribe(subscriber, user:)
-          caffeinate_campaign.subscribe(subscriber, user: user)
+        def subscribe(subscriber, **args)
+          caffeinate_campaign.subscribe(subscriber, **args)
         end
 
         # :nodoc:

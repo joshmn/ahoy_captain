@@ -23,7 +23,7 @@ module Caffeinate
         # @param [Hash] options The options to set defaults with
         # @option options [String] :mailer_class The mailer class
         def default(options = {})
-          options.assert_valid_keys(:mailer_class, :mailer)
+          options.assert_valid_keys(:mailer_class, :mailer, :using)
           @defaults = options
         end
       end

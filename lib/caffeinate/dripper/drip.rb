@@ -50,6 +50,7 @@ module Caffeinate
         def drip(action_name, options = {}, &block)
           options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
           options[:mailer_class] ||= options[:mailer] || defaults[:mailer_class]
+          options[:using] ||= defaults[:using]
           options[:step] ||= drips.size + 1
 
           if options[:mailer_class].nil?
