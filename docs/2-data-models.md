@@ -4,7 +4,7 @@ redirect_from: /docs/2-data-models.html
 
 # Data Models
 
-There are three models that are important to Caffeinate.
+There are four models that are important to Caffeinate.
 
 ## Campaign
 
@@ -50,4 +50,8 @@ mailer_action (string)
 A Mailing record is created when we create a new `Caffeinate::CampaignSubscription` object. We create them based on the 
 drips we define in our Campaign (not `Caffeinate::Campaign`) resource.
 
-Onto [Campaign Customization](3-campaign-customization.md).
+## Dripper
+
+A Dripper ties a `::Caffeinate::Campaign` to a mailer, and all the logic between.
+ 
+Onto [Dripper Customization](3-dripper-customization.md).
