@@ -15,12 +15,16 @@ module Caffeinate
       #
       # @return nil
       def perform!
-        campaign.caffeinate_campaign_subscriptions.active.includes(:next_caffeinate_mailing).each do |subscriber|
-          if subscriber.next_caffeinate_mailing
-           subscriber.next_caffeinate_mailing.process!
+        run_callbacks(:before_process, self)
+        campaign.caffeinate_campaign_subscriptions.active.in_batches(of: self.class._batch_size).each do |batch|
+          run_callbacks(:on_process, self, batch)
+          batch.each do |subscriber|
+            if subscriber.next_caffeinate_mailing
+              subscriber.next_caffeinate_mailing.process!
+            end
           end
         end
-        true
+        run_callbacks(:after_process, self)
       end
 
       module ClassMethods
