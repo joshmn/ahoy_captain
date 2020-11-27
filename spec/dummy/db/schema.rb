@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_190157) do
     t.string "user_id"
     t.string "token", null: false
     t.datetime "ended_at"
+    t.datetime "resubscribed_at"
     t.datetime "unsubscribed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
