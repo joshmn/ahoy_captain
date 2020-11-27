@@ -16,6 +16,7 @@ describe Caffeinate::Dripper::Base do
       expect(FunkyDripper.drips.count).to eq(2)
     end
   end
+
   context '.inffered_mailer_class' do
     it 'is nil if there is no defined class' do
       class BaseInferredDripper < Caffeinate::Dripper::Base; end

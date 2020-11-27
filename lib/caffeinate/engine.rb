@@ -8,12 +8,7 @@ module Caffeinate
   # :nodoc:
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
-
-    config.to_prepare do
-      Dir.glob(Rails.root.join("app/drippers/**/*.rb")).each do |file|
-        require file
-      end
-    end
+    config.eager_load_namespaces << Caffeinate
 
     ActiveSupport.on_load(:action_mailer) do
       include ::Caffeinate::ActionMailer::Extension
