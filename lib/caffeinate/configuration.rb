@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   class Configuration
     attr_accessor :now, :async_delivery, :mailing_job
@@ -9,7 +11,7 @@ module Caffeinate
     end
 
     def now=(val)
-      raise ArgumentError, "#now must be a proc" unless val.respond_to?(:call)
+      raise ArgumentError, '#now must be a proc' unless val.respond_to?(:call)
 
       super
     end

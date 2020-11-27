@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ::Caffeinate::Mailing do
@@ -45,9 +47,9 @@ describe ::Caffeinate::Mailing do
         mailing.mailer_action = 'test'
         mailing.mailer_class = 'SuperTestMailer'
         mailing.caffeinate_campaign_subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
-        expect {
+        expect do
           mailing.process!
-        }.to change {
+        end.to change {
           ActiveJob::Base.queue_adapter.enqueued_jobs.count
         }.by 1
         Caffeinate.config.mailing_job = nil

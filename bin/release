@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/caffeinate/version'
+
+version = Caffeinate::VERSION
+system('gem build caffeinate.gemspec')
+system("gem push caffeinate-#{version}.gem")
+system("rm caffeinate-#{version}.gem")
+system("git tag -a v#{version} -m 'version #{version}'")
+system("git push origin v#{version}")

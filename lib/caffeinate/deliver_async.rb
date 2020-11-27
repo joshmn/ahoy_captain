@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   # Method for handling async delivery. `include` it for plug-and-play.
   #

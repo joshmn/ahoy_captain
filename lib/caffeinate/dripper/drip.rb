@@ -52,7 +52,9 @@ module Caffeinate
           options[:mailer_class] ||= options[:mailer] || defaults[:mailer_class]
           options[:step] ||= drips.size + 1
 
-          raise ArgumentError, "You must define :mailer_class or :mailer in the options for :#{action_name}" if options[:mailer_class].nil?
+          if options[:mailer_class].nil?
+            raise ArgumentError, "You must define :mailer_class or :mailer in the options for :#{action_name}"
+          end
           raise ArgumentError, "You must define :delay in the options for :#{action_name}" if options[:delay].nil?
 
           drips.register(action_name, options, &block)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Caffeinate::CampaignSubscriptionsController, type: :controller do
@@ -9,9 +11,9 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
 
   it 'works' do
     subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
-    expect {
+    expect do
       get :unsubscribe, params: { token: subscription.token }
       subscription.reload
-    }.to change(subscription, :unsubscribed_at)
+    end.to change(subscription, :unsubscribed_at)
   end
 end

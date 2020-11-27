@@ -8,7 +8,7 @@ FactoryBot.define do
 
   trait :with_campaign do
     after(:create) do |obj|
-      campaign_class_name = obj.name.gsub(" ", "")
+      campaign_class_name = obj.name.gsub(' ', '')
       campaign_class = Object.const_set(campaign_class_name, ::TestCampaign.clone)
       campaign_class.campaign(obj.slug.to_sym)
     end

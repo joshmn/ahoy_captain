@@ -21,7 +21,7 @@ module Caffeinate
 
       # The inferred mailer class
       def self.inferred_mailer_class
-        klass_name = "#{self.name.delete_suffix("Dripper")}Mailer"
+        klass_name = "#{name.delete_suffix('Dripper')}Mailer"
         klass = klass_name.safe_constantize
         return nil unless klass
         return klass_name if klass < ::ActionMailer::Base

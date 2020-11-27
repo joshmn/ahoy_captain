@@ -43,7 +43,7 @@ module Caffeinate
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
 
-      caffeinate_campaign.to_dripper.run_callbacks(:on_skip, self.caffeinate_campaign_subscription, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_skip, caffeinate_campaign_subscription, self)
     end
 
     # The associated drip
@@ -88,9 +88,9 @@ module Caffeinate
     def deliver_later!
       klass = ::Caffeinate.config.mailing_job_class
       if klass.respond_to?(:perform_later)
-        klass.perform_later(self.id)
+        klass.perform_later(id)
       elsif klass.respond_to?(:perform_async)
-        klass.perform_async(self.id)
+        klass.perform_async(id)
       else
         raise NoMethodError, "Neither perform_later or perform_async are defined on #{klass}."
       end
