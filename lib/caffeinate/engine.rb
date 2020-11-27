@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'caffeinate/helpers'
 require 'caffeinate/action_mailer'
 require 'caffeinate/active_record/extension'
 
@@ -22,6 +23,10 @@ module Caffeinate
 
     ActiveSupport.on_load(:active_record) do
       extend ::Caffeinate::ActiveRecord::Extension
+    end
+
+    ActiveSupport.on_load(:action_view) do
+      ApplicationHelper.send(:include, ::Caffeinate::Helpers)
     end
   end
 end
