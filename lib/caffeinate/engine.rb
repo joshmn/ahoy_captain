@@ -8,9 +8,9 @@ module Caffeinate
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
 
-    Rails.main_app.reloader.to_prepare do
+    config.to_prepare do
       Dir.glob(Rails.root.join("app/drippers/**/*.rb")).each do |file|
-        require file
+        load file
       end
     end
 
