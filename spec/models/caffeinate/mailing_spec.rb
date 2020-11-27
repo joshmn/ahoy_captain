@@ -71,4 +71,79 @@ describe ::Caffeinate::Mailing do
       end
     end
   end
+
+  context '#pending?' do
+    it 'is not sent or skipped' do
+      mailing = described_class.new
+      expect(mailing.pending?).to be_truthy
+      mailing.sent_at = Time.current
+      expect(mailing.pending?).to be_falsey
+      mailing.sent_at = 50.years.ago
+      expect(mailing.pending?).to be_falsey
+      mailing.sent_at = 50.years.from_now
+      expect(mailing.pending?).to be_falsey
+      mailing.sent_at = nil
+      expect(mailing.pending?).to be_truthy
+      mailing.skipped_at = Time.current
+      expect(mailing.pending?).to be_falsey
+      mailing.skipped_at = 50.years.ago
+      expect(mailing.pending?).to be_falsey
+      mailing.skipped_at = 50.years.from_now
+      expect(mailing.pending?).to be_falsey
+      mailing.skipped_at = Time.current
+      mailing.sent_at = Time.current
+      expect(mailing.pending?).to be_falsey
+      mailing.skipped_at = 50.years.ago
+      mailing.sent_at = 50.years.ago
+      expect(mailing.pending?).to be_falsey
+      mailing.skipped_at = 50.years.from_now
+      mailing.sent_at = 50.years.from_now
+      expect(mailing.pending?).to be_falsey
+    end
+  end
+
+  context 'skipped' do
+    context '#skipped?' do
+      it 'has a present skipped_at' do
+        mailing = described_class.new
+        expect(mailing.skipped?).to be_falsey
+        mailing.skipped_at = Time.current
+        expect(mailing.skipped?).to be_truthy
+        mailing.skipped_at = 50.years.ago
+        expect(mailing.skipped?).to be_truthy
+        mailing.skipped_at = 50.years.from_now
+        expect(mailing.skipped?).to be_truthy
+        mailing.skipped_at = nil
+        expect(mailing.skipped?).to be_falsey
+      end
+    end
+
+    describe '#process!' do
+
+      class SkippedMailingDripper < ::Caffeinate::Dripper::Base
+        campaign :skipped_mailing
+        drip :happy, mailer_class: 'SkippedMailingMailer', delay: 0.hours, using: :parameterized
+      end
+
+      let!(:mailing_campaign) { create(:caffeinate_campaign, slug: :skipped_mailing) }
+      let!(:skipped_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: mailing_campaign) }
+
+      class SkippedMailingMailer < ActionMailer::Base
+        def happy
+          mail(to: "hello@example.com", from: "hello@example.com", subject: "hello") do |format|
+            format.text { render plain: "hi" }
+          end
+        end
+      end
+
+      it 'sets skipped to nil' do
+        mailing = skipped_subscription.caffeinate_mailings.first
+        mailing.skip!
+        expect(mailing.skipped?).to be_truthy
+        mailing.process!
+        expect(mailing.skipped?).to be_falsey
+        expect(mailing.sent?).to be_truthy
+      end
+    end
+  end
 end
