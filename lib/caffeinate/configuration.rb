@@ -2,12 +2,13 @@
 
 module Caffeinate
   class Configuration
-    attr_accessor :now, :async_delivery, :mailing_job
+    attr_accessor :now, :async_delivery, :mailing_job, :batch_size
 
     def initialize
       @now = -> { Time.current }
       @async_delivery = false
       @mailing_job = nil
+      @batch_size = 1_000
     end
 
     def now=(val)
