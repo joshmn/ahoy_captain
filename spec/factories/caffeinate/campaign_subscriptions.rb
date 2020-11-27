@@ -5,5 +5,6 @@ FactoryBot.define do
     caffeinate_campaign
     subscriber { create(:company) }
     user { create(:user) }
+    token { SecureRandom.uuid }
   end
 end

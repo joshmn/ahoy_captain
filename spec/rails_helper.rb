@@ -46,5 +46,6 @@ RSpec.configure do |config|
 end
 
 ActiveJob::Base.queue_adapter = :test
+Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
 class TestCampaign < ::Caffeinate::Dripper::Base; end
