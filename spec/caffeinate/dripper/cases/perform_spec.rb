@@ -21,12 +21,25 @@ describe ::Caffeinate::Dripper::Perform do
   end
 
   context '#perform' do
-    let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
-    it 'sends a mail' do
-      expect do
-        PerformDripper.perform!
-      end.to change(ActionMailer::Base.deliveries, :size).by(1)
+    context 'with a future mail' do
+      let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
+      it 'does not send mail' do
+        expect do
+          PerformDripper.perform!
+        end.to_not change(ActionMailer::Base.deliveries, :size)
+      end
+    end
+
+    context 'with a past mail' do
+      let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
+      it 'sends mail' do
+        Timecop.travel(2.hours.from_now) do
+          expect do
+            PerformDripper.perform!
+          end.to change(ActionMailer::Base.deliveries, :size).by(1)
+        end
+      end
     end
   end
 end
