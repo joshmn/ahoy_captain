@@ -19,6 +19,10 @@ module Caffeinate
         template 'application_dripper.rb', 'app/drippers/application_dripper.rb'
       end
 
+      def install_routes
+        inject_into_file "config/routes.rb", "\n  mount ::Caffeinate::Engine => '/caffeinate", after: /Rails.application.routes.draw do/
+      end
+
       # :nodoc:
       def self.next_migration_number(_path)
         if @prev_migration_nr
