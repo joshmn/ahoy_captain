@@ -6,7 +6,7 @@ module Caffeinate
     self.table_name = 'caffeinate_campaign_subscriptions'
 
     has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
-    has_one :next_caffeinate_mailing, -> { upcoming.unsent.limit(1).first }, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    belongs_to :next_mailing, -> { upcoming.unsent.limit(1).first }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
     belongs_to :subscriber, polymorphic: true
     belongs_to :user, polymorphic: true, optional: true
