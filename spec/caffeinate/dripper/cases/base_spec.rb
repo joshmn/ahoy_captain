@@ -3,6 +3,19 @@
 require 'rails_helper'
 
 describe Caffeinate::Dripper::Base do
+  let!(:campaign) { create(:caffeinate_campaign, slug: "funky_dripper") }
+  class FunkyDripper < Caffeinate::Dripper::Base
+    campaign :funky_dripper
+
+    drip :test_1, delay: 0.hours, mailer_class: "Test"
+    drip :test_2, delay: 0.hours, mailer_class: "Test"
+  end
+
+  context 'drips' do
+    it 'should be 2' do
+      expect(FunkyDripper.drips.count).to eq(2)
+    end
+  end
   context '.inffered_mailer_class' do
     it 'is nil if there is no defined class' do
       class BaseInferredDripper < Caffeinate::Dripper::Base; end
