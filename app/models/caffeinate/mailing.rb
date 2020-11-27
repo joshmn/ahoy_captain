@@ -17,6 +17,8 @@
 module Caffeinate
   # Records of the mails sent and to be sent for a given `::Caffeinate::CampaignSubscriber`
   class Mailing < ApplicationRecord
+    CURRENT_THREAD_KEY = :current_caffeinate_mailing.freeze
+
     self.table_name = 'caffeinate_mailings'
 
     belongs_to :caffeinate_campaign_subscription, class_name: 'Caffeinate::CampaignSubscription'

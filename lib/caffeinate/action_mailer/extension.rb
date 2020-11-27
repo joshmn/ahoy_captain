@@ -5,7 +5,7 @@ module Caffeinate
     module Extension
       def self.included(klass)
         klass.before_action do
-          @mailing = Thread.current[:current_caffeinate_mailing] if Thread.current[:current_caffeinate_mailing]
+          @mailing = Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] if Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
         end
       end
     end
