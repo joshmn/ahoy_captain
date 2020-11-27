@@ -1,8 +1,8 @@
 # Caffeinate
 
-A drip mailer and management for Ruby on Rails.
+Ruby on Rails drip campaign engine. 
 
-## Docs
+## Are there docs?
 
 [Since you asked](https://rubydoc.info/github/joshmn/caffeinate).
 
