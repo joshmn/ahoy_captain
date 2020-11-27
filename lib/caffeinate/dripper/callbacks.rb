@@ -8,6 +8,10 @@ module Caffeinate
         klass.extend ClassMethods
       end
 
+      def run_callbacks(name, *args)
+        self.class.run_callbacks(name, *args)
+      end
+
       module ClassMethods
         # :nodoc:
         def run_callbacks(name, *args)
@@ -31,6 +35,57 @@ module Caffeinate
         # :nodoc:
         def on_subscribe_blocks
           @on_subscribe_blocks ||= []
+        end
+
+
+        # Callback before the mailings get processed.
+        #
+        #   before_process do |dripper|
+        #     Slack.notify(:caffeinate, "Dripper is getting ready for mailing! #{dripper.caffeinate_campaign.name}!")
+        #   end
+        #
+        # @yield Caffeinate::Dripper
+        def before_process(&block)
+          before_process_blocks << block
+        end
+
+        # :nodoc:
+        def before_process_blocks
+          @before_process_blocks ||= []
+        end
+
+        # Callback before the mailings get processed in a batch.
+        #
+        #   after_process do |dripper, mailings|
+        #     Slack.notify(:caffeinate, "Dripper #{dripper.name} sent #{mailings.size} mailings! Whoa!")
+        #   end
+        #
+        # @yield Caffeinate::Dripper
+        # @yield Caffeinate::Mailing [Array]
+        def on_process(&block)
+          on_process_blocks << block
+        end
+
+        # :nodoc:
+        def on_process_blocks
+          @on_process_blocks ||= []
+        end
+
+        # Callback after the all the mailings have been sent.
+        #
+        #   after_process do |dripper|
+        #     Slack.notify(:caffeinate, "Dripper #{dripper.name} sent #{mailings.size} mailings! Whoa!")
+        #   end
+        #
+        # @yield Caffeinate::Dripper
+        # @yield Caffeinate::Mailing [Array]
+        def after_process(&block)
+          after_process_blocks << block
+        end
+
+        # :nodoc:
+        def after_process_blocks
+          @after_process_blocks ||= []
         end
 
         # Callback before a Drip has called the mailer.
