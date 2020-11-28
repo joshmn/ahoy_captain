@@ -21,6 +21,13 @@ FactoryBot.define do
     mailer_action { 'action_does_not_exist' }
   end
 
+  trait :ready_to_mail do
+    send_at { 1.minute.ago }
+    mailer_class { 'ArgumentMailer' }
+    mailer_action { 'hello' }
+    association :caffeinate_campaign_subscription, :ready
+  end
+
   trait :upcoming do
     send_at { 1.minute.from_now }
   end

@@ -23,4 +23,8 @@ FactoryBot.define do
     user { create(:user) }
     token { SecureRandom.uuid }
   end
+
+  trait :ready do
+    association :caffeinate_campaign, factory: :prebuilt_caffeinate_campaign
+  end
 end

@@ -23,4 +23,12 @@ FactoryBot.define do
       campaign_class.campaign(obj.slug.to_sym)
     end
   end
+
+  trait :with_drips do
+    after_create do |obj|
+      obj.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.minutes
+    end
+  end
+
+  factory :prebuilt_caffeinate_campaign, parent: :caffeinate_campaign, traits: [:with_dripper, :with_drips]
 end
