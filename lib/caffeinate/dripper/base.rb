@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'caffeinate/dripper/drip'
 require 'caffeinate/dripper/batching'
-require 'caffeinate/dripper/inferences'
 require 'caffeinate/dripper/callbacks'
-require 'caffeinate/dripper/defaults'
-require 'caffeinate/dripper/subscriber'
 require 'caffeinate/dripper/campaign'
-require 'caffeinate/dripper/perform'
+require 'caffeinate/dripper/defaults'
 require 'caffeinate/dripper/delivery'
+require 'caffeinate/dripper/drip'
+require 'caffeinate/dripper/inferences'
+require 'caffeinate/dripper/perform'
+require 'caffeinate/dripper/subscriber'
 
 module Caffeinate
   module Dripper
