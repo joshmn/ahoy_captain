@@ -16,10 +16,10 @@ FactoryBot.define do
     sequence(:slug) { |seq| "campaign_#{seq}" }
   end
 
-  trait :with_campaign do
+  trait :with_dripper do
     after(:create) do |obj|
       campaign_class_name = obj.name.gsub(' ', '')
-      campaign_class = Object.const_set(campaign_class_name, ::TestCampaign.clone)
+      campaign_class = Object.const_set("#{campaign_class_name}Dripper", ::BaseTestDripper.clone)
       campaign_class.campaign(obj.slug.to_sym)
     end
   end
