@@ -53,9 +53,9 @@ Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
 class BaseTestDripper < ::Caffeinate::Dripper::Base; end
 class ArgumentMailer < ActionMailer::Base
-  def hello(mailing)
-    mail(to: "argument_mailer@example.com", from: "argument_mailer@example.com", subject: "Argument Mailer") do |format|
-      format.text { render plain: "ArgumentMailer" }
+  def hello(_mailing)
+    mail(to: 'argument_mailer@example.com', from: 'argument_mailer@example.com', subject: 'Argument Mailer') do |format|
+      format.text { render plain: 'ArgumentMailer' }
     end
   end
 end

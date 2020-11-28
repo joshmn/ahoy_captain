@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ::Caffeinate::DripEvaluator do
-
   class DripEvaluatorMailer < ActionMailer::Base
     def hello_end; end
+
     def hello_skip; end
+
     def hello_unsubscribe; end
   end
 

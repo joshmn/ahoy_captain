@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Caffeinate::ActionMailer::Interceptor do
@@ -7,15 +9,15 @@ describe Caffeinate::ActionMailer::Interceptor do
 
   context '.delivering_email' do
     context 'without Caffeinate.current_mailing' do
-      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!")  }
+      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       it 'does nothing' do
         expect(Caffeinate.current_mailing).to be_falsey
         expect(described_class.delivering_email(mail)).to be_falsey
       end
       it 'does not change #perform_deliveries' do
-        expect {
+        expect do
           described_class.delivering_email(mail)
-        }.to_not change(mail, :perform_deliveries)
+        end.to_not change(mail, :perform_deliveries)
       end
     end
 
@@ -28,7 +30,7 @@ describe Caffeinate::ActionMailer::Interceptor do
           @@before_send_called = true
         end
       end
-      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!")  }
+      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       let(:mailing) { subscription.caffeinate_mailings.first }
       it 'runs before_send callbacks' do
         ::Caffeinate.current_mailing = mailing

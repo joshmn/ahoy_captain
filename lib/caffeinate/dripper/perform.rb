@@ -19,9 +19,7 @@ module Caffeinate
         campaign.caffeinate_campaign_subscriptions.active.in_batches(of: self.class._batch_size).each do |batch|
           run_callbacks(:on_process, self, batch)
           batch.each do |subscriber|
-            if subscriber.next_caffeinate_mailing
-              subscriber.next_caffeinate_mailing.process!
-            end
+            subscriber.next_caffeinate_mailing&.process!
           end
         end
         run_callbacks(:after_process, self)

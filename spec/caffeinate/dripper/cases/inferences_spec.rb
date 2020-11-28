@@ -28,12 +28,12 @@ describe Caffeinate::Dripper::Inferences do
   context '.infered_campaign_slug' do
     it 'deletes the Dripper suffix' do
       class BaseInferredDripper < Caffeinate::Dripper::Base; end
-      expect(BaseInferredDripper.inferred_campaign_slug).to_not end_with("Dripper")
+      expect(BaseInferredDripper.inferred_campaign_slug).to_not end_with('Dripper')
     end
 
     it 'converts to underscore' do
       class BaseInferredDripper < Caffeinate::Dripper::Base; end
-      expect(BaseInferredDripper.inferred_campaign_slug).to eq("base_inferred")
+      expect(BaseInferredDripper.inferred_campaign_slug).to eq('base_inferred')
     end
   end
 end

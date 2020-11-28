@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 describe Caffeinate::Dripper::Base do
-  let!(:campaign) { create(:caffeinate_campaign, slug: "funky_dripper") }
+  let!(:campaign) { create(:caffeinate_campaign, slug: 'funky_dripper') }
   class FunkyDripper < Caffeinate::Dripper::Base
     campaign :funky_dripper
 
-    drip :test_1, delay: 0.hours, mailer_class: "Test"
-    drip :test_2, delay: 0.hours, mailer_class: "Test"
+    drip :test_1, delay: 0.hours, mailer_class: 'Test'
+    drip :test_2, delay: 0.hours, mailer_class: 'Test'
   end
 
   context 'drips' do

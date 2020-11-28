@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   # URL helpers for accessing the mounted Caffeinate instance.
   module Helpers

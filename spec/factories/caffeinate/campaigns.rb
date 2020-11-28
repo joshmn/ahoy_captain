@@ -30,5 +30,5 @@ FactoryBot.define do
     end
   end
 
-  factory :prebuilt_caffeinate_campaign, parent: :caffeinate_campaign, traits: [:with_dripper, :with_drips]
+  factory :prebuilt_caffeinate_campaign, parent: :caffeinate_campaign, traits: %i[with_dripper with_drips]
 end

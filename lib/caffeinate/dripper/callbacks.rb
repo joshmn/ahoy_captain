@@ -37,7 +37,6 @@ module Caffeinate
           @on_subscribe_blocks ||= []
         end
 
-
         # Callback before the mailings get processed.
         #
         #   before_process do |dripper|

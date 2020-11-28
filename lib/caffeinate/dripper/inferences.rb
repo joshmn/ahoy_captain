@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module Dripper
     module Inferences
@@ -18,7 +20,7 @@ module Caffeinate
 
         # The inferred mailer class
         def inferred_campaign_slug
-          "#{name.delete_suffix('Dripper')}".underscore
+          name.delete_suffix('Dripper').to_s.underscore
         end
       end
     end

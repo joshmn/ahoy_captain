@@ -15,7 +15,7 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
       expect(subscription.subscribed?).to be_truthy
       get :unsubscribe, params: { token: subscription.token }
-      expect(response.body).to include("unsubscribed")
+      expect(response.body).to include('unsubscribed')
       expect(response).to have_http_status(:ok)
       subscription.reload
       expect(subscription.subscribed?).to be_falsey
@@ -26,7 +26,7 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign, unsubscribed_at: Time.current)
       expect(subscription.subscribed?).to be_falsey
       get :unsubscribe, params: { token: subscription.token }
-      expect(response.body).to include("unsubscribed")
+      expect(response.body).to include('unsubscribed')
       expect(response).to have_http_status(:ok)
       subscription.reload
       expect(subscription.subscribed?).to be_falsey
@@ -36,9 +36,9 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
 
   context 'an invalid token' do
     it 'raises ActiveRecord::RecordNotFound' do
-      expect {
-        get :unsubscribe, params: { token: "meow" }
-      }.to raise_error(::ActiveRecord::RecordNotFound)
+      expect do
+        get :unsubscribe, params: { token: 'meow' }
+      end.to raise_error(::ActiveRecord::RecordNotFound)
     end
   end
 end

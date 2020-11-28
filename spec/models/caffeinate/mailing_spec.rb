@@ -119,7 +119,6 @@ describe ::Caffeinate::Mailing do
     end
 
     describe '#process!' do
-
       class SkippedMailingDripper < ::Caffeinate::Dripper::Base
         campaign :skipped_mailing
         drip :happy, mailer_class: 'SkippedMailingMailer', delay: 0.hours, using: :parameterized
@@ -130,8 +129,8 @@ describe ::Caffeinate::Mailing do
 
       class SkippedMailingMailer < ActionMailer::Base
         def happy
-          mail(to: "hello@example.com", from: "hello@example.com", subject: "hello") do |format|
-            format.text { render plain: "hi" }
+          mail(to: 'hello@example.com', from: 'hello@example.com', subject: 'hello') do |format|
+            format.text { render plain: 'hi' }
           end
         end
       end

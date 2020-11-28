@@ -21,7 +21,7 @@ module Caffeinate
     end
 
     ActiveSupport.on_load(:action_view) do
-      ApplicationHelper.send(:include, ::Caffeinate::Helpers)
+      ApplicationHelper.include ::Caffeinate::Helpers
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   # Handles evaluating the `drip` block and provides convenience methods for handling the mailing or its campaign.
   class DripEvaluator

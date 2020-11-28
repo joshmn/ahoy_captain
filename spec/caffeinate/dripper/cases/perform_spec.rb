@@ -21,7 +21,6 @@ describe ::Caffeinate::Dripper::Perform do
   end
 
   context '#perform' do
-
     context 'with a future mail' do
       let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
       it 'does not send mail' do

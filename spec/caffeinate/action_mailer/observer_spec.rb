@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Caffeinate::ActionMailer::Observer do
@@ -7,7 +9,7 @@ describe Caffeinate::ActionMailer::Observer do
 
   context '.delivered_email' do
     context 'without Caffeinate.current_mailing' do
-      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!")  }
+      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       it 'does nothing' do
         expect(Caffeinate.current_mailing).to be_falsey
         expect(described_class.delivered_email(mail)).to be_falsey
@@ -23,7 +25,7 @@ describe Caffeinate::ActionMailer::Observer do
           @@after_send_called = true
         end
       end
-      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!")  }
+      let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       let(:mailing) { subscription.caffeinate_mailings.first }
       it 'runs before_send callbacks' do
         ::Caffeinate.current_mailing = mailing
@@ -33,9 +35,9 @@ describe Caffeinate::ActionMailer::Observer do
 
       it 'updates mailing to the current time' do
         ::Caffeinate.current_mailing = mailing
-        expect {
+        expect do
           described_class.delivered_email(mail)
-        }.to change(mailing, :sent_at)
+        end.to change(mailing, :sent_at)
       end
     end
   end
