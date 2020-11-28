@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-require 'caffeinate/action_mailer/extension'
-require 'caffeinate/action_mailer/interceptor'
-require 'caffeinate/action_mailer/observer'
+require "mail"
+
+Dir["#{File.expand_path(File.dirname(__FILE__))}/action_mailer/*"].each { |path| require "caffeinate/action_mailer/#{File.basename(path)}" }

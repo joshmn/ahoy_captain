@@ -18,7 +18,7 @@ module Caffeinate
       module ClassMethods
         # Sets the campaign on the Dripper and resets any existing `@caffeinate_campaign`
         #
-        #   class OrdersDripper
+        #   class OrdersDripper < ApplicationDripper
         #     campaign :order_drip
         #   end
         #
@@ -37,10 +37,7 @@ module Caffeinate
         def caffeinate_campaign
           return @caffeinate_campaign if @caffeinate_campaign.present?
 
-          @caffeinate_campaign = ::Caffeinate::Campaign.find_by(slug: campaign_slug)
-          return @caffeinate_campaign if @caffeinate_campaign
-
-          raise(::ActiveRecord::RecordNotFound, "Unable to find ::Caffeinate::Campaign with slug #{campaign_slug}.")
+          @caffeinate_campaign = ::Caffeinate::Campaign[campaign_slug]
         end
 
         # The defined slug or the inferred slug
