@@ -22,14 +22,23 @@ module Caffeinate
       Caffeinate.dripper_to_campaign_class[slug.to_sym].constantize
     end
 
+    # Convenience method for find_by!(slug: value)
+    #
+    #   ::Caffeinate::Campaign[:onboarding]
+    #   # is the same as
+    #   ::Caffeinate::Campaign.find_by(slug: :onboarding)
     def self.[](val)
       find_by!(slug: val)
     end
 
+    # Checks to see if the subscriber exists.
+    #
+    # Use `find_by` so that we don't have to load the record twice. Often used with `subscribes?`
     def subscriber(record, **args)
       @subscriber ||= caffeinate_campaign_subscriptions.find_by(subscriber: record, **args)
     end
 
+    # Check if the subscriber exists
     def subscribes?(record, **args)
       subscriber(record, **args).present?
     end
