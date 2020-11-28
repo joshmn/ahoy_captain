@@ -2,6 +2,7 @@
 
 module Caffeinate
   module Dripper
+    # Includes the inferred methods based on a Dripper name.
     module Inferences
       def self.included(klass)
         klass.extend ClassMethods

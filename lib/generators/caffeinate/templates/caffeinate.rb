@@ -6,7 +6,7 @@ Caffeinate.setup do |config|
   # Used for when we set a datetime column to "now" in the database
   #
   # Default:
-  #   -> { Time.current }
+  #   config.now = -> { Time.current }
   #
   # config.now = -> { DateTime.now }
   #
@@ -21,4 +21,14 @@ Caffeinate.setup do |config|
   #
   # config.async_delivery = true
   # config.mailing_job = 'MyCustomCaffeinateJob'
+  #
+  # == Batching
+  #
+  # When a Dripper is performed and sends the mails, we use `find_in_batches`. Use `batch_size` to set the batch size.
+  # You can set this on a dripper as well for more granular control.
+  #
+  # Default:
+  #   config.batch_size = 1_000
+  #
+  # config.batch_size = 100
 end

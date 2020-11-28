@@ -2,7 +2,7 @@
 
 module Caffeinate
   module Dripper
-    # Handles delivery of a Caffeinate::Mailer for a Caffeinate::Dripper
+    # Handles delivery of a `Caffeinate::Mailer` for a `Caffeinate::Dripper`.
     module Delivery
       # :nodoc:
       def self.included(klass)

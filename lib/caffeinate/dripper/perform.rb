@@ -2,7 +2,7 @@
 
 module Caffeinate
   module Dripper
-    # Handles delivering a `Caffeinate::Mailing` for the `Caffeinate::Dripper`
+    # Handles delivering a `Caffeinate::Mailing` for the `Caffeinate::Dripper`.
     module Perform
       # :nodoc:
       def self.included(klass)
@@ -10,6 +10,8 @@ module Caffeinate
       end
 
       # Delivers the next_caffeinate_mailer for the campaign's subscribers.
+      #
+      # Handles with batches based on batch_size.
       #
       #   OrderDripper.new.perform!
       #
@@ -23,6 +25,7 @@ module Caffeinate
           end
         end
         run_callbacks(:after_process, self)
+        nil
       end
 
       module ClassMethods

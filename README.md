@@ -1,81 +1,89 @@
 # Caffeinate
 
-Ruby on Rails drip campaign engine. 
+Caffeinate is a drip campaign engine for Ruby on Rails applications.
 
-## Are there docs?
-
-[Since you asked](https://rubydoc.info/github/joshmn/caffeinate).
+Caffeinate tries to make creating and managing timed and scheduled email sequences fun. It works alongside ActionMailer 
+and has everything you need to get started and to successfully manage campaigns. It's only dependency is the stack you're
+already familiar with: Ruby on Rails.
 
 ## Usage
 
-Given a mailer like this:
+You can probably imagine seeing a Mailer like this:
 
 ```ruby 
-class AbandonedCartMailer < ActionMailer::Base 
-  def you_forgot_something(cart)
-    mail(to: cart.user.email, subject: "You forgot something!")
+class OnboardingMailer < ActionMailer::Base 
+  # Send on account creation
+  def welcome_to_my_cool_app(user)
+    mail(to: @user.email, subject: "You forgot something!")
   end
 
-  def selling_out_soon(cart)
-    mail(to: cart.user.email, subject: "Selling out soon!")
+  # Send 2 days after the user signs up
+  def some_cool_tips(user)
+    mail(to: @user.email, subject: "Here are some cool tips for MyCoolApp")
+  end 
+
+  # Sends 3 days after the user signs up and hasn't added a company profile yet
+  def help_getting_started(user)
+    return if user.company.present?
+
+    mail(to: @user.email, subject: "Did you know...")
   end 
 end 
 ```
+
+With background jobs running, checking, and everything else. That's messy. Why are we checking state in the Mailer? Ugh.
+
+We can clean this up with Caffeinate. Here's how we'd do it.
 
 ### Create a Campaign
 
 ```ruby 
-Caffeinate::Campaign.create!(name: "Abandoned Cart", slug: "abandoned_cart") 
+Caffeinate::Campaign.create!(name: "Onboarding Campaign", slug: "onboarding") 
 ```
 
 ### Create a Caffeinate::Dripper
 
+Place the contents below in `app/drippers/onboarding_dripper.rb`:
+
 ```ruby 
-class AbandonedCartDripper < Caffeinate::Dripper::Base
-  # This should match a Caffeinate::Campaign#slug
-  campaign :abandoned_cart 
-  
-  # A block to subscribe your users automatically 
-  # You can invoke this by calling `AbandonedCartDripper.subscribe!`,
-  # probably in a background process, run at a given interval 
-  subscribes do 
-    Cart.left_joins(:cart_items)
-        .includes(:user)
-        .where(completed_at: nil)
-        .where(updated_at: 1.day.ago..2.days.ago)
-        .having('count(cart_items.id) = 0').each do |cart|
-      subscribe(cart, user: cart.user)
-    end 
-  end 
-  
-  # Register your drips! Syntax is
-  # drip <mailer_action_name>, mailer: <MailerClass>, delay: <ActiveSupport::Interval>
-  drip :you_forgot_something, mailer: "AbandonedCartMailer", delay: 1.hour 
-  drip :selling_out_soon, mailer: "AbandonedCartMailer", delay: 8.hours do 
-    cart = mailing.subscriber
-    if cart.completed?
-      end! # you can also invoke `unsubscribe!` to cancel this mailing and all future mailings
+class OnboardingDripper < ApplicationDripper
+  drip :welcome_to_my_cool_app, delay: 0.hours
+  drip :some_cool_tips, delay: 2.days
+  drip :help_getting_started, delay: 3.days do 
+    if mailing.user.company.present?
+      mailing.unsubscribe!
       return false
-    end 
-  end 
+    end
+  end
 end 
 ```
 
-Automatically subscribe eligible carts to it by running:
+### Add a subscriber to the Campaign
 
 ```ruby 
-AbandonedCartDripper.subscribe!
+class User < ApplicationRecord
+  after_create_commit do 
+    Caffeinate::Campaign.find_by(slug: "onboarding").subscribe(self)
+  end 
+end
 ```
 
-This would typically run in a background job, queued up at a given interval.
+### Run the Dripper
 
-And then, once it's done, start your engines!
+You'd normally want to do this in a cron/whenever/scheduled Sidekiq/etc job.
 
-```ruby 
-AbandonedCartDripper.perform!
+```ruby
+OnboardingDripper.perform!
 ```
 
-This, too, would typically run in a background job, queued up at a given interval.
+### Spend more time building
+
+Now you can spend more time building your app and less time managing your marketing campaigns.
+* Centralized logic makes it easy to understand the flow
+* Subscription management, timings, send history all built-in
+* Built on the stack you're already familiar with
+
+There's a lot more than what you just saw, too! Caffeinate almost makes managing timed email sequences fun. 
 
 ## Installation
 
@@ -102,6 +110,11 @@ Followed by a migrate:
 ```bash
 $ rails db:migrate
 ```
+
+## Documentation
+
+* [Getting started, tips and tricks](https://github.com/joshmn/caffeinate/blob/master/docs/README.md) 
+* [Better-than-average code documentation](https://rubydoc.info/github/joshmn/caffeinate)
 
 ## Upcoming features/todo
 

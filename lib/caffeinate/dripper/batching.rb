@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
+  # Includes batch support for setting the batch size for Perform
   module Batching
     def self.included(klass)
       klass.extend ClassMethods

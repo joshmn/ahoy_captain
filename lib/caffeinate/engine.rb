@@ -5,7 +5,7 @@ require 'caffeinate/action_mailer'
 require 'caffeinate/active_record/extension'
 
 module Caffeinate
-  # :nodoc:
+  # Adds Caffeinate to Rails
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
     config.eager_load_namespaces << Caffeinate

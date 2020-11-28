@@ -2,6 +2,7 @@
 
 module Caffeinate
   module Dripper
+    # Callbacks for a Dripper.
     module Callbacks
       # :nodoc:
       def self.included(klass)
@@ -179,8 +180,8 @@ module Caffeinate
         #     Slack.notify(:caffeinate, "#{campaign_sub.id} has unsubscribed... sad day.")
         #   end
         #
-        # @yield Caffeinate::CampaignSubscription
-        # @yield Caffeinate::Mailing
+        # @yield `Caffeinate::CampaignSubscription`
+        # @yield `Caffeinate::Mailing`
         def on_skip(&block)
           on_skip_blocks << block
         end

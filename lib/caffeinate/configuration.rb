@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Caffeinate
+  # Global configuration
   class Configuration
     attr_accessor :now, :async_delivery, :mailing_job, :batch_size
 

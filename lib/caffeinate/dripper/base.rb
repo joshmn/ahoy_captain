@@ -12,6 +12,7 @@ require 'caffeinate/dripper/subscriber'
 
 module Caffeinate
   module Dripper
+    # Base class
     class Base
       include Batching
       include Callbacks

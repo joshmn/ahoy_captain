@@ -2,6 +2,7 @@
 
 module Caffeinate
   module ActiveRecord
+    # Includes the ActiveRecord association and relevant scopes for an ActiveRecord-backed model
     module Extension
       # Adds the associations for a subscriber
       def caffeinate_subscriber

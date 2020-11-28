@@ -2,6 +2,7 @@
 
 module Caffeinate
   module Dripper
+    # Campaign methods for `Caffeinate::Dripper`.
     module Campaign
       # :nodoc:
       def self.included(klass)
@@ -10,7 +11,7 @@ module Caffeinate
 
       # The campaign for this Dripper
       #
-      # @return Caffeinate::Campaign
+      # @return `Caffeinate::Campaign`
       def campaign
         self.class.caffeinate_campaign
       end
@@ -33,7 +34,7 @@ module Caffeinate
           Caffeinate.register_dripper(@_campaign_slug, name)
         end
 
-        # Returns the `Caffeinate::Campaign` object for the Campaign
+        # Returns the `Caffeinate::Campaign` object for the Dripper
         def caffeinate_campaign
           return @caffeinate_campaign if @caffeinate_campaign.present?
 

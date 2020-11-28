@@ -2,7 +2,7 @@
 
 module Caffeinate
   module Dripper
-    # The Drip DSL for registering a drip
+    # The Drip DSL for registering a drip.
     module Drip
       # A collection of Drip objects for a `Caffeinate::Dripper`
       class DripCollection

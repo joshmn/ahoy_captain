@@ -29,10 +29,12 @@ module Caffeinate
     yield config
   end
 
+  # The current mailing
   def self.current_mailing=(val)
     Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] = val
   end
 
+  # The current mailing
   def self.current_mailing
     Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
   end

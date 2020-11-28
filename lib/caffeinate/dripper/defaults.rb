@@ -2,6 +2,7 @@
 
 module Caffeinate
   module Dripper
+    # Handles the default DSL for a `Caffeinate::Dripper`.
     module Defaults
       # :nodoc:
       def self.included(klass)
