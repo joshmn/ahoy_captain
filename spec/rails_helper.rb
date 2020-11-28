@@ -59,3 +59,6 @@ class ArgumentMailer < ActionMailer::Base
     end
   end
 end
+
+# Silence warnings, namely warning: class variable access from toplevel in observer_spec and interceptor_spec
+$VERBOSE = nil
