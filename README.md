@@ -14,19 +14,19 @@ You can probably imagine seeing a Mailer like this:
 class OnboardingMailer < ActionMailer::Base 
   # Send on account creation
   def welcome_to_my_cool_app(user)
-    mail(to: @user.email, subject: "You forgot something!")
+    mail(to: user.email, subject: "You forgot something!")
   end
 
   # Send 2 days after the user signs up
   def some_cool_tips(user)
-    mail(to: @user.email, subject: "Here are some cool tips for MyCoolApp")
+    mail(to: user.email, subject: "Here are some cool tips for MyCoolApp")
   end 
 
   # Sends 3 days after the user signs up and hasn't added a company profile yet
   def help_getting_started(user)
     return if user.company.present?
 
-    mail(to: @user.email, subject: "Did you know...")
+    mail(to: user.email, subject: "Did you know...")
   end 
 end 
 ```
