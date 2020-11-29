@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails/all'
+require 'caffeinate/mail_ext'
 require 'caffeinate/engine'
 require 'caffeinate/drip'
 require 'caffeinate/url_helpers'
@@ -27,15 +28,5 @@ module Caffeinate
   # Yields the configuration
   def self.setup
     yield config
-  end
-
-  # The current mailing
-  def self.current_mailing=(val)
-    Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY] = val
-  end
-
-  # The current mailing
-  def self.current_mailing
-    Thread.current[::Caffeinate::Mailing::CURRENT_THREAD_KEY]
   end
 end

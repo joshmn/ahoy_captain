@@ -8,8 +8,10 @@ describe Caffeinate::ActionMailer::Extension do
   end
 
   context 'parameterized mailer' do
+    let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
+
     class CaffeinateActionMailerExtensionMailer < ::ActionMailer::Base
-      def test
+      def hello
         mail(to: 'hello@example.com', from: 'hello@example.com', subject: @mailing) do |format|
           format.text { render plain: 'hi' }
         end
@@ -17,8 +19,7 @@ describe Caffeinate::ActionMailer::Extension do
     end
 
     it 'receives @mailing' do
-      Caffeinate.current_mailing = 'Hello this is Bob'
-      expect(CaffeinateActionMailerExtensionMailer.test.subject).to eq('Hello this is Bob')
+      expect(CaffeinateActionMailerExtensionMailer.with(mailing: "Hello this is Bob").hello.subject).to eq('Hello this is Bob')
     end
   end
 end

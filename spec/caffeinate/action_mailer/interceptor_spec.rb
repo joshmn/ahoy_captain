@@ -8,10 +8,10 @@ describe Caffeinate::ActionMailer::Interceptor do
   end
 
   context '.delivering_email' do
-    context 'without Caffeinate.current_mailing' do
+    context 'without Mail::Message.caffeinate_mailing' do
       let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       it 'does nothing' do
-        expect(Caffeinate.current_mailing).to be_falsey
+        expect(mail.caffeinate_mailing).to be_falsey
         expect(described_class.delivering_email(mail)).to be_falsey
       end
       it 'does not change #perform_deliveries' do
@@ -21,7 +21,7 @@ describe Caffeinate::ActionMailer::Interceptor do
       end
     end
 
-    context 'with Caffeinate.current_mailing' do
+    context 'with Mail::Message.caffeinate_mailing' do
       let!(:campaign) { create(:caffeinate_campaign, :with_dripper) }
       let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
       before do
@@ -33,7 +33,7 @@ describe Caffeinate::ActionMailer::Interceptor do
       let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
       let(:mailing) { subscription.caffeinate_mailings.first }
       it 'runs before_send callbacks' do
-        ::Caffeinate.current_mailing = mailing
+        mail.caffeinate_mailing = mailing
         described_class.delivering_email(mail)
         expect(campaign.to_dripper.class_variable_defined?(:@@before_send_called)).to be_truthy
       end
@@ -44,7 +44,7 @@ describe Caffeinate::ActionMailer::Interceptor do
         campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours do
           false
         end
-        ::Caffeinate.current_mailing = mailing
+        mail.caffeinate_mailing = mailing
         described_class.delivering_email(mail)
         expect(mail.perform_deliveries).to be_falsey
         campaign.to_dripper.instance_variable_set(:@drip_collection, drips)

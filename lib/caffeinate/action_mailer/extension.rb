@@ -7,7 +7,9 @@ module Caffeinate
     module Extension
       def self.included(klass)
         klass.before_action do
-          @mailing = Caffeinate.current_mailing if Caffeinate.current_mailing
+          if params
+            @mailing = params[:mailing]
+          end
         end
 
         klass.helper_method :caffeinate_unsubscribe_url, :caffeinate_subscribe_url
