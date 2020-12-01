@@ -61,6 +61,7 @@ module Caffeinate
         # @option options [Integer] :step The order in which the drip is executed
         # @option options [ActiveSupport::Duration] :delay When the drip should be ran
         def drip(action_name, options = {}, &block)
+          options.symbolize_keys!
           options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
           options[:mailer_class] ||= options[:mailer] || defaults[:mailer_class]
           options[:using] ||= defaults[:using]

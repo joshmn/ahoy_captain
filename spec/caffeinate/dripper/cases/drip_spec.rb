@@ -14,6 +14,13 @@ describe ::Caffeinate::Dripper::Drip do
     end
   end
 
+  context 'strings as keys' do
+    it 'converts to symbols' do
+      DripDripper.drip 'test_two', 'delay': 0.hours, 'step': 1, 'mailer_class': 'CoolMailer'
+      expect(DripDripper.drip_collection['test_two'].options).to eq({delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil})
+    end
+  end
+
   context 'no delay' do
     it 'raises ArgumentError' do
       expect do
