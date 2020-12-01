@@ -9,9 +9,7 @@ module Caffeinate
         klass.extend ClassMethods
       end
 
-      # Delivers the next_caffeinate_mailer for the campaign's subscribers.
-      #
-      # Handles with batches based on batch_size.
+      # Delivers the next_caffeinate_mailer for the campaign's subscribers. Handles with batches based on `batch_size`.
       #
       #   OrderDripper.new.perform!
       #

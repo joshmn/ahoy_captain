@@ -33,7 +33,7 @@ It's okay to be explicit though. Let's do that.
 
 ```ruby 
 class AbandonedCartDripper < ApplicationDripper
-self.campaign = :abandoned_cart 
+  self.campaign = :abandoned_cart 
 end
 ```
 
@@ -45,7 +45,7 @@ if we want to, too, just to remind other developers what they're working with.
 
 ```ruby 
 class AbandonedCartDripper < ApplicationDripper
-self.campaign = :abandoned_cart
+  self.campaign = :abandoned_cart
   default mailer: "AbandonedCartMailer"
 end
 ``` 
@@ -102,7 +102,7 @@ AbandonedCartCampaign.subscribe(cart, user: cart.user)
 
 ```ruby
 class AbandonedCartCampaign < ApplicationCampaign
-self.campaign = :abandoned_cart
+  self.campaign = :abandoned_cart
   default mailer: "AbandonedCartDripper"
   
   drip :are_you_still_there, delay: 48.hours do 

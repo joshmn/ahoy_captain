@@ -40,6 +40,7 @@ module Caffeinate
 
           @caffeinate_campaign = ::Caffeinate::Campaign[campaign_slug]
         end
+        alias campaign caffeinate_campaign
 
         # The defined slug or the inferred slug
         def campaign_slug
