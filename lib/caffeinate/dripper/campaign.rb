@@ -28,7 +28,7 @@ module Caffeinate
         #   self.name.delete_suffix("Campaign").underscore
         #
         # @param [Symbol] slug The slug of a persisted `Caffeinate::Campaign`.
-        def campaign(slug)
+        def campaign=(slug)
           @caffeinate_campaign = nil
           @_campaign_slug = slug.to_sym
           Caffeinate.register_dripper(@_campaign_slug, name)

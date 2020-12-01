@@ -20,7 +20,7 @@ FactoryBot.define do
     after(:create) do |obj|
       campaign_class_name = obj.name.gsub(' ', '')
       campaign_class = Object.const_set("#{campaign_class_name}Dripper", ::BaseTestDripper.clone)
-      campaign_class.campaign(obj.slug.to_sym)
+      campaign_class.campaign = obj.slug.to_sym
     end
   end
 

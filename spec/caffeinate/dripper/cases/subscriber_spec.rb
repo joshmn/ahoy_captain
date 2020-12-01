@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ::Caffeinate::Dripper::Subscriber do
   let!(:campaign) { create(:caffeinate_campaign, slug: 'caffeinate_subscriber_dripper_test') }
   class SubscriberDripper < ::Caffeinate::Dripper::Base
-    campaign :caffeinate_subscriber_dripper_test
+self.campaign = :caffeinate_subscriber_dripper_test
 
     subscribes do
       Company.all.includes(:user).each do |company|

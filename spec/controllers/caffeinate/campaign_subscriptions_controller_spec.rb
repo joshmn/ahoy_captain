@@ -7,7 +7,7 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
   routes { Caffeinate::Engine.routes }
   let!(:campaign) { create(:caffeinate_campaign, slug: 'campaign_subscriptions_controller_test') }
   class CampaignControllerTestDripper < ::Caffeinate::Dripper::Base
-    campaign :campaign_subscriptions_controller_test
+self.campaign = :campaign_subscriptions_controller_test
   end
 
   context 'a valid token' do

@@ -12,7 +12,7 @@ describe ::Caffeinate::DripEvaluator do
   end
 
   class DripEvaluatorDripper < ::Caffeinate::Dripper::Base
-    campaign :drip_evaluator
+self.campaign = :drip_evaluator
     default mailer_class: 'DripEvaluatorMailer', using: :parameterized
     drip :hello_end, delay: 0.hours do
       end!
