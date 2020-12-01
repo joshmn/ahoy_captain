@@ -17,11 +17,25 @@ module Caffeinate
       #
       # @return nil
       def perform!
+        includes = [:next_caffeinate_mailing]
+        preloads = []
+        if ::Caffeinate.config.async_delivery?
+          # nothing
+        else
+          preloads += [:subscriber, :user]
+        end
+
         run_callbacks(:before_process, self)
-        campaign.caffeinate_campaign_subscriptions.active.in_batches(of: self.class._batch_size).each do |batch|
+        campaign.caffeinate_campaign_subscriptions
+            .active
+            .joins(:next_caffeinate_mailing)
+            .preload(*preloads)
+            .includes(*includes)
+            .in_batches(of: self.class.batch_size)
+            .each do |batch|
           run_callbacks(:on_process, self, batch)
           batch.each do |subscriber|
-            subscriber.next_caffeinate_mailing&.process!
+            subscriber.next_caffeinate_mailing.process!
           end
         end
         run_callbacks(:after_process, self)
