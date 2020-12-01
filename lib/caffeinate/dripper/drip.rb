@@ -13,9 +13,13 @@ module Caffeinate
           @drips = {}
         end
 
+        def for(action)
+          @drips[action.to_sym]
+        end
+
         # Register the drip
         def register(action, options, &block)
-          @drips[action.to_s] = ::Caffeinate::Drip.new(@dripper, action, options, &block)
+          @drips[action.to_sym] = ::Caffeinate::Drip.new(@dripper, action, options, &block)
         end
 
         def each(&block)

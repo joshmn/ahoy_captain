@@ -17,7 +17,7 @@ describe ::Caffeinate::Dripper::Drip do
   context 'strings as keys' do
     it 'converts to symbols' do
       DripDripper.drip 'test_two', 'delay': 0.hours, 'step': 1, 'mailer_class': 'CoolMailer'
-      expect(DripDripper.drip_collection['test_two'].options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil })
+      expect(DripDripper.drip_collection.for(:test_two).options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil })
     end
   end
 

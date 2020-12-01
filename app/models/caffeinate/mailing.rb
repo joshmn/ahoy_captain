@@ -65,7 +65,7 @@ module Caffeinate
     # The associated drip
     # @todo This can be optimized with a better cache
     def drip
-      @drip ||= caffeinate_campaign.to_dripper.drip_collection[mailer_action]
+      @drip ||= caffeinate_campaign.to_dripper.drip_collection.for(mailer_action)
     end
 
     # The associated Subscriber from `::Caffeinate::CampaignSubscription`
