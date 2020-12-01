@@ -14,7 +14,7 @@ describe ::Caffeinate::Dripper::Perform do
   end
 
   class PerformDripper < ::Caffeinate::Dripper::Base
-self.campaign = :perform_dripper
+    self.campaign = :perform_dripper
     default mailer_class: 'PerformMailer'
 
     drip :welcome, delay: 1.hour

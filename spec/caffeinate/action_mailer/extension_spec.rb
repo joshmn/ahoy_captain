@@ -19,7 +19,7 @@ describe Caffeinate::ActionMailer::Extension do
     end
 
     it 'receives @mailing' do
-      expect(CaffeinateActionMailerExtensionMailer.with(mailing: "Hello this is Bob").hello.subject).to eq('Hello this is Bob')
+      expect(CaffeinateActionMailerExtensionMailer.with(mailing: 'Hello this is Bob').hello.subject).to eq('Hello this is Bob')
     end
   end
 end

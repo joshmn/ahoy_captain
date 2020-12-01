@@ -14,9 +14,9 @@ describe ::Caffeinate::Dripper::Batching do
   context '.batch_size=' do
     it 'sets the batch_size' do
       original = BatchingDripper.batch_size
-      expect {
+      expect do
         BatchingDripper.batch_size = 5
-      }.to change(BatchingDripper, :batch_size).to(5)
+      end.to change(BatchingDripper, :batch_size).to(5)
       BatchingDripper.batch_size = original
     end
   end

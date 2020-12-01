@@ -24,7 +24,7 @@ describe ::Caffeinate::Mailing do
   let!(:skipped_mailings) { create_list(:caffeinate_mailing, 2, :skipped, caffeinate_campaign_subscription: subscription) }
 
   class CaffeinateMailingTestCampaign < ::Caffeinate::Dripper::Base
-self.campaign = :caffeinate_active_record_extension
+    self.campaign = :caffeinate_active_record_extension
   end
 
   context '#unsent' do
@@ -120,7 +120,7 @@ self.campaign = :caffeinate_active_record_extension
 
     describe '#process!' do
       class SkippedMailingDripper < ::Caffeinate::Dripper::Base
-self.campaign = :skipped_mailing
+        self.campaign = :skipped_mailing
         drip :happy, mailer_class: 'SkippedMailingMailer', delay: 0.hours, using: :parameterized
       end
 

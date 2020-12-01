@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe ::Caffeinate::Dripper::Callbacks do
   class CallbacksTestOneDripper < ::Caffeinate::Dripper::Base
-self.campaign = :callbacks_test_one
+    self.campaign = :callbacks_test_one
 
     on_subscribe do
       @ran = true
@@ -12,7 +12,7 @@ self.campaign = :callbacks_test_one
   end
 
   class CallbacksTestTwoDripper < ::Caffeinate::Dripper::Base
-self.campaign = :callbacks_test_two
+    self.campaign = :callbacks_test_two
 
     on_subscribe do
       @ran = true

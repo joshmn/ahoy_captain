@@ -22,17 +22,17 @@ module Caffeinate
         if ::Caffeinate.config.async_delivery?
           # nothing
         else
-          preloads += [:subscriber, :user]
+          preloads += %i[subscriber user]
         end
 
         run_callbacks(:before_process, self)
         campaign.caffeinate_campaign_subscriptions
-            .active
-            .joins(:next_caffeinate_mailing)
-            .preload(*preloads)
-            .includes(*includes)
-            .in_batches(of: self.class.batch_size)
-            .each do |batch|
+                .active
+                .joins(:next_caffeinate_mailing)
+                .preload(*preloads)
+                .includes(*includes)
+                .in_batches(of: self.class.batch_size)
+                .each do |batch|
           run_callbacks(:on_process, self, batch)
           batch.each do |subscriber|
             subscriber.next_caffeinate_mailing.process!

@@ -9,7 +9,7 @@ describe ::Caffeinate::ActiveRecord::Extension do
   end
 
   class CaffeinateActiveRecordCampaign < ::Caffeinate::Dripper::Base
-self.campaign = :caffeinate_active_record_extension
+    self.campaign = :caffeinate_active_record_extension
   end
 
   context '#caffeinate_subscriber' do

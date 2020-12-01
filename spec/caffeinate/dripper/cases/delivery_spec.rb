@@ -30,7 +30,7 @@ describe ::Caffeinate::Dripper::Delivery do
   end
 
   class DeliveryTestDripper < ::Caffeinate::Dripper::Base
-self.campaign = :delivery_test_dripper
+    self.campaign = :delivery_test_dripper
 
     default mailer_class: 'DeliveryTestMailer'
 

@@ -2,7 +2,7 @@
 
 module Caffeinate
   module Dripper
-  # Includes batch support for setting the batch size for Perform
+    # Includes batch support for setting the batch size for Perform
     module Batching
       def self.included(klass)
         klass.extend ClassMethods

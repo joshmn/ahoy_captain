@@ -14,11 +14,11 @@ module Caffeinate
         #
         # @param [Caffeinate::Mailing] mailing The mailing to deliver
         def deliver!(mailing)
-          if mailing.drip.parameterized?
-            message = mailing.mailer_class.constantize.with(mailing: mailing).send(mailing.mailer_action)
-          else
-            message = mailing.mailer_class.constantize.send(mailing.mailer_action, mailing)
-          end
+          message = if mailing.drip.parameterized?
+                      mailing.mailer_class.constantize.with(mailing: mailing).send(mailing.mailer_action)
+                    else
+                      mailing.mailer_class.constantize.send(mailing.mailer_action, mailing)
+                    end
           message.caffeinate_mailing = mailing
           message.deliver
         end

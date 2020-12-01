@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ::Caffeinate::Dripper::Campaign do
   let!(:campaign) { create(:caffeinate_campaign, slug: 'campaign_test_dripper') }
   class CampaignTestDripper < ::Caffeinate::Dripper::Base
-self.campaign = :campaign_test_dripper
+    self.campaign = :campaign_test_dripper
   end
   class NoCampaignTestDripper < ::Caffeinate::Dripper::Base; end
 
