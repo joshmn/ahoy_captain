@@ -19,8 +19,20 @@ module Caffeinate
       options[:using] == :parameterized
     end
 
-    def send_at
-      options[:delay].from_now
+    def send_at(mailing = nil)
+      if periodical?
+        start = mailing.instance_exec(&options[:start])
+        if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count > 0
+          start += options[:every]
+        end
+        start.from_now
+      else
+        options[:delay].from_now
+      end
+    end
+
+    def periodical?
+      options[:every].present?
     end
 
     # Checks if the drip is enabled

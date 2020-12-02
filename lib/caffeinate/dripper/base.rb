@@ -8,6 +8,7 @@ require 'caffeinate/dripper/delivery'
 require 'caffeinate/dripper/drip'
 require 'caffeinate/dripper/inferences'
 require 'caffeinate/dripper/perform'
+require 'caffeinate/dripper/periodical'
 require 'caffeinate/dripper/subscriber'
 
 module Caffeinate
@@ -22,6 +23,7 @@ module Caffeinate
       include Drip
       include Inferences
       include Perform
+      include Periodical
       include Subscriber
     end
   end

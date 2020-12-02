@@ -30,6 +30,13 @@ module Caffeinate
     scope :skipped, -> { where.not(skipped_at: nil) }
     scope :unskipped, -> { where(skipped_at: nil) }
 
+    def initialize_dup(args)
+      super
+      self.send_at = nil
+      self.sent_at = nil
+      self.skipped_at = nil
+    end
+
     # Checks if the Mailing is not skipped and not sent
     def pending?
       unskipped? && unsent?
@@ -80,7 +87,7 @@ module Caffeinate
 
     # Assigns attributes to the Mailing from the Drip
     def from_drip(drip)
-      self.send_at = drip.send_at
+      self.send_at = drip.send_at(self)
       self.mailer_class = drip.options[:mailer_class]
       self.mailer_action = drip.action
       self

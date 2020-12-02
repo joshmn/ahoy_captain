@@ -44,7 +44,7 @@ module Caffeinate
 
         def validate_drip_options(action, options)
           options.symbolize_keys!
-          options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
+          options.assert_valid_keys(:mailer_class, :step, :delay, :every, :start, :using, :mailer)
           options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
           options[:using] ||= @dripper.defaults[:using]
           options[:step] ||= @dripper.drips.size + 1
@@ -52,7 +52,10 @@ module Caffeinate
           if options[:mailer_class].nil?
             raise ArgumentError, "You must define :mailer_class or :mailer in the options for #{action.inspect} on #{@dripper.inspect}"
           end
-          raise ArgumentError, "You must define :delay in the options for #{action.inspect} on #{@dripper.inspect}" if options[:delay].nil?
+
+          if options[:every].nil? && options[:delay].nil?
+            raise ArgumentError, "You must define :delay in the options for #{action.inspect} on #{@dripper.inspect}"
+          end
 
           options
         end
