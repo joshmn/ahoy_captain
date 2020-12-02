@@ -19,16 +19,7 @@ module Caffeinate
 
         # Register the drip
         def register(action, options, &block)
-          options.symbolize_keys!
-          options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
-          options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
-          options[:using] ||= @dripper.defaults[:using]
-          options[:step] ||= @dripper.drips.size + 1
-
-          if options[:mailer_class].nil?
-            raise ArgumentError, "You must define :mailer_class or :mailer in the options for #{action.inspect} on #{@dripper.inspect}"
-          end
-          raise ArgumentError, "You must define :delay in the options for #{action.inspect} on #{@dripper.inspect}" if options[:delay].nil?
+          options = validate_drip_options(action, options)
 
           @drips[action.to_sym] = ::Caffeinate::Drip.new(@dripper, action, options, &block)
         end
@@ -47,6 +38,23 @@ module Caffeinate
 
         def [](val)
           @drips[val]
+        end
+
+        private
+
+        def validate_drip_options(action, options)
+          options.symbolize_keys!
+          options.assert_valid_keys(:mailer_class, :step, :delay, :using, :mailer)
+          options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
+          options[:using] ||= @dripper.defaults[:using]
+          options[:step] ||= @dripper.drips.size + 1
+
+          if options[:mailer_class].nil?
+            raise ArgumentError, "You must define :mailer_class or :mailer in the options for #{action.inspect} on #{@dripper.inspect}"
+          end
+          raise ArgumentError, "You must define :delay in the options for #{action.inspect} on #{@dripper.inspect}" if options[:delay].nil?
+
+          options
         end
       end
 
