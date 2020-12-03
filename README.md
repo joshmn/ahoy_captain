@@ -6,6 +6,8 @@ Caffeinate tries to make creating and managing timed and scheduled email sequenc
 and has everything you need to get started and to successfully manage campaigns. It's only dependency is the stack you're
 already familiar with: Ruby on Rails.
 
+![Caffeinate logo](logo.png)
+
 ## Usage
 
 You can probably imagine seeing a Mailer like this:
