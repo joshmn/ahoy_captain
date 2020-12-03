@@ -10,7 +10,7 @@ module Caffeinate
           options[:start] = start
           options[:every] = every
           drip(action_name, options, &block)
-          after_send do |campaign_sub, mailing|
+          after_send do |mailing, _message|
             if mailing.drip.action == action_name
               next_mailing = mailing.dup
               next_mailing.send_at = mailing.drip.send_at(mailing)

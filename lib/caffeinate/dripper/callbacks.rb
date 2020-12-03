@@ -94,9 +94,8 @@ module Caffeinate
         #     Slack.notify(:caffeinate, "#{drip.action_name} is starting")
         #   end
         #
-        # @yield Caffeinate::CampaignSubscription
-        # @yield Caffeinate::Mailing
         # @yield Caffeinate::Drip current drip
+        # @yield Caffeinate::Mailing
         def before_drip(&block)
           before_drip_blocks << block
         end
@@ -112,7 +111,6 @@ module Caffeinate
         #     Slack.notify(:caffeinate, "A new subscriber to #{campaign_subscription.campaign.name}!")
         #   end
         #
-        # @yield Caffeinate::CampaignSubscription
         # @yield Caffeinate::Mailing
         # @yield Mail::Message
         def before_send(&block)
@@ -130,7 +128,6 @@ module Caffeinate
         #     Slack.notify(:caffeinate, "A new subscriber to #{campaign_subscription.campaign.name}!")
         #   end
         #
-        # @yield Caffeinate::CampaignSubscription
         # @yield Caffeinate::Mailing
         # @yield Mail::Message
         def after_send(&block)
@@ -180,7 +177,6 @@ module Caffeinate
         #     Slack.notify(:caffeinate, "#{campaign_sub.id} has unsubscribed... sad day.")
         #   end
         #
-        # @yield `Caffeinate::CampaignSubscription`
         # @yield `Caffeinate::Mailing`
         def on_skip(&block)
           on_skip_blocks << block

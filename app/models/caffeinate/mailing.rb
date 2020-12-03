@@ -66,7 +66,7 @@ module Caffeinate
     def skip!
       update!(skipped_at: Caffeinate.config.time_now)
 
-      caffeinate_campaign.to_dripper.run_callbacks(:on_skip, caffeinate_campaign_subscription, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_skip, self)
     end
 
     # The associated drip
