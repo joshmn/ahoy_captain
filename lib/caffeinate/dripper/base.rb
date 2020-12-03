@@ -28,3 +28,5 @@ module Caffeinate
     end
   end
 end
+
+ActiveSupport.run_load_hooks :caffeinate, Caffeinate::Dripper::Base
