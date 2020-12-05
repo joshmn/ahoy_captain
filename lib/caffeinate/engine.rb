@@ -10,6 +10,12 @@ module Caffeinate
     isolate_namespace Caffeinate
     config.eager_load_namespaces << Caffeinate
 
+    config.to_prepare do
+      Dir.glob(Rails.root.join(Caffeinate.config.drippers_path, "**", "*.rb")).each do |dripper|
+        require dripper
+      end
+    end
+
     ActiveSupport.on_load(:action_mailer) do
       include ::Caffeinate::ActionMailer::Extension
       ::ActionMailer::Base.register_interceptor(::Caffeinate::ActionMailer::Interceptor)

@@ -2,7 +2,7 @@
 
 module Caffeinate
   class CampaignSubscriptionsController < ApplicationController
-    layout 'caffeinate'
+    layout '_caffeinate'
 
     helper_method :caffeinate_unsubscribe_url, :caffeinate_subscribe_url
 

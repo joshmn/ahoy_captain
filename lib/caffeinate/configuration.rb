@@ -3,13 +3,14 @@
 module Caffeinate
   # Global configuration
   class Configuration
-    attr_accessor :now, :async_delivery, :mailing_job, :batch_size
+    attr_accessor :now, :async_delivery, :mailing_job, :batch_size, :drippers_path
 
     def initialize
       @now = -> { Time.current }
       @async_delivery = false
       @mailing_job = nil
       @batch_size = 1_000
+      @drippers_path = "app/drippers"
     end
 
     def now=(val)
