@@ -65,15 +65,15 @@ module Caffeinate
     end
 
     # Updates `ended_at` and runs `on_complete` callbacks
-    def end!
-      update!(ended_at: ::Caffeinate.config.time_now)
+    def end!(reason = nil)
+      update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_complete, self)
     end
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
-    def unsubscribe!
-      update!(unsubscribed_at: ::Caffeinate.config.time_now)
+    def unsubscribe!(reason = nil)
+      update!(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
     end
