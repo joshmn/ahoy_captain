@@ -6,6 +6,7 @@ class CreateCaffeinateCampaigns < ActiveRecord::Migration[6.0]
     create_table :caffeinate_campaigns do |t|
       t.string :name, null: false
       t.string :slug, null: false
+      t.boolean :active, default: true, null: false
 
       t.timestamps
     end
