@@ -14,6 +14,9 @@ class CreateCaffeinateMailings < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
-    add_index :caffeinate_mailings, %i[campaign_subscription_id mailer_class mailer_action sent_at send_at skipped_at], name: :index_caffeinate_mailings
+    add_index :caffeinate_mailings, :sent_at
+    add_index :caffeinate_mailings, :send_at
+    add_index :caffeinate_mailings, :skipped_at
+    add_index :caffeinate_mailings, %i[campaign_subscription_id mailer_class mailer_action], name: :index_caffeinate_mailings
   end
 end
