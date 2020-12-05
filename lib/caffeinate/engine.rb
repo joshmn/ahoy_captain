@@ -8,7 +8,6 @@ module Caffeinate
   # Adds Caffeinate to Rails
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
-    config.eager_load_namespaces << Caffeinate
 
     config.to_prepare do
       Dir.glob(Rails.root.join(Caffeinate.config.drippers_path, "**", "*.rb")).each do |dripper|
