@@ -12,8 +12,10 @@ class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
       t.string :user_id
       t.string :token, null: false
       t.datetime :ended_at
+      t.string :ended_reason
       t.datetime :resubscribed_at
       t.datetime :unsubscribed_at
+      t.string :unsubscribe_reason
 
       t.timestamps
     end
