@@ -22,14 +22,30 @@ describe ::Caffeinate::Dripper::Periodical do
 
   context '.periodical' do
     let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
-    it 'sends a mail' do
+    it 'has a single mailing' do
       expect(campaign_subscription.caffeinate_mailings.count).to eq(1)
-      expect do
-        PeriodicalDripper.perform!
-      end.to change(ActionMailer::Base.deliveries, :size)
-      expect(campaign_subscription.caffeinate_mailings.count).to eq(2)
-      expect(campaign_subscription.caffeinate_mailings.unsent.count).to eq(1)
-      expect(campaign_subscription.caffeinate_mailings.unsent.first.send_at).to be_within(5.seconds).of(1.hour.from_now)
+    end
+    context 'with performed dripper' do
+      let(:perform) { PeriodicalDripper.perform! }
+      it 'changes deliveries count' do
+        expect {
+          perform
+        }.to change(ActionMailer::Base.deliveries, :size).by(1)
+      end
+
+      it 'creates another mailing' do
+        expect { perform }.to change(campaign_subscription.caffeinate_mailings, :count).by(1)
+      end
+
+      it 'creates an unsent mailing' do
+        perform
+        expect(campaign_subscription.caffeinate_mailings.unsent.count).to eq(1)
+      end
+
+      it 'sends a mail' do
+        perform
+        expect(campaign_subscription.caffeinate_mailings.unsent.first.send_at).to be_within(10.seconds).of(1.hour.from_now)
+      end
     end
   end
 end
