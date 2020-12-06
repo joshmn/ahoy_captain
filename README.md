@@ -65,7 +65,7 @@ end
 ```ruby 
 class User < ApplicationRecord
   after_create_commit do 
-    Caffeinate::Campaign.find_by(slug: "onboarding").subscribe(self)
+    OnboardingDripper.subscribe(self)
   end 
 end
 ```
@@ -120,12 +120,7 @@ $ rails db:migrate
 
 ## Upcoming features/todo
 
-* Ability to optionally use relative start time when creating a step 
-* Logo
-* Conversion tracking
-* Custom field support on CampaignSubscription
-* GUI (?)
-* REST API (?)
+[Handy dandy roadmap](https://github.com/joshmn/caffeinate/projects/1).
 
 ## Contributing
 
