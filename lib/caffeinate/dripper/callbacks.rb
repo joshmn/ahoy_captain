@@ -40,18 +40,18 @@ module Caffeinate
 
         # Callback before the mailings get processed.
         #
-        #   before_process do |dripper|
+        #   before_perform do |dripper|
         #     Slack.notify(:caffeinate, "Dripper is getting ready for mailing! #{dripper.caffeinate_campaign.name}!")
         #   end
         #
         # @yield Caffeinate::Dripper
-        def before_process(&block)
-          before_process_blocks << block
+        def before_perform(&block)
+          before_perform_blocks << block
         end
 
         # :nodoc:
-        def before_process_blocks
-          @before_process_blocks ||= []
+        def before_perform_blocks
+          @before_perform_blocks ||= []
         end
 
         # Callback before the mailings get processed in a batch.
@@ -62,13 +62,13 @@ module Caffeinate
         #
         # @yield Caffeinate::Dripper
         # @yield Caffeinate::Mailing [Array]
-        def on_process(&block)
-          on_process_blocks << block
+        def on_perform(&block)
+          on_perform_blocks << block
         end
 
         # :nodoc:
-        def on_process_blocks
-          @on_process_blocks ||= []
+        def on_perform_blocks
+          @on_perform_blocks ||= []
         end
 
         # Callback after the all the mailings have been sent.
@@ -79,13 +79,13 @@ module Caffeinate
         #
         # @yield Caffeinate::Dripper
         # @yield Caffeinate::Mailing [Array]
-        def after_process(&block)
-          after_process_blocks << block
+        def after_perform(&block)
+          after_perform_blocks << block
         end
 
         # :nodoc:
-        def after_process_blocks
-          @after_process_blocks ||= []
+        def after_perform_blocks
+          @after_perform_blocks ||= []
         end
 
         # Callback before a Drip has called the mailer.
@@ -169,6 +169,23 @@ module Caffeinate
         # :nodoc:
         def on_unsubscribe_blocks
           @on_unsubscribe_blocks ||= []
+        end
+
+
+        # Callback after a CampaignSubscriber has ended.
+        #
+        #   on_end do |campaign_sub|
+        #     Slack.notify(:caffeinate, "#{campaign_sub.id} has ended... sad day.")
+        #   end
+        #
+        # @yield Caffeinate::CampaignSubscription
+        def on_end(&block)
+          on_end_blocks << block
+        end
+
+        # :nodoc:
+        def on_end_blocks
+          @on_end_blocks ||= []
         end
 
         # Callback after a `Caffeinate::Mailing` is skipped.

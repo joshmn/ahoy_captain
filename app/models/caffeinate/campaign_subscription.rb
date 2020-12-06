@@ -68,7 +68,8 @@ module Caffeinate
     def end!(reason = nil)
       update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
 
-      caffeinate_campaign.to_dripper.run_callbacks(:on_complete, self)
+      caffeinate_campaign.to_dripper.run_callbacks(:on_end, self)
+      true
     end
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
@@ -76,6 +77,7 @@ module Caffeinate
       update!(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
+      true
     end
 
     # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks
@@ -83,6 +85,7 @@ module Caffeinate
       update!(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
+      true
     end
 
     private
@@ -94,6 +97,7 @@ module Caffeinate
         mailing.save!
       end
       caffeinate_campaign.to_dripper.run_callbacks(:on_subscribe, self)
+      true
     end
 
     def set_token!

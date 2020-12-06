@@ -11,6 +11,7 @@ module Caffeinate
 
         mailing.update!(sent_at: Caffeinate.config.time_now, skipped_at: nil) if message.perform_deliveries
         mailing.caffeinate_campaign.to_dripper.run_callbacks(:after_send, mailing, message)
+        true
       end
     end
   end
