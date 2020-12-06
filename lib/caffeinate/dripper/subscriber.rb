@@ -34,6 +34,18 @@ module Caffeinate
           caffeinate_campaign.subscribe(subscriber, **args)
         end
 
+        # Unsubscribes from the campaign.
+        #
+        #   OrderDripper.unsubscribe(order, user: order.user)
+        #
+        # @param [ActiveRecord::Base] subscriber The object subscribing
+        # @option [ActiveRecord::Base] :user The associated user (optional)
+        #
+        # @return [Caffeinate::CampaignSubscriber] the CampaignSubscriber
+        def unsubscribe(subscriber, **args)
+          caffeinate_campaign.unsubscribe(subscriber, **args)
+        end
+
         # :nodoc:
         def subscribes_block
           raise(NotImplementedError, 'Define subscribes') unless @subscribes_block

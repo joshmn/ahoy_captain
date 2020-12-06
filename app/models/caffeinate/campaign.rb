@@ -40,7 +40,24 @@ module Caffeinate
 
     # Check if the subscriber exists
     def subscribes?(record, **args)
-      subscriber(record, **args).present?
+      subscriber(record, **args).exists?
+    end
+
+    # Unsubscribes an object from a campaign.
+    #
+    #   Campaign[:onboarding].unsubscribe(Company.first, user: Company.first.admin, reason: "Because I said so")
+    #
+    # is the same as
+    #
+    #  Campaign.find_by(slug: "onboarding").caffeinate_campaign_subscriptions.find_by(subscriber: Company.first, user: Company.first.admin).unsubscribe!("Because I said so")
+    #
+    # Just... mintier.
+    def unsubscribe(subscriber, **args)
+      reason = args.delete(:reason)
+      subscription = subscriber(subscriber, **args)
+      raise ActiveRecord::RecordInvalid, subscription if subscription.nil?
+
+      subscription.unsubscribe!(reason)
     end
 
     # Subscribes an object to a campaign.

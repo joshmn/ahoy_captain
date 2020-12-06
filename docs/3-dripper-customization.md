@@ -95,13 +95,13 @@ There are two ways of handling subscribers.
 ### Do it yourself
 
 ```ruby
-AbandonedCartCampaign.subscribe(cart, user: cart.user)
+AbandonedCartDripper.subscribe(cart, user: cart.user)
 ```
 
 ### Automate it
 
 ```ruby
-class AbandonedCartCampaign < ApplicationCampaign
+class AbandonedCartDripper < ApplicationDripper
   self.campaign = :abandoned_cart
   default mailer: "AbandonedCartDripper"
   
@@ -127,7 +127,7 @@ end
 Put this in a background process and run it every `n` minutes. 60 minutes works for me, it should work for you:
 
 ```ruby
-AbandonedCartCampaign.subscribe!
+AbandonedCartDripper.subscribe!
 ```
 
 Though, each campaign might run at a different pace.
@@ -143,7 +143,7 @@ It's easy.
 Put this in a background job and have it run every `x` minutes. 5 minutes works for me, it should work for you:
 
 ```ruby
-AbandonedCartCampaign.perform!
+AbandonedCartDripper.perform!
 ```
 
 You're done.
@@ -157,7 +157,7 @@ You probably want to know when some things happen. There's a list of [what yield
 Your mailer is just like every other mailer. Except, your action only receives one argument: the `Caffeinate::CampaignSubscription#subscriber`.
 
 ```ruby 
-class AbandonedCartDripper < ActionMailer::Base
+class AbandonedCartMailer < ActionMailer::Base
   def are_you_still_there(mailer)
     @mailing = mailing
     @cart = mailing.subscriber
