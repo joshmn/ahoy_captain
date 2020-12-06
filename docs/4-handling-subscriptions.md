@@ -18,9 +18,11 @@ subscription.end!
 ```
 
 When a Dripper runs, it excludes all `CampaignSubscription` which are either ended or unsubscribed. If you try sending a 
-`Caffeinate::Mailing` manually, or if it gets otherwise triggered to be sent, a `Caffeinate::CampaignSubscriptionEnded` 
+`Caffeinate::Mailing` manually, or if it gets otherwise triggered to be sent, a `Caffeinate::InvalidState` 
 error will be raised if the associated `CampaignSubscription` is ended.
 
+`#end!` takes an optional single argument of a string that will update the `CampaignSubscription#ended_reason` column.
+ 
 ## Unsubscribing a Subscription
 
 To unsubscribe is to cancel all future `Caffeinate::Mailing` records from getting sent. They don't get deleted, they 
@@ -35,11 +37,11 @@ subscription.unsubscribe!
 
 When a Dripper runs, it excludes all `CampaignSubscription` which are either ended or unsubscribed. If you try sending a 
 `Caffeinate::Mailing` manually, or if it gets otherwise triggered to be sent, it will raise 
-`Caffeinate::CampaignSubscriptionUnsubscribed` if the associated `CampaignSubscription` is unsubscribed.
+`Caffeinate::InvalidState` if the associated `CampaignSubscription` is unsubscribed.
+
+`#end!` takes an optional single argument of a string that will update the `CampaignSubscription#unsubscribe_reason` column.
 
 ## Resubscribing a Subscription
-
-**Note**: This method is a work in progress and is not available yet.
 
 To resubscribe a subscription, simply call `resubscribe!`. 
 
@@ -49,21 +51,10 @@ subscription.resubscribe!
 ```
 
 This will update the `unsubscribed_at` state to `nil`. If the subscription isn't unsubscribed, it will raise
-`Caffeinate::CampaignSubscription::InvalidState`.
+`Caffeinate::InvalidState`.
 
-## Resuming a Subscription
-
-**Note**: This method is a work in progress and is not available yet.
-
-To resume a subscription, simply call `resume!`. 
-
-```ruby 
-subscription = Caffeinate::CampaignSubscription.first
-subscription.resume!
-```
-
-This will update the `ended_at` state to `nil`. If the subscription isn't ended, it will raise
-`Caffeinate::CampaignSubscription::InvalidState`.
+This doesn't renew any drippings, instead just starts from the new time and any previously unsent `Mailing` that were 
+supposed to be sent will be sent. This is probably a problem that I'd accept a PR for.
 
 ## Unsubscribe and Subscribe URLs
 

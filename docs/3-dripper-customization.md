@@ -150,31 +150,7 @@ You're done.
 
 ## Callbacks
 
-You probably want to know when some things happen. Here's the lifecycle:
-
-### on_subscribe
- 
-Gets called when a `Caffeinate::CampaignSubscription` is created, and after its mailings are created. 
-
-### before_send
-
-Gets called in an ActionMailer interceptor before the mail is sent.
-
-### after_send
-
-Gets called in the observer after the mail is sent.
-
-### on_complete
-
-Gets called after the a `Caffeinate::CampaignSubscription` completes a campaign.
-
-### on_unsubscribe
-
-Gets called after the a `Caffeinate::CampaignSubscription` unsubscribes from a campaign using `Caffeinate::CampaignSubscription#unsubscribe!`.
-
-### on_skip
-
-Gets called after the `Caffeinate::Mailing#skip!` is called.
+You probably want to know when some things happen. There's a list of [what yields what in the docs](https://rubydoc.info/gems/caffeinate/Caffeinate/Dripper/Callbacks).
 
 ## Writing your mailer
 

@@ -17,9 +17,14 @@
 #  updated_at             :datetime         not null
 #
 module Caffeinate
+  # If a record tries to be `unsubscribed!` or `ended!` or `resubscribe!` and it's in a state that is not
+  # correct, raise this
+  class InvalidState < ::ActiveRecord::RecordInvalid; end
+
   # CampaignSubscription associates an object and its optional user to a Campaign
   # and its relevant Mailings.
   class CampaignSubscription < ApplicationRecord
+
     self.table_name = 'caffeinate_campaign_subscriptions'
 
     has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
@@ -66,6 +71,8 @@ module Caffeinate
 
     # Updates `ended_at` and runs `on_complete` callbacks
     def end!(reason = nil)
+      raise ::Caffeinate::InvalidState, "CampaignSubscription is already unsubscribed." if unsubscribed?
+
       update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_end, self)
@@ -74,14 +81,20 @@ module Caffeinate
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
     def unsubscribe!(reason = nil)
+      raise ::Caffeinate::InvalidState, "CampaignSubscription is already ended." if ended?
+
       update!(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
       true
     end
 
-    # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks
-    def resubscribe!
+    # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks.
+    # Use `force` to forcefully reset. Does not create the mailings.
+    def resubscribe!(force = false)
+      raise ::Caffeinate::InvalidState, "CampaignSubscription is already ended." if ended? && !force
+      raise ::Caffeinate::InvalidState, "CampaignSubscription is already unsubscribed." if unsubscribed? && !force
+
       update!(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
