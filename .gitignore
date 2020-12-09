@@ -10,3 +10,4 @@ spec/dummy/tmp/
 .idea/
 tmp/
 .DS_Store
+coverage/
