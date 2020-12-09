@@ -9,7 +9,7 @@ already familiar with: Ruby on Rails.
 There's a cool demo with all the things included at [www.caffeinate.email](https://caffeinate.email). You can view the [marketing 
 site source code here](https://github.com/joshmn/caffeinate-test).
 
-![Caffeinate logo](./logo.png)
+![Caffeinate logo](https://github.com/joshmn/caffeinate/raw/master/logo.png)
 
 ## Do you suffer from ActionMailer tragedies?
 
