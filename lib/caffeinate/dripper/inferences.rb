@@ -19,7 +19,9 @@ module Caffeinate
           nil
         end
 
-        # The inferred mailer class
+        # The inferred campaign slug
+        #
+        #   MyCoolDripper => my_cool
         def inferred_campaign_slug
           name.delete_suffix('Dripper').to_s.underscore
         end
