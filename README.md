@@ -84,12 +84,6 @@ $ rake db:migrate
 
 Just delete it. Mailers should be responsible for receiving context and creating a `mail` object. Nothing more.
 
-While we're at it, let's add an unsubscribe link to the views or layout: 
-
-```erb
-<%= link_to "Stop receiving onboarding tips :(", caffeinate_unsubscribe_url %>
-```
-
 The only other change you need to make is the argument that the mailer action receives:
 
 ```ruby 
@@ -111,6 +105,12 @@ class OnboardingMailer < ActionMailer::Base
 end 
 ```
 
+While we're there, let's add an unsubscribe link to the views or layout: 
+
+```erb
+<%= link_to "Stop receiving onboarding tips :(", caffeinate_unsubscribe_url %>
+```
+
 ### Create a Dripper
 
 A Dripper has all the logic for your Campaign and coordinates with ActionMailer on what to send.
@@ -125,9 +125,12 @@ class OnboardingDripper < ApplicationDripper
 end 
 ```
 
+The `drip` syntax is `def drip(mailer_action, options = {})`.
+
 ### Add a subscriber to the Campaign
 
-Call `OnboardingDripper.subscribe` to subscribe a polymorphic `subscriber` to the Campaign, creating a `Caffeinate::CampaignSubscription`.
+Call `OnboardingDripper.subscribe` to subscribe a polymorphic `subscriber` to the Campaign, which creates 
+a `Caffeinate::CampaignSubscription`.
 
 ```ruby 
 class User < ApplicationRecord
