@@ -52,7 +52,7 @@ end
 ### What's wrong with this?
 
 * You're checking state in a mailer
-* The unsubscribe feature is, most likely, tied to an `User`, which means...
+* The unsubscribe feature is, most likely, tied to a `User`, which means...
 * It's going to be _so fun_ to scale horizontally
 
 ## Caffeinate to the rescue
