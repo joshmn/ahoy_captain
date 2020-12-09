@@ -11,7 +11,7 @@ describe ::Caffeinate::Dripper::Campaign do
 
   context '.campaign' do
     it 'returns campaign' do
-      expect(CampaignTestDripper.caffeinate_campaign).to eq(campaign)
+      expect(CampaignTestDripper.campaign).to eq(campaign)
     end
   end
 
@@ -21,11 +21,30 @@ describe ::Caffeinate::Dripper::Campaign do
     end
   end
 
-  context 'without a campaign slug' do
+  context 'without a campaign slug when Config.implicit_campaigns is false' do
+    before do
+      ::Caffeinate.config.implicit_campaigns = false
+    end
+
+    after do
+      ::Caffeinate.config.implicit_campaigns = true
+    end
+
     it 'raises ArgumentError' do
       expect do
-        NoCampaignTestDripper.caffeinate_campaign
+        NoCampaignTestDripper.campaign
       end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  context 'implicit campaign' do
+    it 'creates a campaign' do
+      class FunkyDripThingDripper < ::Caffeinate::Dripper::Base; end
+      expect(::Caffeinate::Campaign.find_by(slug: 'funky_drip_thing_dripper')).to be_nil
+      campaign = FunkyDripThingDripper.campaign
+      expect(campaign).to be_persisted
+      expect(campaign.slug).to eq('funky_drip_thing')
+      expect(campaign.name).to eq('Funky Drip Thing Campaign')
     end
   end
 end
