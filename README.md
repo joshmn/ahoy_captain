@@ -15,7 +15,7 @@ site source code here](https://github.com/joshmn/caffeinate-test).
 
 If you have _anything_ like this is your codebase, **you need Caffeinate**:
 
-```
+```ruby 
 class User < ApplicationRecord
   after_commit on: :create do 
     OnboardingMailer.welcome_to_my_cool_app(self).deliver_later
@@ -86,7 +86,9 @@ Just delete it. Mailers should be responsible for receiving context and creating
 
 While we're at it, let's add an unsubscribe link to the views or layout: 
 
-`<%= link_to "Stop receiving onboarding tips :(", caffeinate_unsubscribe_url %>`
+```erb
+<%= link_to "Stop receiving onboarding tips :(", caffeinate_unsubscribe_url %>
+```
 
 The only other change you need to make is the argument that the mailer action receives:
 
