@@ -24,21 +24,23 @@ module Caffeinate
   # CampaignSubscription associates an object and its optional user to a Campaign
   # and its relevant Mailings.
   class CampaignSubscription < ApplicationRecord
-
     self.table_name = 'caffeinate_campaign_subscriptions'
 
     has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
-    has_one :next_caffeinate_mailing, -> { upcoming.unsent }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    has_many :mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
+
+    has_one :next_caffeinate_mailing, -> { upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    has_one :next_mailing, -> { upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
+    alias_attribute :campaign, :caffeinate_campaign
+
     belongs_to :subscriber, polymorphic: true
     belongs_to :user, polymorphic: true, optional: true
 
     # All CampaignSubscriptions that where `unsubscribed_at` is nil and `ended_at` is nil
     scope :active, -> { where(unsubscribed_at: nil, ended_at: nil) }
-
-    # All CampaignSubscriptions that where `unsubscribed_at` is nil and `ended_at` is nil
     scope :subscribed, -> { active }
-
     scope :unsubscribed, -> { where.not(unsubscribed_at: nil) }
 
     # All CampaignSubscriptions that where `ended_at` is not nil
@@ -54,17 +56,17 @@ module Caffeinate
       caffeinate_campaign.to_dripper.deliver!(mailing)
     end
 
-    # Checks if the subscription is not ended and not unsubscribed
+    # Checks if the `CampaignSubscription` is not ended and not unsubscribed
     def subscribed?
       !ended? && !unsubscribed?
     end
 
-    # Checks if the CampaignSubscription is not subscribed by checking the presence of `unsubscribed_at`
+    # Checks if the `CampaignSubscription` is not subscribed by checking the presence of `unsubscribed_at`
     def unsubscribed?
       unsubscribed_at.present?
     end
 
-    # Checks if the CampaignSubscription is ended by checking the presence of `ended_at`
+    # Checks if the `CampaignSubscription` is ended by checking the presence of `ended_at`
     def ended?
       ended_at.present?
     end
@@ -113,6 +115,7 @@ module Caffeinate
       true
     end
 
+    # Sets a unique token
     def set_token!
       loop do
         self.token = SecureRandom.uuid

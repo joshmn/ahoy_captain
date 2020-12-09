@@ -22,7 +22,9 @@ module Caffeinate
     self.table_name = 'caffeinate_mailings'
 
     belongs_to :caffeinate_campaign_subscription, class_name: 'Caffeinate::CampaignSubscription'
+    alias_attribute :subscription, :caffeinate_campaign_subscription
     has_one :caffeinate_campaign, through: :caffeinate_campaign_subscription
+    alias_attribute :campaign, :caffeinate_campaign
 
     scope :upcoming, -> { unsent.unskipped.where('send_at < ?', ::Caffeinate.config.time_now).order('send_at asc') }
     scope :unsent, -> { unskipped.where(sent_at: nil) }
