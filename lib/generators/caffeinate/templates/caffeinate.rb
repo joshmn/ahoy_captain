@@ -31,4 +31,14 @@ Caffeinate.setup do |config|
   #   config.batch_size = 1_000
   #
   # config.batch_size = 100
+  #
+  # == Implicit Campaigns
+  #
+  # Instead of manually having to create a Campaign, you can let Caffeinate do a `find_or_create_by` at runtime.
+  # This is probably dangerous but it hasn't burned me yet so here you go:
+  #
+  # Default:
+  #   config.implicit_campaigns = true
+  #
+  # config.implicit_campaigns = false
 end
