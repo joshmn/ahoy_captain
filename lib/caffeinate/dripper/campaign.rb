@@ -34,11 +34,24 @@ module Caffeinate
           Caffeinate.register_dripper(@_campaign_slug, name)
         end
 
-        # Returns the `Caffeinate::Campaign` object for the Dripper
+        # Returns the `Caffeinate::Campaign` object for the Dripper.
+        #
+        # If `config.implicit_campaigns` is true, this will automatically create a `Caffeinate::Campaign` if one is not
+        # found via the `campaign_slug`.
         def caffeinate_campaign
           return @caffeinate_campaign if @caffeinate_campaign.present?
 
-          @caffeinate_campaign = ::Caffeinate::Campaign[campaign_slug]
+          if ::Caffeinate.config.implicit_campaigns?
+            @caffeinate_campaign = ::Caffeinate::Campaign.find_or_initialize_by(slug: campaign_slug)
+            if @caffeinate_campaign.new_record?
+              @caffeinate_campaign.name = "#{self.name.delete_suffix("Dripper").titleize} Campaign"
+              @caffeinate_campaign.save!
+            end
+          else
+            @caffeinate_campaign = ::Caffeinate::Campaign[campaign_slug]
+          end
+
+          @caffeinate_campaign
         end
         alias campaign caffeinate_campaign
 
