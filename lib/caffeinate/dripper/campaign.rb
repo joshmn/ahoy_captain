@@ -31,7 +31,7 @@ module Caffeinate
         def campaign=(slug)
           @caffeinate_campaign = nil
           @_campaign_slug = slug.to_sym
-          Caffeinate.register_dripper(@_campaign_slug, name)
+          Caffeinate.dripper_collection.register(@_campaign_slug, name)
         end
 
         # Returns the `Caffeinate::Campaign` object for the Dripper.

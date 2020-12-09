@@ -22,7 +22,7 @@ module Caffeinate
 
     # Poorly-named Campaign class resolver
     def to_dripper
-      Caffeinate.dripper_to_campaign_class[slug.to_sym].constantize
+      ::Caffeinate.dripper_collection.resolve(self)
     end
 
     # Convenience method for find_by!(slug: value)

@@ -8,16 +8,11 @@ require 'caffeinate/url_helpers'
 require 'caffeinate/configuration'
 require 'caffeinate/dripper/base'
 require 'caffeinate/deliver_async'
+require 'caffeinate/dripper_collection'
 
 module Caffeinate
-  # Caches the campaign to the campaign class
-  def self.dripper_to_campaign_class
-    @dripper_to_campaign_class ||= {}
-  end
-
-  # Convenience method for `dripper_to_campaign_class`
-  def self.register_dripper(name, klass)
-    dripper_to_campaign_class[name.to_sym] = klass
+  def self.dripper_collection
+    @drippers ||= DripperCollection.new
   end
 
   # Global configuration
