@@ -156,7 +156,7 @@ describe ::Caffeinate::Dripper::Callbacks do
         dripper.before_sending = 1
       end
       ::Caffeinate::ActionMailer::Interceptor.delivering_email(mail)
-      expect(dripper.before_sending).to be_nil
+      expect(dripper.before_sending).to_not eq(1)
     end
 
     it 'runs if caffeinate_mailing is present' do

@@ -145,4 +145,18 @@ describe ::Caffeinate::Mailing do
       end
     end
   end
+
+  context 'delegated methods' do
+    let(:mailing) { unsent_mailings.first }
+    context '#user' do
+      it 'delegates to caffeinate_campaign_subscription' do
+        expect(mailing.user).to eq(mailing.caffeinate_campaign_subscription.user)
+      end
+    end
+    context '#subscriber' do
+      it 'delegates to caffeinate_campaign_subscription' do
+        expect(mailing.subscriber).to eq(mailing.caffeinate_campaign_subscription.subscriber)
+      end
+    end
+  end
 end

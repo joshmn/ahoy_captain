@@ -13,7 +13,7 @@ module Caffeinate
     end
 
     def subscribe
-      @campaign_subscription.subscribe!
+      @campaign_subscription.resubscribe!
     end
 
     private
@@ -22,7 +22,7 @@ module Caffeinate
       Caffeinate::UrlHelpers.caffeinate_subscribe_url(@campaign_subscription, options)
     end
 
-    def caffeinate_unsubscribe_url
+    def caffeinate_unsubscribe_url(**options)
       Caffeinate::UrlHelpers.caffeinate_unsubscribe_url(@campaign_subscription, options)
     end
 

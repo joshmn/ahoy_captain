@@ -11,22 +11,18 @@ module Caffeinate
         has_many :caffeinate_mailings, through: :caffeinate_campaign_subscriptions, class_name: '::Caffeinate::Mailing'
 
         scope :not_subscribed_to_campaign, lambda { |list|
-          subscribed = ::Caffeinate::CampaignSubscription
-                           .select(:subscriber_id)
-                           .joins(:caffeinate_campaign)
-                           .where(subscriber_type: name, caffeinate_campaigns: { slug: list })
-
-          where.not(id: subscribed)
+          where.not(id: ::Caffeinate::CampaignSubscription
+                            .select(:subscriber_id)
+                            .joins(:caffeinate_campaign)
+                            .where(subscriber_type: name, caffeinate_campaigns: { slug: list }))
         }
 
         scope :unsubscribed_from_campaign, lambda { |list|
-          unsubscribed = ::Caffeinate::CampaignSubscription
-                             .unsubscribed
-                             .select(:subscriber_id)
-                             .joins(:caffeinate_campaign)
-                             .where(subscriber_type: name, caffeinate_campaigns: { slug: list })
-
-          where(id: unsubscribed)
+          where(id: ::Caffeinate::CampaignSubscription
+                        .unsubscribed
+                        .select(:subscriber_id)
+                        .joins(:caffeinate_campaign)
+                        .where(subscriber_type: name, caffeinate_campaigns: { slug: list }))
         }
       end
       alias caffeinate_subscriber acts_as_caffeinate_subscriber

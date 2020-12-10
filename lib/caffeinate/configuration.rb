@@ -17,7 +17,7 @@ module Caffeinate
     def now=(val)
       raise ArgumentError, '#now must be a proc' unless val.respond_to?(:call)
 
-      super
+      @now = val
     end
 
     # Automatically create a `::Caffeinate::Campaign` object if not found per `Dripper.inferred_campaign_slug`

@@ -38,6 +38,22 @@ module Caffeinate
           @on_subscribe_blocks ||= []
         end
 
+        # Callback after a Caffeinate::CampaignSubscription is `#resubscribed!`
+        #
+        #   on_resubscribe do |campaign_subscription|
+        #     Slack.notify(:caffeinate, "Someone resubscribed to #{campaign_subscription.campaign.name}!")
+        #   end
+        #
+        # @yield Caffeinate::CampaignSubscription
+        def on_resubscribe(&block)
+          on_resubscribe_blocks << block
+        end
+
+        # :nodoc:
+        def on_resubscribe_blocks
+          @on_resubscribe_blocks ||= []
+        end
+
         # Callback before the mailings get processed.
         #
         #   before_perform do |dripper|

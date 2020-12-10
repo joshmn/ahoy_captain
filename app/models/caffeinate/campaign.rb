@@ -43,7 +43,7 @@ module Caffeinate
 
     # Check if the subscriber exists
     def subscribes?(record, **args)
-      subscriber(record, **args).exists?
+      subscriber(record, **args).present?
     end
 
     # Unsubscribes an object from a campaign.
@@ -71,10 +71,7 @@ module Caffeinate
 
     # Subscribes an object to a campaign. Raises `ActiveRecord::RecordInvalid` if the record was invalid.
     def subscribe!(subscriber, **args)
-      subscription = subscribe(subscriber, **args)
-      return subscription if subscribe.persisted?
-
-      raise ActiveRecord::RecordInvalid, subscription
+      subscribe(subscriber, **args)
     end
   end
 end

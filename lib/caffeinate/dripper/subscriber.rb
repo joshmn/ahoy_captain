@@ -18,8 +18,8 @@ module Caffeinate
         end
 
         # Returns the campaign's `Caffeinate::CampaignSubscriber`
-        def subscribers
-          caffeinate_campaign.caffeinate_campaign_subscribers
+        def subscriptions
+          caffeinate_campaign.caffeinate_campaign_subscriptions
         end
 
         # Subscribes to the campaign.

@@ -90,4 +90,19 @@ describe ::Caffeinate::Dripper::Subscriber do
       end
     end
   end
+
+  context '.subscriptions' do
+    it 'is caffeinate_campaign_subscriptions' do
+      expect(SubscriberDripper.subscriptions.to_sql).to eq(::Caffeinate::CampaignSubscription.where(caffeinate_campaign_id: SubscriberDripper.campaign.id).to_sql)
+    end
+  end
+
+  context '.unsubscribe' do
+    let!(:company) { create(:company) }
+    let!(:subscription) { SubscriberDripper.subscribe(company) }
+    it 'unsubscribes' do
+      SubscriberDripper.unsubscribe(company)
+      expect(subscription.reload.unsubscribed_at).to be_present
+    end
+  end
 end

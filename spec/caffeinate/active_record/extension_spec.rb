@@ -42,4 +42,17 @@ describe ::Caffeinate::ActiveRecord::Extension do
       expect(user.caffeinate_campaign_subscriptions_as_user.first).to be_a(::Caffeinate::CampaignSubscription)
     end
   end
+
+  context 'scopes' do
+    context '.not_subscribed_to_campaign' do
+      it 'is not table' do
+        expect(Company.not_subscribed_to_campaign("campaign").to_sql).to include(Caffeinate::CampaignSubscription.table_name)
+      end
+    end
+    context '.unsubscribed_from_campaign' do
+      it 'is table' do
+        expect(Company.unsubscribed_from_campaign("campaign").to_sql).to include(Caffeinate::CampaignSubscription.table_name)
+      end
+    end
+  end
 end

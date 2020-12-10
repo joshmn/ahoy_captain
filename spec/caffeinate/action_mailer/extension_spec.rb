@@ -22,4 +22,32 @@ describe Caffeinate::ActionMailer::Extension do
       expect(CaffeinateActionMailerExtensionMailer.with(mailing: 'Hello this is Bob').hello.subject).to eq('Hello this is Bob')
     end
   end
+
+  context 'helpers' do
+    let(:campaign) { create(:caffeinate_campaign, :with_dripper) }
+    let(:company) { create(:company) }
+    let(:subscription) { campaign.subscribe(company) }
+    context '#caffeinate_unsubscribe_url' do
+      it 'returns a url' do
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_unsubscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription))
+        expect(url).to eq("http://localhost:3000/caffeinate/campaign_subscriptions/#{subscription.token}/unsubscribe")
+      end
+
+      it 'handles passed options' do
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: "donkey.kong")
+        expect(URI.parse(url).host).to eq("donkey.kong")
+      end
+    end
+    context '#caffeinate_subscribe_url' do
+      it 'returns a url' do
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription))
+        expect(url).to eq("http://localhost:3000/caffeinate/campaign_subscriptions/#{subscription.token}/subscribe")
+      end
+
+      it 'handles passed options' do
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: "donkey.kong")
+        expect(URI.parse(url).host).to eq("donkey.kong")
+      end
+    end
+  end
 end

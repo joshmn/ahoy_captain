@@ -40,7 +40,7 @@ describe Caffeinate::ActionMailer::Interceptor do
 
       it 'sets performed_deliveries to the result of the evaluator' do
         drips = campaign.to_dripper.drip_collection
-        campaign.to_dripper.instance_variable_set(:@drip_collection, ::Caffeinate::Dripper::Drip::DripCollection.new(campaign.to_dripper))
+        campaign.to_dripper.instance_variable_set(:@drip_collection, ::Caffeinate::Dripper::DripCollection.new(campaign.to_dripper))
         campaign.to_dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours do
           false
         end
