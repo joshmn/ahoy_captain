@@ -12,7 +12,7 @@ describe ::Caffeinate::ActiveRecord::Extension do
     self.campaign = :caffeinate_active_record_extension
   end
 
-  context '#caffeinate_subscriber' do
+  describe '#caffeinate_subscriber' do
     let!(:campaign) { create(:caffeinate_campaign, slug: :caffeinate_active_record_extension) }
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:company) { subscription.subscriber }
@@ -32,7 +32,7 @@ describe ::Caffeinate::ActiveRecord::Extension do
     end
   end
 
-  context '#caffeinate_user' do
+  describe '#caffeinate_user' do
     let!(:campaign) { create(:caffeinate_campaign, slug: :caffeinate_active_record_extension) }
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:user) { subscription.user }
@@ -44,12 +44,13 @@ describe ::Caffeinate::ActiveRecord::Extension do
   end
 
   context 'scopes' do
-    context '.not_subscribed_to_campaign' do
+    describe '.not_subscribed_to_campaign' do
       it 'is not table' do
         expect(Company.not_subscribed_to_campaign('campaign').to_sql).to include(Caffeinate::CampaignSubscription.table_name)
       end
     end
-    context '.unsubscribed_from_campaign' do
+
+    describe '.unsubscribed_from_campaign' do
       it 'is table' do
         expect(Company.unsubscribed_from_campaign('campaign').to_sql).to include(Caffeinate::CampaignSubscription.table_name)
       end

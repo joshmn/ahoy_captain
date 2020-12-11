@@ -27,21 +27,21 @@ describe ::Caffeinate::Mailing do
     self.campaign = :caffeinate_active_record_extension
   end
 
-  context '#unsent' do
+  describe '#unsent' do
     it 'has 5 unsent mailings' do
       expect(described_class.unsent.count).to eq(5)
       expect(described_class.unsent).to eq(unsent_mailings)
     end
   end
 
-  context '#sent' do
+  describe '#sent' do
     it 'has 3 sent mailings' do
       expect(described_class.sent.count).to eq(3)
       expect(described_class.sent).to eq(sent_mailings)
     end
   end
 
-  context '#skipped' do
+  describe '#skipped' do
     it 'has 3 skipped mailings' do
       expect(described_class.skipped.count).to eq(2)
       expect(described_class.skipped).to eq(skipped_mailings)
@@ -49,7 +49,7 @@ describe ::Caffeinate::Mailing do
     end
   end
 
-  context '#process' do
+  describe '#process' do
     context 'async' do
       it 'enqueues a job' do
         class MyJob < ActiveJob::Base
@@ -72,49 +72,49 @@ describe ::Caffeinate::Mailing do
     end
   end
 
-  context '#pending?' do
+  describe '#pending?' do
     it 'is not sent or skipped' do
       mailing = described_class.new
-      expect(mailing.pending?).to be_truthy
+      expect(mailing).to be_pending
       mailing.sent_at = Time.current
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.sent_at = 50.years.ago
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.sent_at = 50.years.from_now
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.sent_at = nil
-      expect(mailing.pending?).to be_truthy
+      expect(mailing).to be_pending
       mailing.skipped_at = Time.current
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.skipped_at = 50.years.ago
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.skipped_at = 50.years.from_now
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.skipped_at = Time.current
       mailing.sent_at = Time.current
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.skipped_at = 50.years.ago
       mailing.sent_at = 50.years.ago
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
       mailing.skipped_at = 50.years.from_now
       mailing.sent_at = 50.years.from_now
-      expect(mailing.pending?).to be_falsey
+      expect(mailing).not_to be_pending
     end
   end
 
   context 'skipped' do
-    context '#skipped?' do
+    describe '#skipped?' do
       it 'has a present skipped_at' do
         mailing = described_class.new
-        expect(mailing.skipped?).to be_falsey
+        expect(mailing).not_to be_skipped
         mailing.skipped_at = Time.current
-        expect(mailing.skipped?).to be_truthy
+        expect(mailing).to be_skipped
         mailing.skipped_at = 50.years.ago
-        expect(mailing.skipped?).to be_truthy
+        expect(mailing).to be_skipped
         mailing.skipped_at = 50.years.from_now
-        expect(mailing.skipped?).to be_truthy
+        expect(mailing).to be_skipped
         mailing.skipped_at = nil
-        expect(mailing.skipped?).to be_falsey
+        expect(mailing).not_to be_skipped
       end
     end
 
@@ -138,22 +138,24 @@ describe ::Caffeinate::Mailing do
       it 'sets skipped to nil' do
         mailing = skipped_subscription.caffeinate_mailings.first
         mailing.skip!
-        expect(mailing.skipped?).to be_truthy
+        expect(mailing).to be_skipped
         mailing.process!
-        expect(mailing.skipped?).to be_falsey
-        expect(mailing.sent?).to be_truthy
+        expect(mailing).not_to be_skipped
+        expect(mailing).to be_sent
       end
     end
   end
 
   context 'delegated methods' do
     let(:mailing) { unsent_mailings.first }
-    context '#user' do
+
+    describe '#user' do
       it 'delegates to caffeinate_campaign_subscription' do
         expect(mailing.user).to eq(mailing.caffeinate_campaign_subscription.user)
       end
     end
-    context '#subscriber' do
+
+    describe '#subscriber' do
       it 'delegates to caffeinate_campaign_subscription' do
         expect(mailing.subscriber).to eq(mailing.caffeinate_campaign_subscription.subscriber)
       end

@@ -5,19 +5,21 @@ require 'rails_helper'
 describe ::Caffeinate::Campaign do
   let(:campaign) { create(:caffeinate_campaign, :with_dripper) }
 
-  context '#to_dripper' do
+  describe '#to_dripper' do
     it 'resolves to a dripper' do
       expect(campaign.to_dripper.superclass).to eq(Caffeinate::Dripper::Base)
     end
   end
 
-  context '#subscribe!' do
+  describe '#subscribe!' do
     context 'without args' do
       let(:company) { create(:company) }
+
       it 'returns a CampaignSubscription with the subscriber being the first argument' do
         subscriber = campaign.subscribe!(company)
         expect(subscriber).to be_a(::Caffeinate::CampaignSubscription)
       end
+
       it 'is persisted' do
         subscriber = campaign.subscribe!(company)
         expect(subscriber).to be_persisted
@@ -33,27 +35,32 @@ describe ::Caffeinate::Campaign do
     end
   end
 
-  context '#subscriber' do
+  describe '#subscriber' do
     context 'without args' do
       let(:subscribed_company) { create(:company) }
       let(:unsubscribed_company) { create(:company) }
+
       before do
         campaign.subscribe!(subscribed_company)
       end
+
       context 'a subscription is present' do
         it 'returns a CampaignSubscription' do
           lookup = campaign.subscriber(subscribed_company)
           expect(lookup).to be_a(Caffeinate::CampaignSubscription)
         end
+
         it 'returns a persisted CampaignSubscription' do
           lookup = campaign.subscriber(subscribed_company)
           expect(lookup).to be_persisted
         end
+
         it 'returns the correct subscriber' do
           lookup = campaign.subscriber(subscribed_company)
           expect(lookup.subscriber).to eq(subscribed_company)
         end
       end
+
       context 'a subscription is not present' do
         it 'returns nil' do
           lookup = campaign.subscriber(unsubscribed_company)
@@ -63,26 +70,30 @@ describe ::Caffeinate::Campaign do
     end
   end
 
-  context '#subscribes?' do
+  describe '#subscribes?' do
     context 'without args' do
       let(:subscribed_company) { create(:company) }
       let(:unsubscribed_company) { create(:company) }
+
       before do
         campaign.subscribe!(subscribed_company)
       end
+
       it 'returns a CampaignSubscription' do
-        expect(campaign.subscribes?(subscribed_company)).to be_truthy
+        expect(campaign).to be_subscribes(subscribed_company)
       end
+
       it 'returns false if not subscribed' do
-        expect(campaign.subscribes?(unsubscribed_company)).to be_falsey
+        expect(campaign).not_to be_subscribes(unsubscribed_company)
       end
     end
   end
 
-  context '#unsubscribe' do
+  describe '#unsubscribe' do
     context 'without args' do
       context 'a valid subscription' do
         let(:subscribed_company) { create(:company) }
+
         before do
           campaign.subscribe!(subscribed_company)
         end

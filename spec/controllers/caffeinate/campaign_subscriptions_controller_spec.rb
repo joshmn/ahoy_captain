@@ -6,6 +6,7 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
   render_views
   routes { Caffeinate::Engine.routes }
   let!(:campaign) { create(:caffeinate_campaign, slug: 'campaign_subscriptions_controller_test') }
+
   class CampaignControllerTestDripper < ::Caffeinate::Dripper::Base
     self.campaign = :campaign_subscriptions_controller_test
   end
@@ -13,37 +14,37 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
   context 'a valid token' do
     it 'subscribes if subscribed' do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
-      expect(subscription.subscribed?).to be_truthy
+      expect(subscription).to be_subscribed
       get :subscribe, params: { token: subscription.token }
       expect(response.body).to include('subscribed')
       expect(response).to have_http_status(:ok)
       subscription.reload
-      expect(subscription.subscribed?).to be_truthy
-      expect(subscription.unsubscribed?).to be_falsey
+      expect(subscription).to be_subscribed
+      expect(subscription).not_to be_unsubscribed
     end
   end
 
   context 'a valid token' do
     it 'unsubscribes if not subscribed' do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
-      expect(subscription.subscribed?).to be_truthy
+      expect(subscription).to be_subscribed
       get :unsubscribe, params: { token: subscription.token }
       expect(response.body).to include('unsubscribed')
       expect(response).to have_http_status(:ok)
       subscription.reload
-      expect(subscription.subscribed?).to be_falsey
-      expect(subscription.unsubscribed?).to be_truthy
+      expect(subscription).not_to be_subscribed
+      expect(subscription).to be_unsubscribed
     end
 
     it 'unsubscribes even if already unsubscribed' do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign, unsubscribed_at: Time.current)
-      expect(subscription.subscribed?).to be_falsey
+      expect(subscription).not_to be_subscribed
       get :unsubscribe, params: { token: subscription.token }
       expect(response.body).to include('unsubscribed')
       expect(response).to have_http_status(:ok)
       subscription.reload
-      expect(subscription.subscribed?).to be_falsey
-      expect(subscription.unsubscribed?).to be_truthy
+      expect(subscription).not_to be_subscribed
+      expect(subscription).to be_unsubscribed
     end
   end
 
@@ -56,7 +57,7 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
   end
 
   context 'helpers' do
-    context '#caffeinate_unsubscribe_url' do
+    describe '#caffeinate_unsubscribe_url' do
       it 'is the proper url' do
         subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
         klass = described_class.new
@@ -64,7 +65,8 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
         expect(klass.send(:caffeinate_unsubscribe_url)).to eq("http://caffeinate.test/caffeinate/campaign_subscriptions/#{subscription.token}/unsubscribe")
       end
     end
-    context '#caffeinate_subscribe_url' do
+
+    describe '#caffeinate_subscribe_url' do
       it 'is the proper url' do
         subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
         klass = described_class.new

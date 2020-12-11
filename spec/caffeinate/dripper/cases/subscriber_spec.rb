@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe ::Caffeinate::Dripper::Subscriber do
   let!(:campaign) { create(:caffeinate_campaign, slug: 'caffeinate_subscriber_dripper_test') }
+
   class SubscriberDripper < ::Caffeinate::Dripper::Base
     self.campaign = :caffeinate_subscriber_dripper_test
 
@@ -14,7 +15,7 @@ describe ::Caffeinate::Dripper::Subscriber do
     end
   end
 
-  context '.subscribe!' do
+  describe '.subscribe!' do
     let!(:company_1) { create(:company) }
     let!(:user) { create(:user) }
     let!(:company_2) { create(:company, user: user) }
@@ -52,10 +53,11 @@ describe ::Caffeinate::Dripper::Subscriber do
     end
   end
 
-  context '.subscribe' do
+  describe '.subscribe' do
     context 'with a single argument' do
       let(:company) { create(:company) }
       let(:subscription) { SubscriberDripper.subscribe(company) }
+
       it 'creates a subscriber' do
         expect(subscription).to be_persisted
       end
@@ -73,6 +75,7 @@ describe ::Caffeinate::Dripper::Subscriber do
       let(:company) { create(:company) }
       let(:user) { create(:user) }
       let(:subscription) { SubscriberDripper.subscribe(company, user: user) }
+
       it 'creates a subscriber' do
         expect(subscription).to be_persisted
       end
@@ -91,15 +94,16 @@ describe ::Caffeinate::Dripper::Subscriber do
     end
   end
 
-  context '.subscriptions' do
+  describe '.subscriptions' do
     it 'is caffeinate_campaign_subscriptions' do
       expect(SubscriberDripper.subscriptions.to_sql).to eq(::Caffeinate::CampaignSubscription.where(caffeinate_campaign_id: SubscriberDripper.campaign.id).to_sql)
     end
   end
 
-  context '.unsubscribe' do
+  describe '.unsubscribe' do
     let!(:company) { create(:company) }
     let!(:subscription) { SubscriberDripper.subscribe(company) }
+
     it 'unsubscribes' do
       SubscriberDripper.unsubscribe(company)
       expect(subscription.reload.unsubscribed_at).to be_present

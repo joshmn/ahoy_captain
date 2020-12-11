@@ -20,13 +20,16 @@ describe ::Caffeinate::Dripper::Periodical do
     periodical :welcome, every: 1.hour, start: proc { |_thing| 0.hours }
   end
 
-  context '.periodical' do
+  describe '.periodical' do
     let!(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
+
     it 'has a single mailing' do
       expect(campaign_subscription.caffeinate_mailings.count).to eq(1)
     end
+
     context 'with performed dripper' do
       let(:perform) { PeriodicalDripper.perform! }
+
       it 'changes deliveries count' do
         expect do
           perform

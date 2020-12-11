@@ -7,7 +7,7 @@ describe ::Caffeinate::Dripper::Drip do
     drip :test, delay: 0.hours, step: 1, mailer_class: 'CoolMailer'
   end
 
-  context '.drip' do
+  describe '.drip' do
     it 'registers a drip with valid arguments' do
       expect(DripDripper.drips.size).to eq(1)
       expect(DripDripper.drips.first.options).to eq({ delay: 0.hours, step: 1, mailer_class: 'CoolMailer', using: nil })

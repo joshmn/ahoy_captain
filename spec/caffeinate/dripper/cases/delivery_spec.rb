@@ -51,7 +51,7 @@ describe ::Caffeinate::Dripper::Delivery do
   let(:campaign_subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
   let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'welcome') }
 
-  context '.deliver!' do
+  describe '.deliver!' do
     it 'sends it' do
       expect(mailing.sent_at).to be_nil
       expect do
@@ -61,8 +61,9 @@ describe ::Caffeinate::Dripper::Delivery do
     end
   end
 
-  context '.deliver! with parameterized' do
+  describe '.deliver! with parameterized' do
     let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'with_params') }
+
     it 'using parameterized' do
       expect(mailing.sent_at).to be_nil
       expect do
@@ -78,7 +79,7 @@ describe ::Caffeinate::Dripper::Delivery do
       expect(mailing.sent_at).to be_nil
       expect do
         do_action
-      end.to_not change(::ActionMailer::Base.deliveries, :size)
+      end.not_to change(::ActionMailer::Base.deliveries, :size)
       expect(mailing.sent_at).to be_nil
       mailing.caffeinate_campaign_subscription.reload
     end
@@ -89,7 +90,7 @@ describe ::Caffeinate::Dripper::Delivery do
       expect(mailing.sent_at).to be_nil
       expect do
         do_action
-      end.to_not change(::ActionMailer::Base.deliveries, :size)
+      end.not_to change(::ActionMailer::Base.deliveries, :size)
       expect(mailing.sent_at).to be_nil
       mailing.caffeinate_campaign_subscription.reload
     end
@@ -98,12 +99,14 @@ describe ::Caffeinate::Dripper::Delivery do
   context 'with a block that returns false' do
     let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'goodbye') }
     let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
+
     it_behaves_like 'block that returns false'
   end
 
   context 'with a block that returns false' do
     let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'goodbye_end') }
     let(:do_action) { DeliveryTestDripper.deliver!(mailing) }
+
     it_behaves_like 'block that returns false and unsubscribes'
   end
 end

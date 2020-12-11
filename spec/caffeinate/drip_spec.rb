@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 describe Caffeinate::Drip do
-  context '#parameterized?' do
+  describe '#parameterized?' do
     it 'is true if using: :parameterized' do
       drip = described_class.new(nil, nil, using: :parameterized)
-      expect(drip.parameterized?).to be_truthy
+      expect(drip).to be_parameterized
       drip = described_class.new(nil, nil, using: :asdf)
-      expect(drip.parameterized?).to be_falsey
+      expect(drip).not_to be_parameterized
     end
   end
 
-  context '#send_at' do
+  describe '#send_at' do
     it 'is a time' do
       drip = described_class.new(nil, nil, delay: 3.hours)
       expect(drip.send_at).to be_a(::ActiveSupport::TimeWithZone)
@@ -20,7 +20,7 @@ describe Caffeinate::Drip do
     end
   end
 
-  context '#enabled?' do
+  describe '#enabled?' do
     it 'works' do
       drip = described_class.new(nil, nil, {})
       expect(drip).to respond_to(:enabled?)

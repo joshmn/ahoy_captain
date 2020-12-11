@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Caffeinate::Configuration do
-  context '#now=' do
+  describe '#now=' do
     it 'raises an error if does not respond to call' do
       expect do
         described_class.new.now = 'bad'

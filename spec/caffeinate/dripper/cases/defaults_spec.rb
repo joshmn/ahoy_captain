@@ -7,7 +7,7 @@ describe ::Caffeinate::Dripper::Defaults do
     default mailer_class: 'Bob'
   end
 
-  context '.defaults' do
+  describe '.defaults' do
     it 'sets the defaults' do
       expect(DefaultsDripper.defaults).to eq({ mailer_class: 'Bob' })
     end

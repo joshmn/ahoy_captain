@@ -27,14 +27,14 @@ describe ::Caffeinate::DripEvaluator do
 
   let!(:campaign) { create(:caffeinate_campaign, slug: 'drip_evaluator') }
 
-  context '#end!' do
+  describe '#end!' do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_end') }
 
     it 'calls #end! on the campaign_subscription' do
       described_class.new(mailing).call(&mailing.drip.block)
       mailing.reload
-      expect(mailing.caffeinate_campaign_subscription.ended?).to be_truthy
+      expect(mailing.caffeinate_campaign_subscription).to be_ended
     end
 
     it 'returns false' do
@@ -43,13 +43,14 @@ describe ::Caffeinate::DripEvaluator do
     end
   end
 
-  context '#unsubscribe!' do
+  describe '#unsubscribe!' do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_unsubscribe') }
+
     it 'calls #unsubscribe! on the campaign_subscription' do
       described_class.new(mailing).call(&mailing.drip.block)
       mailing.reload
-      expect(mailing.caffeinate_campaign_subscription.unsubscribed?).to be_truthy
+      expect(mailing.caffeinate_campaign_subscription).to be_unsubscribed
     end
 
     it 'returns false' do
@@ -58,13 +59,14 @@ describe ::Caffeinate::DripEvaluator do
     end
   end
 
-  context '#skip!' do
+  describe '#skip!' do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_skip') }
+
     it 'calls #skip! on the mailing' do
       described_class.new(mailing).call(&mailing.drip.block)
       mailing.reload
-      expect(mailing.skipped?).to be_truthy
+      expect(mailing).to be_skipped
     end
 
     it 'returns false' do
