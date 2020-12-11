@@ -7,9 +7,9 @@ class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
     create_table :caffeinate_campaign_subscriptions do |t|
       t.references :caffeinate_campaign, null: false, index: { name: :caffeineate_campaign_subscriptions_on_campaign }, foreign_key: true
       t.string :subscriber_type, null: false
-      t.string :subscriber_id, null: false
+      t.integer :subscriber_id, null: false
       t.string :user_type
-      t.string :user_id
+      t.integer :user_id
       t.string :token, null: false
       t.datetime :ended_at
       t.string :ended_reason
