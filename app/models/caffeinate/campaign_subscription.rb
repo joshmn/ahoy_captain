@@ -51,6 +51,8 @@ module Caffeinate
 
     after_commit :create_mailings!, on: :create
 
+    after_commit :on_complete, if: :completed?
+
     # Actually deliver and process the mail
     def deliver!(mailing)
       caffeinate_campaign.to_dripper.deliver!(mailing)
@@ -103,7 +105,15 @@ module Caffeinate
       true
     end
 
+    def completed?
+      caffeinate_mailings.unsent.count == 0
+    end
+
     private
+
+    def on_complete
+      caffeinate_campaign.to_dripper.run_callbacks(:on_complete, self)
+    end
 
     # Create mailings according to the drips registered in the Campaign
     def create_mailings!

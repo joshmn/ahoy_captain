@@ -136,12 +136,39 @@ describe ::Caffeinate::Dripper::Callbacks do
   end
 
   context '.before_drip' do
-    it 'runs before drip has called the mailer' do
-
+    before do
+      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.cattr_accessor :before_dripping
     end
+    it 'runs before drip has called the mailer' do
+      dripper.before_drip do |*args|
+        dripper.before_dripping = args
+      end
+      expect(dripper.before_drip_blocks.size).to eq(1)
+      expect(dripper.before_dripping).to be_nil
+      drip = dripper.drip_collection.values.first
+      drip.enabled?(Caffeinate::Mailing.new)
+      expect(dripper.before_dripping.size).to eq(2)
+      expect(dripper.before_dripping.first).to be_a(::Caffeinate::Drip)
+      expect(dripper.before_dripping.second).to be_a(Caffeinate::Mailing)
+    end
+  end
 
-    it 'yields a Drip, Mailing' do
-
+  context '.on_resubscribe' do
+    before do
+      dripper.cattr_accessor :on_resubscribing
+    end
+    it 'runs before drip has called the mailer' do
+      dripper.on_resubscribe do |*args|
+        dripper.on_resubscribing = args
+      end
+      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      company = create(:company)
+      subscription = campaign.subscribe(company)
+      expect(dripper.on_resubscribing).to be_nil
+      subscription.resubscribe!
+      expect(dripper.on_resubscribing.size).to eq(1)
+      expect(dripper.on_resubscribing.first).to be_a(::Caffeinate::CampaignSubscription)
     end
   end
 

@@ -44,9 +44,7 @@ describe ::Caffeinate::Dripper::Delivery do
       end!
     end
 
-    drip :goodbye_unsubscribe, delay: 0.hours do
-      unsubscribe!
-    end
+    drip :goodbye_unsubscribe, delay: 0.hours do; end
   end
 
   let(:campaign) { create(:caffeinate_campaign, slug: 'delivery_test_dripper') }

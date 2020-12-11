@@ -37,6 +37,8 @@ module Caffeinate
 
     # Checks if the drip is enabled
     def enabled?(mailing)
+      dripper.run_callbacks(:before_drip, self, mailing)
+
       DripEvaluator.new(mailing).call(&@block)
     end
   end

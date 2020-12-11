@@ -9,11 +9,13 @@ module Caffeinate
   class Engine < ::Rails::Engine
     isolate_namespace Caffeinate
 
+    # :nocov:
     config.to_prepare do
       Dir.glob(Rails.root.join(Caffeinate.config.drippers_path, "**", "*.rb")).each do |dripper|
         require dripper
       end
     end
+    # :nocov:
 
     ActiveSupport.on_load(:action_mailer) do
       include ::Caffeinate::ActionMailer::Extension

@@ -17,8 +17,6 @@
 module Caffeinate
   # Records of the mails sent and to be sent for a given `::Caffeinate::CampaignSubscriber`
   class Mailing < ApplicationRecord
-    CURRENT_THREAD_KEY = :current_caffeinate_mailing
-
     self.table_name = 'caffeinate_mailings'
 
     belongs_to :caffeinate_campaign_subscription, class_name: 'Caffeinate::CampaignSubscription'
@@ -72,7 +70,6 @@ module Caffeinate
     end
 
     # The associated drip
-    # @todo This can be optimized with a better cache
     def drip
       @drip ||= caffeinate_campaign.to_dripper.drip_collection.for(mailer_action)
     end
@@ -102,6 +99,8 @@ module Caffeinate
       else
         deliver!
       end
+
+      caffeinate_campaign_subscription.touch
     end
 
     # Delivers the Mailing in the foreground
