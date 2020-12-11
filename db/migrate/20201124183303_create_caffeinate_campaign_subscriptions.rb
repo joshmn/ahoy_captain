@@ -20,6 +20,6 @@ class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
       t.timestamps
     end
     add_index :caffeinate_campaign_subscriptions, :token, unique: true
-    add_index :caffeinate_campaign_subscriptions, %i[subscriber_id subscriber_type user_id user_type], name: :index_caffeinate_campaign_subscriptions
+    add_index :caffeinate_campaign_subscriptions, %i[caffeinate_campaign_id subscriber_id subscriber_type user_id user_type ended_at resubscribed_at unsubscribed_at], name: :index_caffeinate_campaign_subscriptions
   end
 end
