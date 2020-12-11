@@ -1,0 +1,26 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  rspec-test:
+    name: RSpec
+    needs: rubocop-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+      - name: Create local database
+        env:
+          RAILS_ENV: test
+        run: |
+          gem install bundler -v 2.1.3
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+      - name: Build and test with rspec
+        env:
+          RAILS_ENV: test
+        run: bundle exec rspec
