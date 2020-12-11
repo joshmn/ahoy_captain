@@ -52,8 +52,10 @@ describe ::Caffeinate::Dripper::Delivery do
   let(:mailing) { create(:caffeinate_mailing, caffeinate_campaign_subscription: campaign_subscription, mailer_class: 'DeliveryTestMailer', mailer_action: 'welcome') }
 
   describe '.deliver!' do
-    it 'sends it' do
+    it 'is not already sent' do
       expect(mailing.sent_at).to be_nil
+    end
+    it 'sends it' do
       expect do
         DeliveryTestDripper.deliver!(mailing)
       end.to change(::ActionMailer::Base.deliveries, :size).by(1)

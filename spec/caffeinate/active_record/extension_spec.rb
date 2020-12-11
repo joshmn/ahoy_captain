@@ -17,13 +17,19 @@ describe ::Caffeinate::ActiveRecord::Extension do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:company) { subscription.subscriber }
 
-    it 'has_many caffeinate_campaign_subscriptions' do
+    it 'has a count on campaign sub' do
       expect(company.caffeinate_campaign_subscriptions.count).to eq(1)
+    end
+
+    it 'has_many Caffeinate::CampaignSubscription' do
       expect(company.caffeinate_campaign_subscriptions.first).to be_a(::Caffeinate::CampaignSubscription)
     end
 
-    it 'has_many caffeinate_campaigns' do
+    it 'has a count' do
       expect(company.caffeinate_campaigns.count).to eq(1)
+    end
+
+    it 'has_many Caffeinate::Campaign' do
       expect(company.caffeinate_campaigns.first).to be_a(::Caffeinate::Campaign)
     end
 
@@ -37,8 +43,11 @@ describe ::Caffeinate::ActiveRecord::Extension do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:user) { subscription.user }
 
-    it 'has_many caffeinate_campaign_subscriptions' do
+    it 'counts' do
       expect(user.caffeinate_campaign_subscriptions_as_user.count).to eq(1)
+    end
+
+    it 'has_many Caffeinate::CampaignSubscriptions' do
       expect(user.caffeinate_campaign_subscriptions_as_user.first).to be_a(::Caffeinate::CampaignSubscription)
     end
   end

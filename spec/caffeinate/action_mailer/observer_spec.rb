@@ -11,8 +11,11 @@ describe Caffeinate::ActionMailer::Observer do
     context 'without Mail::Message.caffeinate_mailing' do
       let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
 
-      it 'does nothing' do
+      it 'is not caffeinated' do
         expect(mail.caffeinate_mailing).to be_falsey
+      end
+
+      it 'returns false' do
         expect(described_class.delivered_email(mail)).to be_falsey
       end
     end

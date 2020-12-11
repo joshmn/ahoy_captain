@@ -25,13 +25,18 @@ describe Caffeinate::Dripper::DripCollection do
   end
 
   describe '#validate_drip_options' do
-    it 'raises argument error if invalid' do
-      error = begin
-        collection.send(:validate_drip_options, :name, { mailer_class: 'Test' })
-      rescue StandardError => e
-        e
-      end
+    let(:error) {
+                  begin
+                    collection.send(:validate_drip_options, :name, { mailer_class: 'Test' })
+                  rescue StandardError => e
+                    e
+                  end
+                }
+    it 'raises ArgumentError if invalid' do
       expect(error.class).to eq(ArgumentError)
+    end
+
+    it 'message contains delay' do
       expect(error.message).to include(':delay')
     end
   end

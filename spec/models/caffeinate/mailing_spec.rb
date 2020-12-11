@@ -73,32 +73,16 @@ describe ::Caffeinate::Mailing do
   end
 
   describe '#pending?' do
-    it 'is not sent or skipped' do
-      mailing = described_class.new
-      expect(mailing).to be_pending
-      mailing.sent_at = Time.current
-      expect(mailing).not_to be_pending
-      mailing.sent_at = 50.years.ago
-      expect(mailing).not_to be_pending
-      mailing.sent_at = 50.years.from_now
-      expect(mailing).not_to be_pending
-      mailing.sent_at = nil
-      expect(mailing).to be_pending
-      mailing.skipped_at = Time.current
-      expect(mailing).not_to be_pending
-      mailing.skipped_at = 50.years.ago
-      expect(mailing).not_to be_pending
-      mailing.skipped_at = 50.years.from_now
-      expect(mailing).not_to be_pending
-      mailing.skipped_at = Time.current
-      mailing.sent_at = Time.current
-      expect(mailing).not_to be_pending
-      mailing.skipped_at = 50.years.ago
-      mailing.sent_at = 50.years.ago
-      expect(mailing).not_to be_pending
-      mailing.skipped_at = 50.years.from_now
-      mailing.sent_at = 50.years.from_now
-      expect(mailing).not_to be_pending
+    [[:sent_at], [:skipped_at], [:sent_at, :skipped_at]].each do |attributes|
+      [Time.current, 50.years.from_now, 50.years.ago].each do |time|
+        it "is not sent or skipped if #{attributes.join(", ")} if time is #{time}" do
+          mailing = Caffeinate::Mailing.new
+          attributes.each do |attr|
+            mailing.write_attribute(attr, time)
+          end
+          expect(mailing).not_to be_pending
+        end
+      end
     end
   end
 
