@@ -187,7 +187,6 @@ module Caffeinate
           @on_unsubscribe_blocks ||= []
         end
 
-
         # Callback after a CampaignSubscriber has ended.
         #
         #   on_end do |campaign_sub|

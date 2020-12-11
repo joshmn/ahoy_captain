@@ -10,7 +10,7 @@ module Caffeinate
       @async_delivery = false
       @mailing_job = nil
       @batch_size = 1_000
-      @drippers_path = "app/drippers"
+      @drippers_path = 'app/drippers'
       @implicit_campaigns = true
     end
 

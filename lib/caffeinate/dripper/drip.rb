@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'caffeinate/dripper/drip_collection'
 module Caffeinate
   module Dripper

@@ -75,7 +75,7 @@ module Caffeinate
 
     # Updates `ended_at` and runs `on_complete` callbacks
     def end!(reason = nil)
-      raise ::Caffeinate::InvalidState, "CampaignSubscription is already unsubscribed." if unsubscribed?
+      raise ::Caffeinate::InvalidState, 'CampaignSubscription is already unsubscribed.' if unsubscribed?
 
       update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
 
@@ -85,7 +85,7 @@ module Caffeinate
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
     def unsubscribe!(reason = nil)
-      raise ::Caffeinate::InvalidState, "CampaignSubscription is already ended." if ended?
+      raise ::Caffeinate::InvalidState, 'CampaignSubscription is already ended.' if ended?
 
       update!(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
 
@@ -96,8 +96,8 @@ module Caffeinate
     # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks.
     # Use `force` to forcefully reset. Does not create the mailings.
     def resubscribe!(force = false)
-      raise ::Caffeinate::InvalidState, "CampaignSubscription is already ended." if ended? && !force
-      raise ::Caffeinate::InvalidState, "CampaignSubscription is already unsubscribed." if unsubscribed? && !force
+      raise ::Caffeinate::InvalidState, 'CampaignSubscription is already ended.' if ended? && !force
+      raise ::Caffeinate::InvalidState, 'CampaignSubscription is already unsubscribed.' if unsubscribed? && !force
 
       update!(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
 

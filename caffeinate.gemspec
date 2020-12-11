@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-rails'
   spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'timecop'
-  spec.add_development_dependency 'simplecov'
 end

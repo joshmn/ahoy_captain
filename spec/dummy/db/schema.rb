@@ -15,9 +15,9 @@ ActiveRecord::Schema.define(version: 2020_11_24_190157) do
   create_table "caffeinate_campaign_subscriptions", force: :cascade do |t|
     t.integer "caffeinate_campaign_id", null: false
     t.string "subscriber_type", null: false
-    t.string "subscriber_id", null: false
+    t.integer "subscriber_id", null: false
     t.string "user_type"
-    t.string "user_id"
+    t.integer "user_id"
     t.string "token", null: false
     t.datetime "ended_at"
     t.string "ended_reason"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 2020_11_24_190157) do
     t.string "unsubscribe_reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["caffeinate_campaign_id", "subscriber_id", "subscriber_type", "user_id", "user_type", "ended_at", "resubscribed_at", "unsubscribed_at"], name: "index_caffeinate_campaign_subscriptions"
     t.index ["caffeinate_campaign_id"], name: "caffeineate_campaign_subscriptions_on_campaign"
-    t.index ["subscriber_id", "subscriber_type", "user_id", "user_type"], name: "index_caffeinate_campaign_subscriptions"
     t.index ["token"], name: "index_caffeinate_campaign_subscriptions_on_token", unique: true
   end
 
@@ -49,11 +49,8 @@ ActiveRecord::Schema.define(version: 2020_11_24_190157) do
     t.string "mailer_action", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"campaign_subscription_id\", \"mailer_class\", \"mailer_action\"", name: "index_caffeinate_mailings"
+    t.index ["caffeinate_campaign_subscription_id", "send_at", "sent_at", "skipped_at"], name: "index_caffeinate_mailings"
     t.index ["caffeinate_campaign_subscription_id"], name: "index_caffeinate_mailings_on_campaign_subscription"
-    t.index ["send_at"], name: "index_caffeinate_mailings_on_send_at"
-    t.index ["sent_at"], name: "index_caffeinate_mailings_on_sent_at"
-    t.index ["skipped_at"], name: "index_caffeinate_mailings_on_skipped_at"
   end
 
   create_table "companies", force: :cascade do |t|

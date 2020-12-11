@@ -17,7 +17,7 @@ describe ::Caffeinate::Dripper::Periodical do
     self.campaign = :periodical_dripper
     default mailer_class: 'PeriodicalMailer'
 
-    periodical :welcome, every: 1.hour, start: proc { |thing| 0.hours }
+    periodical :welcome, every: 1.hour, start: proc { |_thing| 0.hours }
   end
 
   context '.periodical' do
@@ -28,9 +28,9 @@ describe ::Caffeinate::Dripper::Periodical do
     context 'with performed dripper' do
       let(:perform) { PeriodicalDripper.perform! }
       it 'changes deliveries count' do
-        expect {
+        expect do
           perform
-        }.to change(ActionMailer::Base.deliveries, :size).by(1)
+        end.to change(ActionMailer::Base.deliveries, :size).by(1)
       end
 
       it 'creates another mailing' do

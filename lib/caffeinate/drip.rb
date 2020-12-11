@@ -7,6 +7,7 @@ module Caffeinate
   # Handles the block and provides convenience methods for the drip
   class Drip
     attr_reader :dripper, :action, :options, :block
+
     def initialize(dripper, action, options, &block)
       @dripper = dripper
       @action = action
@@ -22,9 +23,7 @@ module Caffeinate
     def send_at(mailing = nil)
       if periodical?
         start = mailing.instance_exec(&options[:start])
-        if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count > 0
-          start += options[:every]
-        end
+        start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count > 0
         start.from_now
       else
         options[:delay].from_now

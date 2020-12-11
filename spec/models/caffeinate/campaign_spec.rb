@@ -24,9 +24,9 @@ describe ::Caffeinate::Campaign do
       # stupid hack
       it 'raises ActiveRecord::RecordInvalid when invalid' do
         bad_company = OpenStruct.new
-        expect {
+        expect do
           campaign.subscribe!(bad_company)
-        }.to raise_error
+        end.to raise_error
       end
     end
   end
@@ -86,16 +86,16 @@ describe ::Caffeinate::Campaign do
         end
 
         it 'calls unsubscribe! on the subscribed object' do
-          expect {
+          expect do
             campaign.unsubscribe(subscribed_company)
-          }.to change(::Caffeinate::CampaignSubscription.unsubscribed, :count).by(1)
+          end.to change(::Caffeinate::CampaignSubscription.unsubscribed, :count).by(1)
         end
 
         it 'calls updates unsubscribed_reason with the given reason' do
           subscription = campaign.subscriber(subscribed_company)
-          campaign.unsubscribe(subscribed_company, reason: "too much pasta")
+          campaign.unsubscribe(subscribed_company, reason: 'too much pasta')
           subscription.reload
-          expect(subscription.unsubscribe_reason).to eq("too much pasta")
+          expect(subscription.unsubscribe_reason).to eq('too much pasta')
         end
       end
     end

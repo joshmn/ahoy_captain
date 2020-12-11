@@ -44,7 +44,7 @@ module Caffeinate
           if ::Caffeinate.config.implicit_campaigns?
             @caffeinate_campaign = ::Caffeinate::Campaign.find_or_initialize_by(slug: campaign_slug)
             if @caffeinate_campaign.new_record?
-              @caffeinate_campaign.name = "#{self.name.delete_suffix("Dripper").titleize} Campaign"
+              @caffeinate_campaign.name = "#{name.delete_suffix('Dripper').titleize} Campaign"
               @caffeinate_campaign.save!
             end
           else

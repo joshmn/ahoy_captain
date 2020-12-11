@@ -4,6 +4,7 @@ module Caffeinate
   # Handles evaluating the `drip` block and provides convenience methods for handling the mailing or its campaign.
   class DripEvaluator
     attr_reader :mailing
+
     def initialize(mailing)
       @mailing = mailing
     end

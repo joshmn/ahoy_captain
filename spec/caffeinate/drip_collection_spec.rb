@@ -24,12 +24,12 @@ describe Caffeinate::Dripper::DripCollection do
   context '#validate_drip_options' do
     it 'raises argument error if invalid' do
       error = begin
-                collection.send(:validate_drip_options, :name, {mailer_class: "Test"})
-              rescue => e
-                e
-              end
+        collection.send(:validate_drip_options, :name, { mailer_class: 'Test' })
+      rescue StandardError => e
+        e
+      end
       expect(error.class).to eq(ArgumentError)
-      expect(error.message).to include(":delay")
+      expect(error.message).to include(':delay')
     end
   end
 end

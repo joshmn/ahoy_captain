@@ -23,7 +23,6 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
     end
   end
 
-
   context 'a valid token' do
     it 'unsubscribes if not subscribed' do
       subscription = create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign)
@@ -73,6 +72,5 @@ describe Caffeinate::CampaignSubscriptionsController, type: :controller do
         expect(klass.send(:caffeinate_subscribe_url)).to eq("http://caffeinate.test/caffeinate/campaign_subscriptions/#{subscription.token}/subscribe")
       end
     end
-
   end
 end

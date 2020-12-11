@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Caffeinate::CampaignSubscription do
-  let(:campaign) { create(:caffeinate_campaign, :with_dripper)}
+  let(:campaign) { create(:caffeinate_campaign, :with_dripper) }
   let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
   context '#end!' do
@@ -22,15 +22,15 @@ describe Caffeinate::CampaignSubscription do
     context 'with argument' do
       it 'updates #ended_at' do
         expect(subscription.ended?).to be_falsey
-        subscription.end!("Hello")
+        subscription.end!('Hello')
         expect(subscription.ended?).to be_truthy
         expect(subscription.ended_at).to be_between(1.second.ago, Time.current)
       end
 
       it 'updates #ended_reason' do
         expect(subscription.ended?).to be_falsey
-        subscription.end!("Hello")
-        expect(subscription.ended_reason).to eq("Hello")
+        subscription.end!('Hello')
+        expect(subscription.ended_reason).to eq('Hello')
       end
     end
   end
@@ -42,7 +42,6 @@ describe Caffeinate::CampaignSubscription do
         subscription.unsubscribe!
         expect(subscription.unsubscribed?).to be_truthy
         expect(subscription.unsubscribed_at).to be_between(1.second.ago, Time.current)
-
       end
       it 'does not update #unsubscribe_reason' do
         expect(subscription.unsubscribed?).to be_falsey
@@ -54,14 +53,14 @@ describe Caffeinate::CampaignSubscription do
     context 'with argument' do
       it 'updates unsubscribe_reason' do
         expect(subscription.unsubscribed?).to be_falsey
-        subscription.unsubscribe!("Hello")
+        subscription.unsubscribe!('Hello')
         expect(subscription.unsubscribed?).to be_truthy
       end
 
       it 'updates unsubscribe_reason' do
         expect(subscription.unsubscribed?).to be_falsey
-        subscription.unsubscribe!("Hello")
-        expect(subscription.unsubscribe_reason).to eq("Hello")
+        subscription.unsubscribe!('Hello')
+        expect(subscription.unsubscribe_reason).to eq('Hello')
       end
     end
   end

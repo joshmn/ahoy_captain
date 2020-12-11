@@ -34,8 +34,8 @@ describe Caffeinate::ActionMailer::Extension do
       end
 
       it 'handles passed options' do
-        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: "donkey.kong")
-        expect(URI.parse(url).host).to eq("donkey.kong")
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: 'donkey.kong')
+        expect(URI.parse(url).host).to eq('donkey.kong')
       end
     end
     context '#caffeinate_subscribe_url' do
@@ -45,8 +45,8 @@ describe Caffeinate::ActionMailer::Extension do
       end
 
       it 'handles passed options' do
-        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: "donkey.kong")
-        expect(URI.parse(url).host).to eq("donkey.kong")
+        url = CaffeinateActionMailerExtensionMailer.new.send(:caffeinate_subscribe_url, mailing: OpenStruct.new(caffeinate_campaign_subscription: subscription), host: 'donkey.kong')
+        expect(URI.parse(url).host).to eq('donkey.kong')
       end
     end
   end

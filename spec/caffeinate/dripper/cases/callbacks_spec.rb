@@ -77,7 +77,7 @@ describe ::Caffeinate::Dripper::Callbacks do
 
   context '.on_process' do
     before do
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       campaign.subscribe(company)
       dripper.cattr_accessor :on_performing
@@ -108,7 +108,7 @@ describe ::Caffeinate::Dripper::Callbacks do
 
   context '.after_perform' do
     before do
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       campaign.subscribe(company)
       dripper.cattr_accessor :after_performing
@@ -137,7 +137,7 @@ describe ::Caffeinate::Dripper::Callbacks do
 
   context '.before_drip' do
     before do
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       dripper.cattr_accessor :before_dripping
     end
     it 'runs before drip has called the mailer' do
@@ -162,7 +162,7 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.on_resubscribe do |*args|
         dripper.on_resubscribing = args
       end
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       subscription = campaign.subscribe(company)
       expect(dripper.on_resubscribing).to be_nil
@@ -190,7 +190,7 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.before_send do
         dripper.before_sending = 1
       end
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       subscription = campaign.subscribe(company)
       mail.caffeinate_mailing = subscription.caffeinate_mailings.first
@@ -202,7 +202,7 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.before_send do |*args|
         dripper.before_sending = args
       end
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       subscription = campaign.subscribe(company)
       mail.caffeinate_mailing = subscription.caffeinate_mailings.first
@@ -231,7 +231,7 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.after_send do
         dripper.after_sending = 1
       end
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       subscription = campaign.subscribe(company)
       mail.caffeinate_mailing = subscription.caffeinate_mailings.first
@@ -243,7 +243,7 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.after_send do |*args|
         dripper.after_sending = args
       end
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       subscription = campaign.subscribe(company)
       mail.caffeinate_mailing = subscription.caffeinate_mailings.first
@@ -305,7 +305,7 @@ describe ::Caffeinate::Dripper::Callbacks do
   context '.on_skip' do
     before do
       dripper.cattr_accessor :on_skipping
-      dripper.drip :hello, mailer_class: "ArgumentMailer", delay: 0.hours
+      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
       company = create(:company)
       campaign.subscribe(company)
     end
