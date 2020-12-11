@@ -106,7 +106,7 @@ module Caffeinate
     end
 
     def completed?
-      caffeinate_mailings.unsent.count == 0
+      caffeinate_mailings.unsent.count.zero?
     end
 
     private

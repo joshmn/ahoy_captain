@@ -11,7 +11,7 @@ module Caffeinate
 
     # :nocov:
     config.to_prepare do
-      Dir.glob(Rails.root.join(Caffeinate.config.drippers_path, '**', '*.rb')).each do |dripper|
+      Dir.glob(Rails.root.join(Caffeinate.config.drippers_path, '**', '*.rb')).sort.each do |dripper|
         require dripper
       end
     end

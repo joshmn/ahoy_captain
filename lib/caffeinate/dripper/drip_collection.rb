@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   module Dripper
     # A collection of Drip objects for a `Caffeinate::Dripper`

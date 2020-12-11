@@ -24,9 +24,7 @@ module Caffeinate
           .in_batches(of: self.class.batch_size)
           .each do |batch|
           run_callbacks(:on_perform, self, batch)
-          batch.each do |mailing|
-            mailing.process!
-          end
+          batch.each(&:process!)
         end
         run_callbacks(:after_perform, self)
         nil

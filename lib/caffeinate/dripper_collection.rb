@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caffeinate
   class DripperCollection
     def initialize

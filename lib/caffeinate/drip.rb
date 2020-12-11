@@ -23,7 +23,7 @@ module Caffeinate
     def send_at(mailing = nil)
       if periodical?
         start = mailing.instance_exec(&options[:start])
-        start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count > 0
+        start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
         start.from_now
       else
         options[:delay].from_now
