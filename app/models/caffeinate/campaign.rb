@@ -35,10 +35,8 @@ module Caffeinate
     end
 
     # Checks to see if the subscriber exists.
-    #
-    # Use `find_by` so that we don't have to load the record twice. Often used with `subscribes?`
     def subscriber(record, **args)
-      @subscriber ||= caffeinate_campaign_subscriptions.find_by(subscriber: record, **args)
+      caffeinate_campaign_subscriptions.find_by(subscriber: record, **args)
     end
 
     # Check if the subscriber exists
