@@ -24,10 +24,17 @@ module Caffeinate
       if periodical?
         start = mailing.instance_exec(&options[:start])
         start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
-        start.from_now
+        date = start.from_now
       else
-        options[:delay].from_now
+        date = options[:delay].from_now
       end
+
+      if options[:at]
+        time = Time.parse(options[:at])
+        return date.change(hour: time.hour, min: time.min, sec: time.sec)
+      end
+
+      date
     end
 
     def periodical?

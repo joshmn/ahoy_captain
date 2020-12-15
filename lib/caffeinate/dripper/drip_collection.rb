@@ -42,7 +42,7 @@ module Caffeinate
 
       def validate_drip_options(action, options)
         options.symbolize_keys!
-        options.assert_valid_keys(:mailer_class, :step, :delay, :every, :start, :using, :mailer)
+        options.assert_valid_keys(:mailer_class, :step, :delay, :every, :start, :using, :mailer, :at)
         options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
         options[:using] ||= @dripper.defaults[:using]
         options[:step] ||= @dripper.drips.size + 1

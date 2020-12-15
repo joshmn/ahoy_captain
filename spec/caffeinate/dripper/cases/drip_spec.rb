@@ -31,4 +31,14 @@ describe ::Caffeinate::Dripper::Drip do
       end.to raise_error(ArgumentError)
     end
   end
+
+  context 'at: option' do
+    it 'creates the drip at the time' do
+      DripDripper.drip :welcome, delay: 3.days, at: "6:13:04 PM Eastern", mailer_class: 'Fun'
+      time = DripDripper.drip_collection.for(:welcome).send_at.to_time
+      expect(time.min).to eq(13)
+      expect(time.sec).to eq(4)
+      expect(time.hour).to eq(18)
+    end
+  end
 end
