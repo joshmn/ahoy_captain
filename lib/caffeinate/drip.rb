@@ -25,6 +25,8 @@ module Caffeinate
         start = mailing.instance_exec(&options[:start])
         start += options[:every] if mailing.caffeinate_campaign_subscription.caffeinate_mailings.count.positive?
         date = start.from_now
+      elsif options[:on]
+        date = mailing.instance_exec(&options[:on])
       else
         date = options[:delay].from_now
       end

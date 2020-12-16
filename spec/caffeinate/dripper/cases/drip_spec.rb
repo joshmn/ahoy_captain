@@ -41,4 +41,14 @@ describe ::Caffeinate::Dripper::Drip do
       expect(time.hour).to eq(18)
     end
   end
+
+  context 'on: option' do
+    it 'creates the drip at the date' do
+      Timecop.freeze do
+        DripDripper.drip :welcome, on: -> { 5.days.from_now }, mailer_class: 'Fun'
+        time = DripDripper.drip_collection.for(:welcome).send_at
+        expect(time).to eq(5.days.from_now)
+      end
+    end
+  end
 end
