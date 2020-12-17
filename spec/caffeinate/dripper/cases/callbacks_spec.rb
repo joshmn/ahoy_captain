@@ -63,20 +63,25 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.before_perform do
         dripper.before_performing = 1
       end
-      expect(dripper.before_performing).to be_nil
       dripper.perform!
       expect(dripper.before_performing).to eq(1)
     end
 
-    it 'yields a Dripper' do
-      dripper.before_perform do |*args|
-        dripper.before_performing = args
+    context 'yields' do
+      before do
+        dripper.before_perform do |*args|
+          dripper.before_performing = args
+        end
+        dripper.perform!
       end
-      dripper.perform!
-      args = dripper.before_performing
-      expect(args.size).to be(1)
-      expect(args[0]).to be_a(Caffeinate::Dripper::Base)
-      expect(args[0]).to be_a(dripper)
+
+      it 'yields 1 arg' do
+        expect(dripper.before_performing.size).to be(1)
+      end
+
+      it 'first arg is the dripper' do
+        expect(dripper.before_performing[0]).to be_a(dripper)
+      end
     end
   end
 
@@ -146,17 +151,27 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.cattr_accessor :before_dripping
     end
 
-    it 'runs before drip has called the mailer' do
-      dripper.before_drip do |*args|
-        dripper.before_dripping = args
+    context 'yields' do
+      before do
+        dripper.before_drip do |*args|
+          dripper.before_dripping = args
+        end
+
+        drip = dripper.drip_collection.values.first
+        drip.enabled?(Caffeinate::Mailing.new)
       end
-      expect(dripper.before_drip_blocks.size).to eq(1)
-      expect(dripper.before_dripping).to be_nil
-      drip = dripper.drip_collection.values.first
-      drip.enabled?(Caffeinate::Mailing.new)
-      expect(dripper.before_dripping.size).to eq(2)
-      expect(dripper.before_dripping.first).to be_a(::Caffeinate::Drip)
-      expect(dripper.before_dripping.second).to be_a(Caffeinate::Mailing)
+
+      it 'yields two args' do
+        expect(dripper.before_dripping.size).to eq(2)
+      end
+
+      it 'first arg is the drip' do
+        expect(dripper.before_dripping.first).to be_a(::Caffeinate::Drip)
+      end
+
+      it 'second arg is the mailing' do
+        expect(dripper.before_dripping.second).to be_a(Caffeinate::Mailing)
+      end
     end
   end
 
@@ -206,18 +221,29 @@ describe ::Caffeinate::Dripper::Callbacks do
       expect(dripper.before_sending).to eq(1)
     end
 
-    it 'yields a Mailing, Mail::Message' do
-      dripper.before_send do |*args|
-        dripper.before_sending = args
+    context 'yields' do
+      before do
+        dripper.before_send do |*args|
+          dripper.before_sending = args
+        end
+        dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+        company = create(:company)
+        subscription = campaign.subscribe(company)
+        mail.caffeinate_mailing = subscription.caffeinate_mailings.first
+        ::Caffeinate::ActionMailer::Interceptor.delivering_email(mail)
       end
-      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
-      company = create(:company)
-      subscription = campaign.subscribe(company)
-      mail.caffeinate_mailing = subscription.caffeinate_mailings.first
-      ::Caffeinate::ActionMailer::Interceptor.delivering_email(mail)
-      expect(dripper.before_sending.size).to eq(2)
-      expect(dripper.before_sending[0]).to eq(mail.caffeinate_mailing)
-      expect(dripper.before_sending[1]).to eq(mail)
+
+      it 'yields two args' do
+        expect(dripper.before_sending.size).to eq(2)
+      end
+
+      it 'first arg is the caffeinate mailing' do
+        expect(dripper.before_sending[0]).to eq(mail.caffeinate_mailing)
+      end
+
+      it 'second arg is the mail' do
+        expect(dripper.before_sending[1]).to eq(mail)
+      end
     end
   end
 
@@ -228,38 +254,59 @@ describe ::Caffeinate::Dripper::Callbacks do
 
     let(:mail) { Mail.from_source("Date: Fri, 28 Sep 2018 11:08:55 -0700\r\nTo: a@example.com\r\nMime-Version: 1.0\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello!") }
 
-    it 'does not run if caffeinate_mailing is false' do
-      dripper.after_send do
-        dripper.after_sending = 1
+    context 'if caffeinate_mailing is false' do
+      before do
+        dripper.after_send do
+          dripper.after_sending = 1
+        end
       end
-      ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
-      expect(dripper.after_sending).to be_nil
+
+      it 'does not run' do
+        ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
+        expect(dripper.after_sending).to_not eq(1)
+      end
     end
 
-    it 'runs if caffeinate_mailing is present' do
-      dripper.after_send do
-        dripper.after_sending = 1
+    context 'if caffeinate_mailing is present' do
+      before do
+        dripper.after_send do
+          dripper.after_sending = 1
+        end
+        dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+        company = create(:company)
+        subscription = campaign.subscribe(company)
+        mail.caffeinate_mailing = subscription.caffeinate_mailings.first
       end
-      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
-      company = create(:company)
-      subscription = campaign.subscribe(company)
-      mail.caffeinate_mailing = subscription.caffeinate_mailings.first
-      ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
-      expect(dripper.after_sending).to eq(1)
+
+      it 'runs' do
+        ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
+        expect(dripper.after_sending).to eq(1)
+      end
     end
 
-    it 'yields a Mailing, Mail::Message' do
-      dripper.after_send do |*args|
-        dripper.after_sending = args
+    context 'yields' do
+      before do
+        dripper.after_send do |*args|
+          dripper.after_sending = args
+        end
+        dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
+        company = create(:company)
+        subscription = campaign.subscribe(company)
+        mail.caffeinate_mailing = subscription.caffeinate_mailings.first
+        ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
       end
-      dripper.drip :hello, mailer_class: 'ArgumentMailer', delay: 0.hours
-      company = create(:company)
-      subscription = campaign.subscribe(company)
-      mail.caffeinate_mailing = subscription.caffeinate_mailings.first
-      ::Caffeinate::ActionMailer::Observer.delivered_email(mail)
-      expect(dripper.after_sending.size).to eq(2)
-      expect(dripper.after_sending[0]).to eq(mail.caffeinate_mailing)
-      expect(dripper.after_sending[1]).to eq(mail)
+
+      it 'yields two args' do
+        expect(dripper.after_sending.size).to eq(2)
+      end
+
+      it 'first arg is the caffeinate_mailing' do
+        expect(dripper.after_sending[0]).to eq(mail.caffeinate_mailing)
+      end
+
+      it 'second arg is the Mail::Message' do
+        expect(dripper.after_sending[1]).to eq(mail)
+      end
     end
   end
 
@@ -268,20 +315,30 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.cattr_accessor :on_ending
     end
 
-    it 'runs after Caffeinate::CampaignSubscription#end! has been called' do
-      dripper.on_end do
-        dripper.on_ending = 1
+    context 'Caffeinate::CampaignSubscription#end!' do
+      before do
+        dripper.on_end do
+          dripper.on_ending = 1
+        end
       end
-      expect(dripper.on_ending).to be_nil
-      subscription.end!
-      expect(dripper.on_ending).to be(1)
+
+      it 'is nil if #end! has not been called' do
+        expect(dripper.on_ending).to be_nil
+      end
+
+      context 'after #end! has been called' do
+        it 'is 1' do
+          subscription.end!
+          expect(dripper.on_ending).to be(1)
+        end
+      end
     end
+
 
     it 'yields a CampaignSubscriber' do
       dripper.on_end do |*args|
         dripper.on_ending = args
       end
-      expect(dripper.on_ending).to be_nil
       subscription.end!
       expect(dripper.on_ending.first).to eq(subscription)
     end
@@ -292,23 +349,41 @@ describe ::Caffeinate::Dripper::Callbacks do
       dripper.cattr_accessor :on_unsubscribing
     end
 
-    it 'runs after before Mailing#unsubscribe! has been called' do
-      dripper.on_unsubscribe do
-        dripper.on_unsubscribing = 1
+    context 'Mailing#unsibscribe' do
+      before do
+        dripper.on_unsubscribe do
+          dripper.on_unsubscribing = 1
+        end
       end
-      expect(dripper.on_unsubscribing).to be_nil
-      subscription.unsubscribe!
-      expect(dripper.on_unsubscribing).to be(1)
+
+      it 'has not run until #unsubscribe! has been called' do
+        expect(dripper.on_unsubscribing).to be_nil
+      end
+
+      context '#unsubscribe!' do
+        it 'runs' do
+          subscription.unsubscribe!
+          expect(dripper.on_unsubscribing).to be(1)
+        end
+      end
     end
 
-    it 'yields a CampaignSubscriber' do
-      dripper.on_unsubscribe do |*args|
-        dripper.on_unsubscribing = args
+    context 'yields' do
+      before do
+        dripper.on_unsubscribe do |*args|
+          dripper.on_unsubscribing = args
+        end
+
+        subscription.unsubscribe!
       end
-      expect(dripper.on_unsubscribing).to be_nil
-      subscription.unsubscribe!
-      expect(dripper.on_unsubscribing.size).to be(1)
-      expect(dripper.on_unsubscribing.first).to be(subscription)
+
+      it 'yields 1 arg' do
+        expect(dripper.on_unsubscribing.size).to be(1)
+      end
+
+      it 'yields a CampaignSubscriber' do
+        expect(dripper.on_unsubscribing.first).to be(subscription)
+      end
     end
   end
 
@@ -329,15 +404,22 @@ describe ::Caffeinate::Dripper::Callbacks do
       expect(dripper.on_skipping).to be(1)
     end
 
-    it 'yields a CampaignSubscriber' do
-      dripper.on_skip do |*args|
-        dripper.on_skipping = args
+    context 'yields' do
+      before do
+        dripper.on_skip do |*args|
+          dripper.on_skipping = args
+        end
+        mailing.skip!
+
+      end
+      it 'yields one arg' do
+        expect(dripper.on_skipping.size).to be(1)
       end
 
-      expect(dripper.on_skipping).to be_nil
-      mailing.skip!
-      expect(dripper.on_skipping.size).to be(1)
-      expect(dripper.on_skipping.first).to be(mailing)
+      it 'yields the mailing' do
+        expect(dripper.on_skipping.first).to be(mailing)
+
+      end
     end
   end
 end

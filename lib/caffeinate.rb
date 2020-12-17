@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
-require 'rails/all'
+require 'active_support'
+
+%w(
+  active_record/railtie
+  action_controller/railtie
+  action_view/railtie
+  action_mailer/railtie
+).each do |railtie|
+  require railtie
+end
+
 require 'caffeinate/mail_ext'
 require 'caffeinate/engine'
 require 'caffeinate/drip'
