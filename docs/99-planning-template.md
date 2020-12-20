@@ -10,6 +10,9 @@ MBA-approved name.
 
 Some MBA-friendly goal here, probably a mention of a KPI.
 
+## Data
+* Subscriber: User
+
 ## Subscribe on
 
 * Condition 1
