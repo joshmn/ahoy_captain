@@ -28,7 +28,7 @@ Some MBA-friendly goal here, probably a mention of a KPI.
 
 ## Emails
 
-### <Subject line>
+### <Subject line 1>
 
 * Delay: 2 hours 
 
