@@ -20,7 +20,7 @@ module Caffeinate
           .upcoming
           .unsent
           .joins(:caffeinate_campaign_subscription)
-          .merge(Caffeinate::CampaignSubscription.active)
+          .merge(Caffeinate::CampaignSubscription.active.where(caffeinate_campaign: self.campaign))
           .in_batches(of: self.class.batch_size)
           .each do |batch|
           run_callbacks(:on_perform, self, batch)

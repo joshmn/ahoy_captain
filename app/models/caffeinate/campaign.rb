@@ -56,7 +56,7 @@ module Caffeinate
     def unsubscribe(subscriber, **args)
       reason = args.delete(:reason)
       subscription = subscriber(subscriber, **args)
-      raise ActiveRecord::RecordInvalid, subscription if subscription.nil?
+      raise ::ActiveRecord::RecordInvalid, subscription if subscription.nil?
 
       subscription.unsubscribe!(reason)
     end
