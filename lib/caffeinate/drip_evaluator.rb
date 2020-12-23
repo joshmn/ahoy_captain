@@ -16,14 +16,14 @@ module Caffeinate
     end
 
     # Ends the CampaignSubscription
-    def end!
-      mailing.caffeinate_campaign_subscription.end!
+    def end!(**args)
+      mailing.caffeinate_campaign_subscription.end!(**args)
       false
     end
 
     # Unsubscribes the CampaignSubscription
-    def unsubscribe!
-      mailing.caffeinate_campaign_subscription.unsubscribe!
+    def unsubscribe!(**args)
+      mailing.caffeinate_campaign_subscription.unsubscribe!(**args)
       false
     end
 
