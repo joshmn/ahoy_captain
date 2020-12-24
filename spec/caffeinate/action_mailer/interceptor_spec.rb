@@ -39,6 +39,11 @@ describe Caffeinate::ActionMailer::Interceptor do
         end
       end
 
+      it 'has a List-Unsubscribe header' do
+        mail.caffeinate_mailing = mailing
+        expect(mail.header['List-Unsubscribe']).to be_present
+        described_class.delivering_email(mail)
+      end
       it 'runs before_send callbacks' do
         mail.caffeinate_mailing = mailing
         described_class.delivering_email(mail)
@@ -57,5 +62,6 @@ describe Caffeinate::ActionMailer::Interceptor do
         campaign.to_dripper.instance_variable_set(:@drip_collection, drips)
       end
     end
+
   end
 end
