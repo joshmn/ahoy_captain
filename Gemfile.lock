@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    caffeinate (0.8.6)
+    caffeinate (0.9)
       rails (>= 5.0.0)
 
 GEM

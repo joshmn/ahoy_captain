@@ -105,7 +105,7 @@ describe ::Caffeinate::Dripper::Subscriber do
     let!(:subscription) { SubscriberDripper.subscribe(company) }
 
     it 'unsubscribes' do
-      SubscriberDripper.unsubscribe(company)
+      SubscriberDripper.unsubscribe!(company)
       expect(subscription.reload.unsubscribed_at).to be_present
     end
   end

@@ -31,10 +31,10 @@ module Caffeinate
         #
         # @return [Caffeinate::CampaignSubscriber] the created CampaignSubscriber
         def subscribe(subscriber, **args)
-          caffeinate_campaign.subscribe(subscriber, **args)
+          caffeinate_campaign.subscribe!(subscriber, **args)
         end
 
-        # Unsubscribes from the campaign.
+        # Unsubscribes from the campaign. Returns false if something's wrong.
         #
         #   OrderDripper.unsubscribe(order, user: order.user)
         #
@@ -44,6 +44,18 @@ module Caffeinate
         # @return [Caffeinate::CampaignSubscriber] the CampaignSubscriber
         def unsubscribe(subscriber, **args)
           caffeinate_campaign.unsubscribe(subscriber, **args)
+        end
+
+        # Unsubscribes from the campaign. Raises error if somerthing's wrong.
+        #
+        #   OrderDripper.unsubscribe(order, user: order.user)
+        #
+        # @param [ActiveRecord::Base] subscriber The object subscribing
+        # @option [ActiveRecord::Base] :user The associated user (optional)
+        #
+        # @return [Caffeinate::CampaignSubscriber] the CampaignSubscriber
+        def unsubscribe!(subscriber, **args)
+          caffeinate_campaign.unsubscribe!(subscriber, **args)
         end
 
         # :nodoc:

@@ -56,6 +56,14 @@ module Caffeinate
     def unsubscribe(subscriber, **args)
       reason = args.delete(:reason)
       subscription = subscriber(subscriber, **args)
+      return false if subscription.nil?
+
+      subscription.unsubscribe(reason)
+    end
+
+    def unsubscribe!(subscriber, **args)
+      reason = args.delete(:reason)
+      subscription = subscriber(subscriber, **args)
       raise ::ActiveRecord::RecordInvalid, subscription if subscription.nil?
 
       subscription.unsubscribe!(reason)
@@ -64,12 +72,12 @@ module Caffeinate
     # Creates a `CampaignSubscription` object for the present Campaign. Allows passing `**args` to
     # delegate additional arguments to the record. Uses `find_or_create_by`.
     def subscribe(subscriber, **args)
-      caffeinate_campaign_subscriptions.find_or_create_by(subscriber: subscriber, **args)
+      caffeinate_campaign_subscriptions.create(subscriber: subscriber, **args)
     end
 
     # Subscribes an object to a campaign. Raises `ActiveRecord::RecordInvalid` if the record was invalid.
     def subscribe!(subscriber, **args)
-      subscribe(subscriber, **args)
+      caffeinate_campaign_subscriptions.create!(subscriber: subscriber, **args)
     end
   end
 end
