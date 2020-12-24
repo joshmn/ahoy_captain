@@ -1,3 +1,9 @@
-class CoolMailer < ApplicationMailer
-
+class <%= @mailer_class %> < ApplicationMailer
+<% @dripper_klass.drips.each do |action| -%>
+  def <%= action.action %><% if action.options[:using].nil? %>(mailing)<% end %>
+<% if action.options[:using].nil? -%>
+    @mailing = mailing
+<% end -%>
+  end
+<% end -%>
 end

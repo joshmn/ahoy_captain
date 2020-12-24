@@ -2,16 +2,21 @@
 
 module Caffeinate
   module Generators
-    # Installs Caffeinate
+    # Creates a mailer from a dripper.
     class MailerGenerator < Rails::Generators::Base
       source_root File.expand_path('templates', __dir__)
       include ::Rails::Generators::Migration
-      argument :dripper, banner: "Dripper class"
+      argument :dripper, banner: "dripper"
 
       desc 'Creates a Mailer class from a dripper.'
 
       def create_mailer
-        template 'mailer.rb', 'app/mailers/application_dripper.rb'
+        @dripper_klass = @dripper.safe_constantize
+        if @dripper_klass.nil?
+          raise ArgumentError, "Unknown dripper #{@dripper}"
+        end
+        @mailer_class = @dripper_klass.defaults[:mailer_class] || @dripper_klass.defaults[:mailer]
+        template 'mailer.rb', "app/mailers/#{@mailer_class.underscore}.rb"
       end
 
     end
