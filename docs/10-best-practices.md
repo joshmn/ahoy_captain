@@ -38,7 +38,7 @@ module Marketing
   class Manager
     class << self 
       def subscribe_to_campaign(campaign_slug:, subscriber:, user: nil, **args)
-        ::Caffeinate::Campaign[campaign].subscribe(subscriber, user: user)
+        ::Caffeinate::Campaign[campaign_slug].subscribe(subscriber, user: user)
       end
     end 
   end 

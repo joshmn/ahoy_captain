@@ -70,16 +70,14 @@ Options include:
 * `on` (`Date`) the exact date that the drip gets sent. Accepts a block
 * `at` (`String` or `Time`) the time that the drip gets sent. Gets coerced into the date via `DateTime#advance` 
  
-The `block` is optional. It executes in the context of the drip so you can access `mailing` within it. If it returns 
-`false`, the mail will not be sent. An example block looks like this:
+The `block` is optional. It executes in the context of the drip so you can access `mailing` within it. If you `throw(:abort)`, the mail won't be sent (this time).
 
 ```ruby 
+# Won't be sent if the time is even...?
 drip :are_you_still_there, delay: 48.hours do 
-  if mailing.user.last_active_at > 4.hours.ago
-    end!
-    return false  
+  if Time.now.to_i.even?
+    throw(:abort)
   end 
-  true 
 end 
 ```
 
@@ -88,7 +86,7 @@ You have a few options here to manage the mailing:
 * `unsubscribe!` will update the associated `Caffeinate::CampaignSubscription`'s `unsubscribed_at`
 * `skip!` will update the associated `Caffeinate::Mailer`'s `skipped_at`
 
-Returning `false` without calling any of these will not send the mailer _now_ but will retry when it the `perform` method gets called again. Speaking of...
+These will stop the delivery process by implictly calling `throw(:abort)`. `end!` and `unsubscribe!` also accept the arguments that `Caffeinate::CampaignSubscription#end!` and `Caffeinate::CampaignSubscription#unsubscribe!` do as well.
 
 ## Handling subscribers
 
