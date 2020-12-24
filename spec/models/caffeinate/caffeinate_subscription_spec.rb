@@ -6,6 +6,25 @@ describe Caffeinate::CampaignSubscription do
   let(:campaign) { create(:caffeinate_campaign, :with_dripper) }
   let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
 
+  describe '#next_mailing' do
+    it 'has a mailing if the campaign is active' do
+      mailing = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.ago)
+      mailing_2 = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.from_now)
+      expect(subscription.next_mailing).to eq(mailing)
+    end
+    it 'does not have a next_mailing if the campaign is ended' do
+      mailing = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.ago)
+      mailing_2 = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.from_now)
+      subscription.end!
+      expect(subscription.next_mailing).to be_nil
+    end
+    it 'does not have a next_mailing if the campaign is unsubscribed' do
+      mailing = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.ago)
+      mailing_2 = subscription.mailings.create!(mailer_class: "Test", mailer_action: "test", send_at: 1.hour.from_now)
+      subscription.unsubscribe!
+      expect(subscription.next_mailing).to be_nil
+    end
+  end
   describe '#end!' do
     context 'without argument' do
       it 'is not ended' do
