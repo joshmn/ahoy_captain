@@ -83,6 +83,16 @@ module Caffeinate
       true
     end
 
+    # Updates `ended_at` and runs `on_complete` callbacks
+    def end(reason = nil)
+      return false if unsubscribed?
+
+      result = update(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
+
+      caffeinate_campaign.to_dripper.run_callbacks(:on_end, self)
+      result
+    end
+
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
     def unsubscribe!(reason = nil)
       raise ::Caffeinate::InvalidState, 'CampaignSubscription is already ended.' if ended?
@@ -97,10 +107,10 @@ module Caffeinate
     def unsubscribe(reason = nil)
       return false if ended?
 
-      update(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
+      result = update(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_unsubscribe, self)
-      true
+      result
     end
 
     # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks.
@@ -113,6 +123,18 @@ module Caffeinate
 
       caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
       true
+    end
+
+    # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks.
+    # Use `force` to forcefully reset. Does not create the mailings.
+    def resubscribe!(force = false)
+      return false if ended? && !force
+      return false if unsubscribed? && !force
+
+      result = update(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
+
+      caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
+      result
     end
 
     def completed?
