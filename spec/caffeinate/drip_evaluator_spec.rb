@@ -43,13 +43,16 @@ describe ::Caffeinate::DripEvaluator do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_end') }
 
-    it 'calls #end! on the campaign_subscription' do
+    before do
       described_class.new(mailing).call(&mailing.drip.block)
+    end
+
+    it 'calls #end! on the campaign_subscription' do
       mailing.reload
       expect(mailing.caffeinate_campaign_subscription).to be_ended
     end
 
-    it 'returns false' do
+    it 'call returns false' do
       result = described_class.new(mailing).call(&mailing.drip.block)
       expect(result).to be_falsey
     end
@@ -58,15 +61,19 @@ describe ::Caffeinate::DripEvaluator do
   describe '#end! with reason' do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign_reason) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_end') }
-
-    it 'calls #end! on the campaign_subscription and gives a reason' do
+    before do
       described_class.new(mailing).call(&mailing.drip.block)
-      mailing.reload
+    end
+
+    it 'is ended' do
       expect(mailing.caffeinate_campaign_subscription).to be_ended
+    end
+
+    it 'has an ended_reason' do
       expect(mailing.caffeinate_campaign_subscription.ended_reason).to be_present
     end
 
-    it 'returns false' do
+    it 'block returns false' do
       result = described_class.new(mailing).call(&mailing.drip.block)
       expect(result).to be_falsey
     end
@@ -92,10 +99,16 @@ describe ::Caffeinate::DripEvaluator do
     let(:subscription) { create(:caffeinate_campaign_subscription, caffeinate_campaign: campaign_reason) }
     let(:mailing) { subscription.caffeinate_mailings.find_by(mailer_action: 'hello_unsubscribe') }
 
-    it 'calls #end! on the campaign_subscription and gives a reason' do
+    before do
       described_class.new(mailing).call(&mailing.drip.block)
+    end
+
+    it 'calls #unsubscribe! on the campaign_subscription' do
       mailing.reload
       expect(mailing.caffeinate_campaign_subscription).to be_unsubscribed
+    end
+
+    it 'has a reason' do
       expect(mailing.caffeinate_campaign_subscription.unsubscribe_reason).to be_present
     end
 
