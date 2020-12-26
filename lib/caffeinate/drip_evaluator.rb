@@ -11,9 +11,9 @@ module Caffeinate
 
     def call(&block)
       return true unless block
-
       catch(:abort) do
-        return instance_eval(&block)
+        result = instance_eval(&block)
+        return result.nil? || result === true
       end
       false
     end
