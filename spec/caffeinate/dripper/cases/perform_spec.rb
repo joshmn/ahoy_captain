@@ -43,4 +43,10 @@ describe ::Caffeinate::Dripper::Perform do
       end
     end
   end
+
+  describe '#upcoming_mailings' do
+    it 'is a relation of Caffeinate::Mailing' do
+      expect(PerformDripper.upcoming_mailings.to_sql).to include(::Caffeinate::Mailing.table_name)
+    end
+  end
 end

@@ -16,11 +16,7 @@ module Caffeinate
       # @return nil
       def perform!
         run_callbacks(:before_perform, self)
-        Caffeinate::Mailing
-          .upcoming
-          .unsent
-          .joins(:caffeinate_campaign_subscription)
-          .merge(Caffeinate::CampaignSubscription.active.where(caffeinate_campaign: self.campaign))
+        self.class.upcoming_mailings
           .in_batches(of: self.class.batch_size)
           .each do |batch|
           run_callbacks(:on_perform, self, batch)
@@ -34,6 +30,14 @@ module Caffeinate
         # Convenience method for Dripper::Base#perform
         def perform!
           new.perform!
+        end
+
+        def upcoming_mailings
+          Caffeinate::Mailing
+              .upcoming
+              .unsent
+              .joins(:caffeinate_campaign_subscription)
+              .merge(Caffeinate::CampaignSubscription.active.where(caffeinate_campaign: campaign))
         end
       end
     end
