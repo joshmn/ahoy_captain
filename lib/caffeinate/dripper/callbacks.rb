@@ -21,6 +21,14 @@ module Caffeinate
           end
         end
 
+        def before_subscribe(&block)
+          before_subscribe_blocks << block
+        end
+
+        def before_subscribe_blocks
+          @before_subscribe_blocks ||= []
+        end
+
         # Callback after a Caffeinate::CampaignSubscription is created, and after the Caffeinate::Mailings have
         # been created.
         #

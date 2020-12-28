@@ -142,4 +142,24 @@ describe Caffeinate::CampaignSubscription do
       expect(subscription).not_to be_subscribed
     end
   end
+
+  describe '#validations' do
+    before do
+      campaign.to_dripper.before_subscribe do |campaign_subscription|
+        campaign_subscription.errors.add(:base, "is invalid")
+        throw(:abort)
+      end
+    end
+
+    after do
+      campaign.to_dripper.instance_variable_set(:@before_subscribe_blocks, [])
+    end
+
+    it 'calls before_subscribe blocks and invalidates accordingly' do
+      user = create(:user)
+      expect {
+        subscription = campaign.to_dripper.subscribe(user)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
 end

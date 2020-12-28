@@ -49,6 +49,8 @@ module Caffeinate
     before_validation :set_token!, on: [:create]
     validates :token, uniqueness: true, on: [:create]
 
+    before_validation :call_dripper_before_subscribe_blocks!, on: :create
+
     after_commit :create_mailings!, on: :create
 
     after_commit :on_complete, if: :completed?
@@ -142,6 +144,10 @@ module Caffeinate
     end
 
     private
+
+    def call_dripper_before_subscribe_blocks!
+      caffeinate_campaign.to_dripper.run_callbacks(:before_subscribe, self)
+    end
 
     def on_complete
       caffeinate_campaign.to_dripper.run_callbacks(:on_complete, self)
