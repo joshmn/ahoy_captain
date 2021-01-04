@@ -30,6 +30,8 @@ module Caffeinate
     scope :skipped, -> { where.not(skipped_at: nil) }
     scope :unskipped, -> { where(skipped_at: nil) }
 
+    after_touch :end_if_no_mailings!
+
     def initialize_dup(args)
       super
       self.send_at = nil
@@ -118,6 +120,10 @@ module Caffeinate
       else
         raise NoMethodError, "Neither perform_later or perform_async are defined on #{klass}."
       end
+    end
+
+    def end_if_no_mailings!
+      end! if future_mailings.empty?
     end
   end
 end

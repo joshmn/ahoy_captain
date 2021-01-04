@@ -28,8 +28,9 @@ module Caffeinate
 
     has_many :caffeinate_mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
     has_many :mailings, class_name: 'Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id, dependent: :destroy
+    has_many :future_mailings, -> { upcoming.unsent }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
 
-    has_one :next_caffeinate_mailing, -> { upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    has_one :next_caffeinate_mailing, -> { joins(:caffeinate_campaign_subscription).where(caffeinate_campaign_subscriptions: { ended_at: nil, unsubscribed_at: nil }).upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
     has_one :next_mailing, -> { joins(:caffeinate_campaign_subscription).where(caffeinate_campaign_subscriptions: { ended_at: nil, unsubscribed_at: nil }).upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
 
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
