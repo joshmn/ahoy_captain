@@ -81,4 +81,23 @@ describe Caffeinate::Drip do
       end
     end
   end
+
+  describe 'options' do
+    class SomeFakeDripper < ::Caffeinate::Dripper::Base
+      default mailer_class: "TestMailer"
+
+      drip :action_name, delay: :delay_as_method
+
+      private
+
+      def delay_as_method(drip, mailing)
+        2.years.from_now.beginning_of_year
+      end
+    end
+
+    it 'uses the method' do
+      expect(SomeFakeDripper.drip_collection.for(:action_name).send_at).to eq(2.years.from_now.beginning_of_year)
+    end
+
+  end
 end
