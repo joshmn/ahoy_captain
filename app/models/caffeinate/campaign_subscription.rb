@@ -33,6 +33,9 @@ module Caffeinate
     has_one :next_caffeinate_mailing, -> { joins(:caffeinate_campaign_subscription).where(caffeinate_campaign_subscriptions: { ended_at: nil, unsubscribed_at: nil }).upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
     has_one :next_mailing, -> { joins(:caffeinate_campaign_subscription).where(caffeinate_campaign_subscriptions: { ended_at: nil, unsubscribed_at: nil }).upcoming.unsent.order(send_at: :asc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
 
+    has_one :previous_caffeinate_mailing, -> { sent.order(sent_at: :desc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+    has_one :previous_mailing, -> { sent.order(sent_at: :desc) }, class_name: '::Caffeinate::Mailing', foreign_key: :caffeinate_campaign_subscription_id
+
     belongs_to :caffeinate_campaign, class_name: 'Caffeinate::Campaign', foreign_key: :caffeinate_campaign_id
     alias_attribute :campaign, :caffeinate_campaign
 

@@ -108,7 +108,6 @@ class AbandonedCartDripper < ApplicationDripper
   drip :are_you_still_there, delay: 48.hours do 
     if mailing.user.last_active_at > 4.hours.ago
       end!
-      return false  
     end 
     true 
   end 
