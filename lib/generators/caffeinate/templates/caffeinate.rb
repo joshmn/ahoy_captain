@@ -41,4 +41,15 @@ Caffeinate.setup do |config|
   #   config.implicit_campaigns = true
   #
   # config.implicit_campaigns = false
+  #
+  # == Default reasons
+  #
+  # The default unsubscribe and end reasons.
+  #
+  # Default:
+  #   config.default_unsubscribe_reason = nil
+  #   config.default_ended_reason = nil
+  #
+  # config.default_unsubscribe_reason = "User unsubscribed"
+  # config.default_ended_reason = "User ended"
 end

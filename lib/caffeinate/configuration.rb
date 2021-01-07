@@ -3,7 +3,8 @@
 module Caffeinate
   # Global configuration
   class Configuration
-    attr_accessor :now, :async_delivery, :mailing_job, :batch_size, :drippers_path, :implicit_campaigns
+    attr_accessor :now, :async_delivery, :mailing_job, :batch_size, :drippers_path, :implicit_campaigns,
+    :default_ended_reason, :default_unsubscribe_reason
 
     def initialize
       @now = -> { Time.current }
@@ -12,6 +13,8 @@ module Caffeinate
       @batch_size = 1_000
       @drippers_path = 'app/drippers'
       @implicit_campaigns = true
+      @default_ended_reason = nil
+      @default_unsubscribe_reason = nil
     end
 
     def now=(val)

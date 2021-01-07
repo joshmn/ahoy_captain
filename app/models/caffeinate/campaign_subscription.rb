@@ -80,7 +80,7 @@ module Caffeinate
     end
 
     # Updates `ended_at` and runs `on_complete` callbacks
-    def end!(reason = nil)
+    def end!(reason = ::Caffeinate.config.default_ended_reason)
       raise ::Caffeinate::InvalidState, 'CampaignSubscription is already unsubscribed.' if unsubscribed?
 
       update!(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
@@ -90,7 +90,7 @@ module Caffeinate
     end
 
     # Updates `ended_at` and runs `on_complete` callbacks
-    def end(reason = nil)
+    def end(reason = ::Caffeinate.config.default_ended_reason)
       return false if unsubscribed?
 
       result = update(ended_at: ::Caffeinate.config.time_now, ended_reason: reason)
@@ -100,7 +100,7 @@ module Caffeinate
     end
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
-    def unsubscribe!(reason = nil)
+    def unsubscribe!(reason = ::Caffeinate.config.default_unsubscribe_reason)
       raise ::Caffeinate::InvalidState, 'CampaignSubscription is already ended.' if ended?
 
       update!(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
@@ -110,7 +110,7 @@ module Caffeinate
     end
 
     # Updates `unsubscribed_at` and runs `on_subscribe` callbacks
-    def unsubscribe(reason = nil)
+    def unsubscribe(reason = ::Caffeinate.config.default_unsubscribe_reason)
       return false if ended?
 
       result = update(unsubscribed_at: ::Caffeinate.config.time_now, unsubscribe_reason: reason)
