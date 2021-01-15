@@ -21,7 +21,7 @@ describe ::Caffeinate::Dripper::Callbacks do
     end
 
     it 'does not send a mail since it gets unsubscribed' do
-      sub = subscription
+      subscription.reload
       expect {
         dripper.perform!
       }.to_not change(ActionMailer::Base.deliveries, :count)
