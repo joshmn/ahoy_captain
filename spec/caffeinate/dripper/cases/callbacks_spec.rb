@@ -418,7 +418,6 @@ describe ::Caffeinate::Dripper::Callbacks do
 
       it 'yields the mailing' do
         expect(dripper.on_skipping.first).to be(mailing)
-
       end
     end
   end

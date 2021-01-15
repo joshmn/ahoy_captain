@@ -13,12 +13,25 @@ module Caffeinate
         self.class.run_callbacks(name, *args)
       end
 
+      def callbacks_for(name)
+        self.class.callbacks_for(name)
+      end
+
       module ClassMethods
         # :nodoc:
         def run_callbacks(name, *args)
-          send("#{name}_blocks").each do |callback|
-            callback.call(*args)
+          catch(:abort) do
+            callbacks_for(name).each do |callback|
+              callback.call(*args)
+            end
+            return true
           end
+          false
+        end
+
+        # :nodoc:
+        def callbacks_for(name)
+          send("#{name}_blocks")
         end
 
         def before_subscribe(&block)
@@ -114,8 +127,17 @@ module Caffeinate
 
         # Callback before a Drip has called the mailer.
         #
-        #   before_drip do |campaign_subscription, mailing, drip|
+        #   before_drip do |drip, mailing|
         #     Slack.notify(:caffeinate, "#{drip.action_name} is starting")
+        #   end
+        #
+        # Note: If you want to bail on the mailing for some reason, you need invoke `throw(:abort)`
+        #
+        #   before_drip do |drip, mailing|
+        #     if mailing.caffeinate_campaign_subscription.subscriber.trial_ended?
+        #       unsubscribe!("Trial ended")
+        #       throw(:abort)
+        #     end
         #   end
         #
         # @yield Caffeinate::Drip current drip
