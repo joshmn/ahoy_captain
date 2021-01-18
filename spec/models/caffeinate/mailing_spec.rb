@@ -145,4 +145,15 @@ describe ::Caffeinate::Mailing do
       end
     end
   end
+
+  context 'scopes' do
+    describe '.upcoming' do
+      it 'is only active subscriptions' do
+        Timecop.freeze do
+          sql = ::Caffeinate::Mailing.upcoming.to_sql
+          expect(sql).to include(Caffeinate::CampaignSubscription.active.select(:id).to_sql)
+        end
+      end
+    end
+  end
 end

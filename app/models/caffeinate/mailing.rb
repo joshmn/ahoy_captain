@@ -24,7 +24,7 @@ module Caffeinate
     has_one :caffeinate_campaign, through: :caffeinate_campaign_subscription
     alias_attribute :campaign, :caffeinate_campaign
 
-    scope :upcoming, -> { unsent.unskipped.where('send_at < ?', ::Caffeinate.config.time_now).order('send_at asc') }
+    scope :upcoming, -> { joins(:caffeinate_campaign_subscription).where(caffeinate_campaign_subscription: ::Caffeinate::CampaignSubscription.active).unsent.unskipped.where('send_at < ?', ::Caffeinate.config.time_now).order('send_at asc') }
     scope :unsent, -> { unskipped.where(sent_at: nil) }
     scope :sent, -> { unskipped.where.not(sent_at: nil) }
     scope :skipped, -> { where.not(skipped_at: nil) }
