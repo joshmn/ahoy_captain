@@ -17,6 +17,7 @@
 FactoryBot.define do
   factory :caffeinate_mailing, class: 'Caffeinate::Mailing' do
     caffeinate_campaign_subscription
+    send_at { 1.minute.ago }
     mailer_class { 'MailerDoesNotExist' }
     mailer_action { 'action_does_not_exist' }
   end

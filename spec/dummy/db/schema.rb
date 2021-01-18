@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_190157) do
 
   create_table "caffeinate_mailings", force: :cascade do |t|
     t.integer "caffeinate_campaign_subscription_id", null: false
-    t.datetime "send_at"
+    t.datetime "send_at", null: false
     t.datetime "sent_at"
     t.datetime "skipped_at"
     t.string "mailer_class", null: false
