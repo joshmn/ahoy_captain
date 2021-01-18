@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration[6.0]
+class CreateCaffeinateCampaignSubscriptions < ActiveRecord::Migration<%= migration_version %>
   def change
     drop_table :caffeinate_campaign_subscriptions if table_exists?(:caffeinate_campaign_subscriptions)
 

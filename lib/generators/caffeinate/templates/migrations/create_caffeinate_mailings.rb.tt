@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-class CreateCaffeinateMailings < ActiveRecord::Migration[6.0]
+class CreateCaffeinateMailings < ActiveRecord::Migration<%= migration_version %>
   def change
-    drop_table :caffeinate_mailings if table_exists?(:caffeinate_mailings)
-
     create_table :caffeinate_mailings do |t|
       t.references :caffeinate_campaign_subscription, null: false, foreign_key: true, index: { name: 'index_caffeinate_mailings_on_campaign_subscription' }
       t.datetime :send_at

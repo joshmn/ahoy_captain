@@ -5,7 +5,6 @@ module Caffeinate
     # Installs Caffeinate
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path('templates', __dir__)
-      include ::Rails::Generators::Migration
 
       desc 'Creates a Caffeinate initializer and copies migrations to your application.'
 
@@ -33,12 +32,21 @@ module Caffeinate
         @prev_migration_nr.to_s
       end
 
+      def migration_version
+        if rails5_and_up?
+          "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+        end
+      end
+
+      def rails5_and_up?
+        Rails::VERSION::MAJOR >= 5
+      end
+
       # :nodoc:
       def copy_migrations
-        require 'rake'
-        Rails.application.load_tasks
-        Rake::Task['railties:install:migrations'].reenable
-        Rake::Task['caffeinate:install:migrations'].invoke
+        template 'migrations/create_caffeinate_campaigns.rb', "db/migrate/#{self.class.next_migration_number("")}_create_caffeinate_campaigns.rb"
+        template 'migrations/create_caffeinate_campaign_subscriptions.rb', "db/migrate/#{self.class.next_migration_number("")}_create_caffeinate_campaign_subscriptions.rb"
+        template 'migrations/create_caffeinate_mailings.rb', "db/migrate/#{self.class.next_migration_number("")}_create_caffeinate_mailings.rb"
       end
     end
   end
