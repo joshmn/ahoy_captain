@@ -20,7 +20,12 @@ module Caffeinate
                       mailing.mailer_class.constantize.send(mailing.mailer_action, mailing)
                     end
           message.caffeinate_mailing = mailing
-          message.deliver
+          if ::Caffeinate.config.deliver_later?
+            message.deliver_later
+          else
+            message.deliver
+          end
+
         end
       end
     end

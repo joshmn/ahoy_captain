@@ -3,12 +3,13 @@
 module Caffeinate
   # Global configuration
   class Configuration
-    attr_accessor :now, :async_delivery, :mailing_job, :batch_size, :drippers_path, :implicit_campaigns,
-    :default_ended_reason, :default_unsubscribe_reason
+    attr_accessor :now, :async_delivery, :deliver_later,:mailing_job, :batch_size, :drippers_path, :implicit_campaigns,
+                  :default_ended_reason, :default_unsubscribe_reason
 
     def initialize
       @now = -> { Time.current }
       @async_delivery = false
+      @deliver_later = false
       @mailing_job = nil
       @batch_size = 1_000
       @drippers_path = 'app/drippers'
@@ -36,6 +37,11 @@ module Caffeinate
     # If delivery is asyncronous
     def async_delivery?
       @async_delivery
+    end
+
+    # If we should use `#deliver_later` instead of `#deliver`
+    def deliver_later?
+      @deliver_later
     end
 
     # The @mailing_job constantized. Only used if `async_delivery = true`
