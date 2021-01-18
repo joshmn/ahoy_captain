@@ -20,6 +20,7 @@ module Caffeinate
     has_many :caffeinate_mailings, through: :caffeinate_campaign_subscriptions, class_name: 'Caffeinate::CampaignSubscriptions'
     has_many :mailings, through: :caffeinate_campaign_subscriptions, class_name: 'Caffeinate::CampaignSubscriptions'
 
+    scope :active, -> { where(active: true) }
     # Poorly-named Campaign class resolver
     def to_dripper
       ::Caffeinate.dripper_collection.resolve(self)

@@ -4,6 +4,11 @@ Important additions/changes/removals will appear here.
 
 ## [Unreleased]
 
+### Added
+* `Caffeinate::Mailing#send_at` column must is `not null`
+* `Caffeinate::Mailing.unsent` reflects `Caffeinate::Mailing` records where `Caffeinate::CampaignSubscription` is active
+* `Caffeinate::Campaign` now has an `active` scope 
+
 ## v0.14 (January 18, 2021)
 
 ### Added
