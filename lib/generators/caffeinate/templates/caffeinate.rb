@@ -17,10 +17,10 @@ Caffeinate.setup do |config|
   #
   # Default:
   #   config.async_delivery = false
-  #   config.mailing_job = nil
+  #   config.async_delivery_class = nil
   #
   # config.async_delivery = true
-  # config.mailing_job = 'MyCustomCaffeinateJob'
+  # config.async_delivery_class = 'MyCustomCaffeinateJob'
   #
   # == Batching
   #

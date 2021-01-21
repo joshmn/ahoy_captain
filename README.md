@@ -122,13 +122,32 @@ In `app/drippers/onboarding_dripper.rb`:
 
 ```ruby
 class OnboardingDripper < ApplicationDripper
+  before_drip do |_drip, mailing| 
+    if mailing.subscription.subscriber.onboarding_completed?
+      mailing.subscription.unsubscribe!("Completed onboarding")
+      throw(:abort)
+    end 
+  end
+
   drip :welcome_to_my_cool_app, mailer: 'OnboardingMailer', delay: 0.hours
   drip :some_cool_tips, mailer: 'OnboardingMailer', delay: 2.days
   drip :help_getting_started, mailer: 'OnboardingMailer', delay: 3.days
 end
 ```
 
-The `drip` syntax is `def drip(mailer_action, options = {})`.
+Our dripper contains what mailers we want to send out, when we want to send them, and callbacks.
+
+`before_drip` yields the current drip and a `Caffeinate::Mailing` object. The `Caffeinate::Mailing` has an 
+association to `Caffeinate::CampaignSubscription` which associates your data models (like `User`) 
+to a `Caffeinate::Campaign`.
+
+We want to skip sending the `mailing` if the `subscriber` (`User`) completed onboarding. Let's unsubscribe 
+with `#unsubscribe!` and give it an optional reason of `Completed onboarding` so we can reference it later 
+when we look at analytics.
+
+`throw(:abort)` halts the callback chain, just like regular Rails callbacks.
+
+The `drip` syntax is `drip(mailer_action, options = {})`.
 
 ### Add a subscriber to the Campaign
 
@@ -139,14 +158,6 @@ a `Caffeinate::CampaignSubscription`.
 class User < ApplicationRecord
   after_commit on: :create do
     OnboardingDripper.subscribe(self)
-  end
-
-  after_commit on: :update do
-    if onboarding_completed? && onboarding_completed_changed?
-      if OnboardingDripper.subscribed?(self)
-        OnboardingDripper.unsubscribe(self)
-      end
-    end
   end
 end
 ```

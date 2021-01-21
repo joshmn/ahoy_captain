@@ -69,7 +69,7 @@ Options include:
 * `step` (`Integer`) the order in which the drip is ran. Default is the order in which the the drip is defined
 * `on` (`Date`) the exact date that the drip gets sent. Accepts a block
 * `at` (`String` or `Time`) the time that the drip gets sent. Gets coerced into the date via `DateTime#advance` 
- 
+
 The `block` is optional. It executes in the context of the drip so you can access `mailing` within it. If you `throw(:abort)`, the mail won't be sent (this time).
 
 ```ruby 
@@ -81,71 +81,40 @@ drip :are_you_still_there, delay: 48.hours do
 end 
 ```
 
-You have a few options here to manage the mailing:
-* `end!` will update the associated `Caffeinate::CampaignSubscription`'s `ended_at`
-* `unsubscribe!` will update the associated `Caffeinate::CampaignSubscription`'s `unsubscribed_at`
-* `skip!` will update the associated `Caffeinate::Mailer`'s `skipped_at`
+You can also invoke `unsubscribe!`, `end!`, and `skip!` here to manage the subscription state and skip the mailing.
 
-These will stop the delivery process by implictly calling `throw(:abort)`. `end!` and `unsubscribe!` also accept the arguments that `Caffeinate::CampaignSubscription#end!` and `Caffeinate::CampaignSubscription#unsubscribe!` do as well.
+```ruby 
+# Won't be sent if the time is even...?
+drip :are_you_still_there, delay: 48.hours do 
+  if mailing.subscription.subscriber.onboarding_completed?
+    unsubscribe!("Completed onboarding")
+  end 
+end 
+```
 
 ## Handling subscribers
 
-There are two ways of handling subscribers. 
+You can explicitly call `Caffeinate::CampaignSubscription` which is just an ActiveRecord model, or you can invoke the dripper:
 
-### Do it yourself
-
-```ruby
+ ```ruby
 AbandonedCartDripper.subscribe(cart, user: cart.user)
 ```
 
-### Automate it
+The first argument will delegate to the `Caffeinate::CampaignSubscription#subscriber` (polymorphic association), the 
+rest of the arguments delegate to `Caffeinate::CampaignSubscription`.
 
-```ruby
-class AbandonedCartDripper < ApplicationDripper
-  self.campaign = :abandoned_cart
-  default mailer: "AbandonedCartDripper"
-  
-  drip :are_you_still_there, delay: 48.hours do 
-    if mailing.user.last_active_at > 4.hours.ago
-      end!
-    end 
-    true 
-  end 
-
-  subscribes do 
-    Cart.includes(:user)
-        .where('cart_items_count > 0')
-        .where(completed_at: nil)
-        .where(started_at: 3.days.ago..2.days.ago).each do |cart|
-      subscribe(cart, user: cart.user)
-    end
-  end 
-end
-```
-
-Put this in a background process and run it every `n` minutes. 60 minutes works for me, it should work for you:
-
-```ruby
-AbandonedCartDripper.subscribe!
-```
-
-Though, each campaign might run at a different pace.
-
-Don't worry about duplicate subscribers. `subscribe` calls `Caffeinate::Campaign#subscribe` which does a `find_or_create_by`.
-
-Now since you have drips and subscribers, let's send some emails.
+There's an optional `user` association which is also polymorphic. 
 
 ## Sending emails
 
-It's easy. 
-
-Put this in a background job and have it run every `x` minutes. 5 minutes works for me, it should work for you:
+Call `perform!` on the dripper. You'll probably do this in a background job and have it run every `x` minutes.
 
 ```ruby
 AbandonedCartDripper.perform!
 ```
 
-You're done.
+This looks at `Caffeinate::Mailing` records where `send_at` has past, `skipped_at` is nil, and the associated 
+`Caffeinate::CampaignSubscription` is has empty `ended_at` and `unsubscribed_at` values.
 
 ## Callbacks
 
@@ -173,3 +142,9 @@ drip :are_you_still_there, delay: 48.hours, using: :parameterized
 ```
 
 We'll send down `@mailing` as the `Caffeinate::Mailing` object.
+
+## Subscriptions
+
+Now we need to handle subscription states.
+
+Next is [Handling Subscriptions](3-handling-subscriptions.md).

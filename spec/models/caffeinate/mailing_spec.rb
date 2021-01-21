@@ -55,7 +55,7 @@ describe ::Caffeinate::Mailing do
         class MyJob < ActiveJob::Base
           include ::Caffeinate::DeliverAsync
         end
-        Caffeinate.config.mailing_job = 'MyJob'
+        Caffeinate.config.async_delivery_class = 'MyJob'
         Caffeinate.config.async_delivery = true
         mailing = sent_mailings.first.dup
         mailing.mailer_action = 'test'
@@ -66,7 +66,7 @@ describe ::Caffeinate::Mailing do
         end.to change {
           ActiveJob::Base.queue_adapter.enqueued_jobs.count
         }.by 1
-        Caffeinate.config.mailing_job = nil
+        Caffeinate.config.async_delivery_class = nil
         Caffeinate.config.async_delivery = false
       end
     end

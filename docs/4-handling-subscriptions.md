@@ -64,3 +64,9 @@ and `ActionView::Base`. They respect Rails' `default_url_options`, too.
 You can pull in these helpers yourself by `include Caffeinate::Helpers`.
 
 Additionally, you can use `Caffeinate::UrlHelpers` for quick and easy access to `Caffeinate::Helpers`.
+
+## Associations to your data models
+
+At some point, you'll probably want some convenience methods for your data models.
+
+See how they're done in [Using Associations](3-using-associations.md).

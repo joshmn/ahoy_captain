@@ -112,7 +112,7 @@ module Caffeinate
 
     # Delivers the Mailing in the background
     def deliver_later!
-      klass = ::Caffeinate.config.mailing_job_class
+      klass = ::Caffeinate.config.async_delivery_class
       if klass.respond_to?(:perform_later)
         klass.perform_later(id)
       elsif klass.respond_to?(:perform_async)

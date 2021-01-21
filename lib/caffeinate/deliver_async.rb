@@ -10,7 +10,7 @@ module Caffeinate
   #
   # To use this, make sure your initializer is configured correctly:
   #   config.async_delivery = true
-  #   config.mailing_job = 'MyWorker'
+  #   config.async_delivery_class = 'MyWorker'
   module DeliverAsync
     def perform(mailing_id)
       mailing = ::Caffeinate::Mailing.find(mailing_id)

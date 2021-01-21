@@ -9,6 +9,12 @@ Important additions/changes/removals will appear here.
 * `Caffeinate::Mailing.unsent` reflects `Caffeinate::Mailing` records where `Caffeinate::CampaignSubscription` is active
 * `Caffeinate::Campaign` now has an `active` scope 
 
+### Changed
+* Better documentation
+
+### Removed
+* Auto-subscribe functionality
+
 ## v0.14 (January 18, 2021)
 
 ### Added
