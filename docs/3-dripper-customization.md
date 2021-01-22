@@ -67,8 +67,8 @@ Options include:
 * `delay` (`ActiveSupport::Duration`) (required) when to send the mail. This is most commonly used like `4.hours`
 * `mailer` (`String`) the class name of the `ActionMailer` class (also aliased to `mailer_class`)
 * `step` (`Integer`) the order in which the drip is ran. Default is the order in which the the drip is defined
-* `on` (`Date`) the exact date that the drip gets sent. Accepts a block
-* `at` (`String` or `Time`) the time that the drip gets sent. Gets coerced into the date via `DateTime#advance` 
+* `on` (`Time` or `Block` or `Symbol`) the exact date that the drip gets sent. 
+* `at` (`String`) the specific time that the drip gets sent. Gets coerced into the date via `DateTime#change` 
 
 The `block` is optional. It executes in the context of the drip so you can access `mailing` within it. If you `throw(:abort)`, the mail won't be sent (this time).
 
