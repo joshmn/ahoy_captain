@@ -1,19 +1,19 @@
 <div align="center">
   <img width="450" src="https://github.com/joshmn/caffeinate/raw/master/logo.png" alt="Caffeinate logo" />
+  [![Maintainability](https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability)](https://codeclimate.com/github/joshmn/caffeinate/maintainability) [![Inline docs](http://inch-ci.org/github/joshmn/caffeinate.svg?branch=master)](http://inch-ci.org/github/joshmn/caffeinate) [![codecov](https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL)](https://codecov.io/gh/joshmn/caffeinate)
+
 </div>
 
 ---
 
 # Caffeinate
 
+
 Caffeinate is a drip email engine for managing, creating, and sending scheduled email sequences from your Ruby on Rails application.
 
 Caffeinate provides a simple DSL to create scheduled email sequences which can be used by ActionMailer without any additional configuration. 
 
 There's a cool demo with all the things included at [caffeinate.email](https://caffeinate.email). You can view the [marketing site source code here](https://github.com/joshmn/caffeinate-marketing).
-
----
-[![Maintainability](https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability)](https://codeclimate.com/github/joshmn/caffeinate/maintainability) [![Inline docs](http://inch-ci.org/github/joshmn/caffeinate.svg?branch=master)](http://inch-ci.org/github/joshmn/caffeinate) [![codecov](https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL)](https://codecov.io/gh/joshmn/caffeinate)
 
 ## Do you suffer from ActionMailer tragedies?
 
