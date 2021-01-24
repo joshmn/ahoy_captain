@@ -33,7 +33,7 @@ a video, you may want to remind them that they can finish watching it. If their 
 remind them in a separate campaign.
 
 So, you'd have separate `Caffeinate::CampaignSubscription` objects where the `subscriber` is the relevant `Subscription` 
-object or the `WatchHistory` object, and the `user` is the user.
+object or the `WatchHistory` object, and the `user` is the User.
 
 ## Mailing
 

@@ -4,10 +4,10 @@ redirect_from: /docs/3-dripper-customization.html
 
 # Working with Drippers
 
-Every Dripper corresponds to a `Caffeinate::Campaign` record. So before creating a
-Dripper resource you must first create a `Caffeinate::Campaign` record for it.
+Every Dripper corresponds to a `Caffeinate::Campaign` record. 
 
-## Creating a `Caffeinate::Campaign` Record
+**Note:** If you don't have `implicit_campaigns` set to true in `Caffeinate::Config`, before using a Dripper you must first 
+create a `Caffeinate::Campaign` record for it.
 
 In a Rails console:
 
@@ -15,15 +15,15 @@ In a Rails console:
 pry(main)> Caffeinate::Campaign.create(name: "Abandoned Cart", slug: "abandoned_cart")
 ```
 
-**Note**: Make sure you note the `slug` attribute. You will use this later.
+Make sure you note the `slug` attribute. You will use this later.
 
 ## Creating the Dripper
 
 Create a file in `app/drippers` called `abandoned_cart_dripper.rb`:
 
 ```ruby
-class AbandonedCartDripper < ApplicationDripper 
-end 
+class AbandonedCartDripper < ApplicationDripper
+end
 ```
 
 On the first line, you will want to specify what `Caffeinate::Campaign` record this campaign belongs to. By default,
@@ -64,13 +64,15 @@ drip <action_name> <options> <block>
 Where `action_name` is the name of the ActionMailer action.
 
 Options include:
-* `delay` (`ActiveSupport::Duration`) (required) when to send the mail. This is most commonly used like `4.hours`
-* `mailer` (`String`) the class name of the `ActionMailer` class (also aliased to `mailer_class`)
-* `step` (`Integer`) the order in which the drip is ran. Default is the order in which the the drip is defined
-* `on` (`Time` or `Block` or `Symbol`) the exact date that the drip gets sent. 
+* `mailer` (`String`) the class name of the `ActionMailer` class (also aliased to `mailer_class`); Required if not specified in the Dripper defaults
+* `delay` (`ActiveSupport::Duration`) when to send the mail. This is most commonly used like `4.hours`. Required if `on` is not set
+* `on` (`Time` or `Block` or `Symbol`) the exact date that the drip gets sent. Required if `delay` is not set 
 * `at` (`String`) the specific time that the drip gets sent. Gets coerced into the date via `DateTime#change` 
+* `step` (`Integer`) the order in which the drip is ran. Default is the order in which the the drip is defined
 
-The `block` is optional. It executes in the context of the drip so you can access `mailing` within it. If you `throw(:abort)`, the mail won't be sent (this time).
+The `block` is optional. It executes in the context of the drip so you can access `mailing` within it.
+ 
+If you `throw(:abort)`, the mail won't be sent (this time).
 
 ```ruby 
 # Won't be sent if the time is even...?
@@ -92,6 +94,45 @@ drip :are_you_still_there, delay: 48.hours do
 end 
 ```
 
+### Precision schedules
+
+We can become more precise with our schedule. 
+
+#### Sending at a specific time
+
+Use `at`:
+
+`drip :welcome, delay: 1.day, at: '12:00 PM America/New_York'`
+
+At coerces the delay using `DateTime#change`.
+
+#### Sending in the user's timezone
+
+Use `on`:
+
+```ruby 
+class WelcomeDripper < ApplicationDripper
+  self.campaign = :welcome
+  default mailer: "WelcomeMailer"
+  
+  drip :created, on: :user_local_time
+  drip :how_is_it_going, on: :user_local_time
+  
+  def user_local_time(drip, mailing)
+    user = mailing.subscription.subscriber 
+    offset = user.utf_offset.minutes
+      
+    if drip.action == :created 
+      1.day.from_now - offset 
+    elsif drip.action == :how_is_it_going
+      3.days.from_now - offset 
+    else
+      raise ArgumentError, "no time for #{drip.inspect}"
+    end   
+  end
+end   
+```
+
 ## Handling subscribers
 
 You can explicitly call `Caffeinate::CampaignSubscription` which is just an ActiveRecord model, or you can invoke the dripper:
@@ -104,6 +145,17 @@ The first argument will delegate to the `Caffeinate::CampaignSubscription#subscr
 rest of the arguments delegate to `Caffeinate::CampaignSubscription`.
 
 There's an optional `user` association which is also polymorphic. 
+
+## Validating subscribers
+
+You can offload the validation of a subscriber to a Dripper:
+
+```ruby 
+  before_subscribe do |campaign_subscription|
+    campaign_subscription.errors.add(:base, "is invalid")
+    throw(:abort)
+  end
+```
 
 ## Sending emails
 
@@ -147,4 +199,4 @@ We'll send down `@mailing` as the `Caffeinate::Mailing` object.
 
 Now we need to handle subscription states.
 
-Next is [Handling Subscriptions](3-handling-subscriptions.md).
+Next is [Handling Subscriptions](4-handling-subscriptions.md).

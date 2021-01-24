@@ -69,7 +69,7 @@ describe ::Caffeinate::Dripper::Drip do
     end
   end
 
-  describe ::Caffeinate::Drip::OptionEvaluator do
+  describe ::Caffeinate::OptionEvaluator do
     context 'when symbol' do
       class RealFakeDripper
         def generate(drip, mailing)
@@ -85,21 +85,21 @@ describe ::Caffeinate::Dripper::Drip do
       it 'calls @thing on the dripper instance' do
         drip = ::Caffeinate::Drip.new(RealFakeDripper, :fake, mailer_class: "PotatoMailer", at: :generate)
         mailing = build_stubbed(:caffeinate_mailing)
-        evaluator = ::Caffeinate::Drip::OptionEvaluator.new(:generate, drip, mailing)
+        evaluator = ::Caffeinate::OptionEvaluator.new(:generate, drip, mailing)
         expect(evaluator.call).to eq("I got called")
       end
 
       it 'sends drip as the first argument' do
         drip = ::Caffeinate::Drip.new(RealFakeDripper, :fake, mailer_class: "PotatoMailer", at: :generate_drip)
         mailing = build_stubbed(:caffeinate_mailing)
-        evaluator = ::Caffeinate::Drip::OptionEvaluator.new(:generate_drip, drip, mailing)
+        evaluator = ::Caffeinate::OptionEvaluator.new(:generate_drip, drip, mailing)
         expect(evaluator.call).to eq(drip)
       end
 
       it 'sends mailing as the second argument' do
         drip = ::Caffeinate::Drip.new(RealFakeDripper, :fake, mailer_class: "PotatoMailer", at: :generate_mailing)
         mailing = build_stubbed(:caffeinate_mailing)
-        evaluator = ::Caffeinate::Drip::OptionEvaluator.new(:generate_mailing, drip, mailing)
+        evaluator = ::Caffeinate::OptionEvaluator.new(:generate_mailing, drip, mailing)
         expect(evaluator.call).to eq(mailing)
       end
     end
@@ -108,7 +108,7 @@ describe ::Caffeinate::Dripper::Drip do
       it 'gets parsed into Time' do
         drip = ::Caffeinate::Drip.new(RealFakeDripper, :fake, mailer_class: "PotatoMailer")
         mailing = build_stubbed(:caffeinate_mailing)
-        evaluator = ::Caffeinate::Drip::OptionEvaluator.new('January 21, 2021', drip, mailing)
+        evaluator = ::Caffeinate::OptionEvaluator.new('January 21, 2021', drip, mailing)
         expect(evaluator.call).to be_a(Time)
       end
     end
@@ -118,7 +118,7 @@ describe ::Caffeinate::Dripper::Drip do
         drip = ::Caffeinate::Drip.new(RealFakeDripper, :fake, mailer_class: "PotatoMailer")
         mailing = build_stubbed(:caffeinate_mailing)
         proc = Proc.new { self }
-        evaluator = ::Caffeinate::Drip::OptionEvaluator.new(proc, drip, mailing)
+        evaluator = ::Caffeinate::OptionEvaluator.new(proc, drip, mailing)
         expect(evaluator.call).to eq(mailing)
       end
     end

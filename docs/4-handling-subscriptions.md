@@ -69,4 +69,4 @@ Additionally, you can use `Caffeinate::UrlHelpers` for quick and easy access to 
 
 At some point, you'll probably want some convenience methods for your data models.
 
-See how they're done in [Using Associations](3-using-associations.md).
+See how they're done in [Using Associations](5-using-associations.md).

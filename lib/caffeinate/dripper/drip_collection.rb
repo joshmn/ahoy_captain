@@ -4,6 +4,8 @@ module Caffeinate
   module Dripper
     # A collection of Drip objects for a `Caffeinate::Dripper`
     class DripCollection
+      VALID_DRIP_OPTIONS = [:mailer_class, :step, :delay, :every, :start, :using, :mailer, :at, :on].freeze
+
       include Enumerable
 
       def initialize(dripper)
@@ -42,7 +44,7 @@ module Caffeinate
 
       def validate_drip_options(action, options)
         options.symbolize_keys!
-        options.assert_valid_keys(:mailer_class, :step, :delay, :every, :start, :using, :mailer, :at, :on)
+        options.assert_valid_keys(*VALID_DRIP_OPTIONS)
         options[:mailer_class] ||= options[:mailer] || @dripper.defaults[:mailer_class]
         options[:using] ||= @dripper.defaults[:using]
         options[:step] ||= @dripper.drips.size + 1
