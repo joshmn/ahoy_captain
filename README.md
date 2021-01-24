@@ -13,6 +13,10 @@ and has everything you need to get started and to successfully manage campaigns.
 already familiar with: Ruby on Rails.
 
 There's a cool demo with all the things included at [caffeinate.email](https://caffeinate.email). You can view the [marketing site source code here](https://github.com/joshmn/caffeinate-marketing).
+---
+[![Maintainability](https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability)](https://codeclimate.com/github/joshmn/caffeinate/maintainability)
+
+[![Inline docs](http://inch-ci.org/github/joshmn/caffeinate.svg?branch=master)](http://inch-ci.org/github/joshmn/caffeinate)
 
 ## Do you suffer from ActionMailer tragedies?
 
