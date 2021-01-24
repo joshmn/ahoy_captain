@@ -157,7 +157,7 @@ tips, tricks, and shortcuts.
 
 Caffeinate also...
 
-* ✅ Allows for hyper-precise scheduled times. 9:19AM _in the user's timezone_? Sure! **Only on business days**? YES! 
+* ✅ Allows hyper-precise scheduled times. 9:19AM _in the user's timezone_? Sure! **Only on business days**? YES! 
 * ✅ Periodicals
 * ✅ Manages unsubscribes
 * ✅ Works with singular and multiple associations
