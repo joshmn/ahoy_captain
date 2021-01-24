@@ -2,9 +2,13 @@ name: ci
 
 on: [push, pull_request]
 
+env:
+  CI: "true"
+  SIMPLECOV: "true"
+
 jobs:
   rspec-test:
-    name: RSpec
+    name: Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,3 +27,4 @@ jobs:
         env:
           RAILS_ENV: test
         run: bundle exec rspec
+      - run: ./.github/upload_coverage.sh $GITHUB_EVENT_PATH
