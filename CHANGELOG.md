@@ -2,7 +2,7 @@
 
 Important additions/changes/removals will appear here.
 
-## [Unreleased]
+## v0.15 (January 18, 2021)
 
 ### Added
 * `Caffeinate::Mailing#send_at` column must is `not null`
@@ -10,10 +10,12 @@ Important additions/changes/removals will appear here.
 * `Caffeinate::Campaign` now has an `active` scope 
 
 ### Changed
-* Better documentation
+* Improved documentation.
 
 ### Removed
 * Auto-subscribe functionality
+    - This wasn't used (and this gem isn't even released); it was from the original implementation and carried over because
+      I thought it was a good idea. It wasn't.
 
 ## v0.14 (January 18, 2021)
 
