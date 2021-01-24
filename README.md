@@ -1,10 +1,18 @@
 <div align="center">
   <img width="450" src="https://github.com/joshmn/caffeinate/raw/master/logo.png" alt="Caffeinate logo" />
-  [![Maintainability](https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability)](https://codeclimate.com/github/joshmn/caffeinate/maintainability) [![Inline docs](http://inch-ci.org/github/joshmn/caffeinate.svg?branch=master)](http://inch-ci.org/github/joshmn/caffeinate) [![codecov](https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL)](https://codecov.io/gh/joshmn/caffeinate)
-
 </div>
 
----
+<div align="center">
+    <a href="https://codecov.io/gh/joshmn/caffeinate">
+        <img src="https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL" alt="Coverage"/>
+    </a>
+    <a href="https://codeclimate.com/github/joshmn/caffeinate/maintainability">
+        <img src="https://api.codeclimate.com/v1/badges/9c075416ce74985d5c6c/maintainability" alt="Maintainability"/>
+    </a>
+     <a href="https://inch-ci.org/github/joshmn/caffeinate">
+        <img src="https://inch-ci.org/github/joshmn/caffeinate.svg?branch=master" alt="Docs"/>
+    </a>
+</div>
 
 # Caffeinate
 
