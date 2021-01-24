@@ -18,6 +18,8 @@ There's a cool demo with all the things included at [caffeinate.email](https://c
 
 [![Inline docs](http://inch-ci.org/github/joshmn/caffeinate.svg?branch=master)](http://inch-ci.org/github/joshmn/caffeinate)
 
+[![codecov](https://codecov.io/gh/joshmn/caffeinate/branch/master/graph/badge.svg?token=5LCOB4ESHL)](https://codecov.io/gh/joshmn/caffeinate)
+
 ## Do you suffer from ActionMailer tragedies?
 
 If you have _anything_ like this is your codebase, **you need Caffeinate**:
