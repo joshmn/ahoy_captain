@@ -14,6 +14,7 @@ module Caffeinate
   # Campaign ties together subscribers and mailings, and provides one core model for handling your Drippers.
   class Campaign < ApplicationRecord
     self.table_name = 'caffeinate_campaigns'
+    class NoSubscription < ::ActiveRecord::RecordInvalid; end
 
     has_many :caffeinate_campaign_subscriptions, class_name: 'Caffeinate::CampaignSubscription', foreign_key: :caffeinate_campaign_id
     has_many :subscriptions, class_name: 'Caffeinate::CampaignSubscription', foreign_key: :caffeinate_campaign_id
@@ -66,7 +67,7 @@ module Caffeinate
     def unsubscribe!(subscriber, **args)
       reason = args.delete(:reason)
       subscription = subscriber(subscriber, **args)
-      raise ::ActiveRecord::RecordInvalid, subscription if subscription.nil?
+      raise NoSubscription, subscription if subscription.nil?
 
       subscription.unsubscribe!(reason)
     end
@@ -74,12 +75,12 @@ module Caffeinate
     # Creates a `CampaignSubscription` object for the present Campaign. Allows passing `**args` to
     # delegate additional arguments to the record. Uses `find_or_create_by`.
     def subscribe(subscriber, **args)
-      caffeinate_campaign_subscriptions.create(subscriber: subscriber, **args)
+      caffeinate_campaign_subscriptions.find_or_create_by(subscriber: subscriber, **args)
     end
 
     # Subscribes an object to a campaign. Raises `ActiveRecord::RecordInvalid` if the record was invalid.
     def subscribe!(subscriber, **args)
-      caffeinate_campaign_subscriptions.create!(subscriber: subscriber, **args)
+      caffeinate_campaign_subscriptions.find_or_create_by!(subscriber: subscriber, **args)
     end
   end
 end
