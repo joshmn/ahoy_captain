@@ -2,6 +2,11 @@
 
 Important additions/changes/removals will appear here.
 
+## v0.16 (April 14, 2021)
+
+### Changed
+* Change `delegate_missing_to` to normal `respond_to_missing?` and `method_missing`
+
 ## v0.15 (January 18, 2021)
 
 ### Added
