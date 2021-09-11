@@ -131,20 +131,9 @@ module Caffeinate
       true
     end
 
-    # Updates `unsubscribed_at` to nil and runs `on_subscribe` callbacks.
-    # Use `force` to forcefully reset. Does not create the mailings.
-    def resubscribe!(force = false)
-      return false if ended? && !force
-      return false if unsubscribed? && !force
-
-      result = update(unsubscribed_at: nil, resubscribed_at: ::Caffeinate.config.time_now)
-
-      caffeinate_campaign.to_dripper.run_callbacks(:on_resubscribe, self)
-      result
-    end
-
+    # Checks if the record is not new and if mailings are all gone.
     def completed?
-      caffeinate_mailings.unsent.count.zero?
+      !saved_change_to_attribute?(:id) && caffeinate_mailings.unsent.count.zero?
     end
 
     private

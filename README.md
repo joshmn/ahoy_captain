@@ -16,12 +16,17 @@
 
 # Caffeinate
 
-
 Caffeinate is a drip email engine for managing, creating, and sending scheduled email sequences from your Ruby on Rails application.
 
 Caffeinate provides a simple DSL to create scheduled email sequences which can be used by ActionMailer without any additional configuration. 
 
 There's a cool demo with all the things included at [caffeinate.email](https://caffeinate.email). You can view the [marketing site source code here](https://github.com/joshmn/caffeinate-marketing).
+
+## Is this thing dead?
+
+No! Not at all!
+
+There's not a lot of activity here because it's stable and working! I am more than happy to entertain new features.
 
 ## Do you suffer from ActionMailer tragedies?
 
