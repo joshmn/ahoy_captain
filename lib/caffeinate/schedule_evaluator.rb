@@ -20,8 +20,6 @@ module Caffeinate
   end
 
   class ScheduleEvaluator
-    delegate_missing_to :@drip
-
     def self.call(drip, mailing)
       new(drip, mailing).call
     end
@@ -54,7 +52,15 @@ module Caffeinate
 
       date
     end
+    
+    def respond_to_missing?(name, include_private = false)
+      @drip.respond_to?(name, include_private)
+    end
 
+    def method_missing(method, *args, &block)
+      @drip.send(method, *args, &block)
+    end
+    
     private
 
     def periodical?
