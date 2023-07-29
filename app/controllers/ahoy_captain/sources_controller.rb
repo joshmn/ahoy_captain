@@ -19,8 +19,6 @@ module AhoyCaptain
       end
 
       @sources = @sources.map { |source| AhoyCaptain::SourceDecorator.new(source) }
-
-      render json: @sources
     end
   end
 

@@ -18,8 +18,6 @@ module AhoyCaptain
           .order("count(country) desc")
           .limit(limit)
       end.map { |country| CountryDecorator.new(country) }
-
-      render json: @countries
     end
   end
 

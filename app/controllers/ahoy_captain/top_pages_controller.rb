@@ -18,7 +18,7 @@ module AhoyCaptain
 
       @pages = @pages.map { |page| PageDecorator.new(page) }
 
-      render json: @pages
+      # render json: @pages
     end
   end
 end

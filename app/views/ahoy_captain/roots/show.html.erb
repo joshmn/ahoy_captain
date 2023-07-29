@@ -19,6 +19,7 @@
       <% component.with_display_links do %>
       <% end %>
       <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :sources, src: sources_path(search_params) %>
       <% end %>
       <% component.with_details_cta do %>
       <% end %>
@@ -28,6 +29,7 @@
       <% component.with_display_links do %>
       <% end %>
       <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :pages, src: top_pages_path(search_params) %>
       <% end %>
       <% component.with_details_cta do %>
       <% end %>
@@ -37,6 +39,7 @@
       <% component.with_display_links do %>
       <% end %>
       <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :geography, src: countries_path(search_params) %>
       <% end %>
       <% component.with_details_cta do %>
       <% end %>
@@ -46,6 +49,7 @@
       <% component.with_display_links do %>
       <% end %>
       <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params) %>
       <% end %>
       <% component.with_details_cta do %>
       <% end %>
