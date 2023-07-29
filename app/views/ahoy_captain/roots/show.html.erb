@@ -13,25 +13,11 @@
         <span class="inline-block">Filter</span>
       </button>
     </div>
-    <div class="flex container p-4 col-span-1 lg:col-span-2">
-      <%= link_to "utm medium", campaigns_path(type: :utm_medium) %><br/>
-      <%= link_to "cities", cities_path %>
-      <%= link_to "countries", countries_path %>
-      <%= link_to "regions", regions_path %>
-      <%= link_to "browsers", devices_browsers_path %>
-      <%= link_to "exit_pages", exit_pages_path %>
-      <%= link_to "entry_pages", entry_pages_path %>
-      <%= link_to "funnels_path", funnels_path %>
-      <%= link_to "goals_path", goals_path %>
-      <%= link_to "realtimes_path", realtime_path %>
-      <%= link_to "sources_path", sources_path %>
-      <%= link_to "top_pages_path", top_pages_path %>
-    </div>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
         <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class='link link-primary'>All</a>
-        <%= render AhoyCaptain::DropdownComponent.new(title: "Campaign") do |dropdown| %>
+        <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
           <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
             <% dropdown.with_option do %>
               <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources">

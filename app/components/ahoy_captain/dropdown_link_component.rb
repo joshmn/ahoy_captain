@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-class AhoyCaptain::DropdownComponent < ViewComponent::Base
+class AhoyCaptain::DropdownLinkComponent < ViewComponent::Base
   renders_many :options
+  renders_one :header
 
   def initialize(title:)
     @title = title

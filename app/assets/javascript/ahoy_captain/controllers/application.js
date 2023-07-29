@@ -1,4 +1,4 @@
-import {Application} from "@hotwired/stimulus"
+import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()
 
@@ -6,4 +6,4 @@ const application = Application.start()
 application.debug = false
 window.Stimulus = application
 
-export {application}
+export { application }
