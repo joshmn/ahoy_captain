@@ -10,7 +10,7 @@ module AhoyCaptain
       end
 
       def visit_query
-        FancyVisitQuery.call(params)
+        VisitQuery.call(params)
       end
     end
   end

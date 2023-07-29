@@ -1,8 +1,8 @@
 module AhoyCaptain
   module Stats
-    class TotalVisitsController < BaseController
+    class BounceRatesController < BaseController
       def index
-        @stats = AhoyCaptain::Stats::BounceRateQuery.call(params).group_by_day(:started_at).count
+        @stats = AhoyCaptain::Stats::BounceRatesQuery.call(params).group_by_day(:started_at).count
       end
     end
   end
