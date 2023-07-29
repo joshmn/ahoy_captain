@@ -1,12 +1,54 @@
-<%= link_to "utm medium", campaigns_path(type: :utm_medium) %><br/>
-<%= link_to "cities", cities_path %>
-<%= link_to "countries", countries_path %>
-<%= link_to "regions", regions_path %>
-<%= link_to "browsers", devices_browsers_path %>
-<%= link_to "exit_pages", exit_pages_path %>
-<%= link_to "entry_pages", entry_pages_path %>
-<%= link_to "funnels_path", funnels_path %>
-<%= link_to "goals_path", goals_path %>
-<%= link_to "realtimes_path", realtime_path %>
-<%= link_to "sources_path", sources_path %>
-<%= link_to "top_pages_path", top_pages_path %>
+<main class='bg-base-300 min-h-screen'>
+  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
+    <div class="flex container p-4 col-span-1 lg:col-span-2">
+      <%= link_to "utm medium", campaigns_path(type: :utm_medium) %><br/>
+      <%= link_to "cities", cities_path %>
+      <%= link_to "countries", countries_path %>
+      <%= link_to "regions", regions_path %>
+      <%= link_to "browsers", devices_browsers_path %>
+      <%= link_to "exit_pages", exit_pages_path %>
+      <%= link_to "entry_pages", entry_pages_path %>
+      <%= link_to "funnels_path", funnels_path %>
+      <%= link_to "goals_path", goals_path %>
+      <%= link_to "realtimes_path", realtime_path %>
+      <%= link_to "sources_path", sources_path %>
+      <%= link_to "top_pages_path", top_pages_path %>
+    </div>
+
+    <%= render ::AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
+      <% component.with_display_links do %>
+      <% end %>
+      <% component.with_statistic_display do %>
+      <% end %>
+      <% component.with_details_cta do %>
+      <% end %>
+    <% end %>
+
+    <%= render ::AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
+      <% component.with_display_links do %>
+      <% end %>
+      <% component.with_statistic_display do %>
+      <% end %>
+      <% component.with_details_cta do %>
+      <% end %>
+    <% end %>
+
+    <%= render ::AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
+      <% component.with_display_links do %>
+      <% end %>
+      <% component.with_statistic_display do %>
+      <% end %>
+      <% component.with_details_cta do %>
+      <% end %>
+    <% end %>
+
+    <%= render ::AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
+      <% component.with_display_links do %>
+      <% end %>
+      <% component.with_statistic_display do %>
+      <% end %>
+      <% component.with_details_cta do %>
+      <% end %>
+    <% end %>
+  </div>
+</main>
