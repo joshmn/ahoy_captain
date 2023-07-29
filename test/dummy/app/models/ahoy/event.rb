@@ -6,12 +6,4 @@ class Ahoy::Event < ApplicationRecord
 
   belongs_to :visit
   belongs_to :user, optional: true
-
-  def self.captain_url_signature
-    "CONCAT(properties->>'controller', '#', properties->>'action')"
-  end
-
-  def self.captain_url_exists
-    "JSONB_EXISTS(properties, 'controller') AND JSONB_EXISTS(properties, 'action')"
-  end
 end

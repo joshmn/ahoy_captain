@@ -40,6 +40,15 @@ module AhoyCaptain
 
     def configure
       yield config
+      init_config
+    end
+
+    def event
+      @event ||= config.models[:event].constantize
+    end
+
+    def visit
+      @visit ||= config.models[:visit].constantize
     end
   end
 end

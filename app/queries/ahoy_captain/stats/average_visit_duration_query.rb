@@ -7,7 +7,7 @@ module AhoyCaptain
                    .reselect("visit_id, max(time) - min(time) as visit_duration")
                    .group("visit_id")
 
-        visit_query.joins("INNER JOIN #{::Ahoy::Event.table_name} ON #{::Ahoy::Event.table_name}.visit_id = visit_durations.visit_id")
+        visit_query.joins("INNER JOIN #{::AhoyCaptain.event.table_name} ON #{::AhoyCaptain.event.table_name}.visit_id = visit_durations.visit_id")
                    .reselect("avg(visit_duration) as average_visit_duration")
                    .from(events, :visit_durations)
       end

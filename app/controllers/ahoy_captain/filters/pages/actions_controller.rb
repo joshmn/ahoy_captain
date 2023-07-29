@@ -3,8 +3,8 @@ module AhoyCaptain
     module Pages
       class ActionsController < BaseController
         def index
-          query = ::Ahoy::Event.ransack(query_with_search)
-          results = query.result.select("#{::Ahoy::Event.captain_url_signature} as url").distinct("(#{::Ahoy::Event.captain_url_signature})")
+          query = ::AhoyCaptain.event.ransack(query_with_search)
+          results = query.result.select("#{AhoyCaptain.config.event[:url_column]} as url").distinct("(#{AhoyCaptain.config.event[:url_column]})")
           rows = []
           results.each do |result|
             rows << result.url

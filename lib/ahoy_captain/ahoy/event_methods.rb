@@ -4,7 +4,7 @@ module AhoyCaptain
       extend ActiveSupport::Concern
 
       included do
-        scope :with_routes, -> { where(captain_url_exists) }
+        scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
 
         ransacker :route do |_parent|
           Arel.sql(captain_url_signature)
