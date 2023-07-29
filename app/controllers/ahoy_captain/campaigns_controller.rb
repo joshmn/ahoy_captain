@@ -22,8 +22,6 @@ module AhoyCaptain
       end
                      .map { |campaign| CampaignDecorator.new(campaign) }
       @campaign_type = params[:type]&.titleize&.gsub("Utm", "UTM")
-
-      render json: @campaigns
     end
   end
 end

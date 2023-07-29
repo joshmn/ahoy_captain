@@ -1,0 +1,3 @@
+<%= turbo_frame_tag :geography do %>
+  <%= render AhoyCaptain::TableComponent.new(items: @cities, category_name: 'City', unit_name: 'Visitors') %>
+<% end %>

@@ -17,8 +17,6 @@ module AhoyCaptain
           .order("count(#{params[:type]}) desc")
           .limit(limit)
       end.map { |device| DeviceDecorator.new(device) }
-
-      render json: @devices
     end
   end
 end

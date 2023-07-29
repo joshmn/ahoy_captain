@@ -16,8 +16,6 @@ module AhoyCaptain
           .order(Arel.sql "count(concat(region, country)) desc")
           .limit(limit)
       end.map { |region| RegionDecorator.new(region) }
-
-      render json: @regions
     end
   end
 end

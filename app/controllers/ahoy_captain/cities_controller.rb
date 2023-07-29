@@ -16,8 +16,6 @@ module AhoyCaptain
           .order(Arel.sql "count(concat(city, region, country)) desc")
           .limit(limit)
       end.map { |city| CityDecorator.new(city) }
-
-      render json: @cities
     end
   end
 end
