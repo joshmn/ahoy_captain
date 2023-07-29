@@ -86,10 +86,8 @@
       <button>close</button>
     </form>
   </dialog>
-</main>
 
-
-<dialog id="countryModal" class="modal max-w-2xl mx-auto">
+  <dialog id="countryModal" class="modal max-w-2xl mx-auto">
   <form method="dialog" class="modal-box w-11/12 max-w-5xl">
     <fieldset data-controller='filter'>
       <h5>Filter by Country</h5>
@@ -101,4 +99,9 @@
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
   </form>
-</dialog>
+  </dialog>
+  <div class='m-auto mt-10 p-10 w-10/12 border-t border-slate-600'>
+    <h5>Powered by Ahoy Captain v<%= AhoyCaptain::VERSION %><h5>
+    <a href='https://github.com/joshmn/ahoy_captain' target=”_blank” class='text-white hover:text-slate-500'>Ahoy Captain on Github</a>
+  </div>
+</main>
