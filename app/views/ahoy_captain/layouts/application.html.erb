@@ -27,6 +27,13 @@
 </head>
 
 <body data-theme='<%= AhoyCaptain.config.theme %>'>
-<%= yield %>
+  <%= yield %>
+  <div class="flex justify-center bg-base-300 border-t-4 border-base-100 py-4">
+    <div class="flex justify-around space-x-4 my-4">
+      <h5>Powered by Ahoy Captain v<%= AhoyCaptain::VERSION %><h5>
+      <a href='https://github.com/joshmn/ahoy_captain' target=”_blank” class='text-white hover:text-slate-500'>Ahoy Captain on Github</a>
+    </div>
+  </div>
+
 </body>
 </html>
