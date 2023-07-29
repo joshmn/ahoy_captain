@@ -1,5 +1,7 @@
 module AhoyCaptain
   module ApplicationHelper
+    include Pagy::Frontend
+
     SPECIAL_PARAMS = [:campaigns_type, :devices_type]
     def ahoy_captain_importmap_tags(entry_point = "application", shim: true)
       safe_join [
@@ -17,6 +19,14 @@ module AhoyCaptain
 
     def special_params
       params.to_unsafe_h.slice(*SPECIAL_PARAMS)
+    end
+
+    def render_pagination
+      if @pagination
+        pagy_nav(@pagination).html_safe
+      else
+        ""
+      end
     end
   end
 end

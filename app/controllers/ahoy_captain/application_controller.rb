@@ -3,7 +3,7 @@ module AhoyCaptain
     private
 
     def limit
-      if request.variant == :details
+      if request.variant.include?(:details)
         nil
       else
         if params[:limit]
@@ -16,6 +16,8 @@ module AhoyCaptain
   end
 
   class ApplicationController < ActionController::Base
+    include Pagy::Backend
+
     layout 'ahoy_captain/layouts/application'
 
     before_action do
@@ -54,6 +56,20 @@ module AhoyCaptain
 
     def event_query
       EventQuery.call(params)
+    end
+
+    def paginate(collection)
+      if paginate?
+        pagy, results = pagy(collection, page: params[:page])
+        @pagination = pagy
+        return results
+      end
+
+      collection
+    end
+
+    def paginate?
+      request.variant.include?(:details)
     end
 
     def cached(*names)

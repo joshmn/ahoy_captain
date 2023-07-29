@@ -9,7 +9,7 @@ module AhoyCaptain
     end
 
     def index
-      @campaigns = cached(:campaigns, params[:campaigns_type]) do
+      results = cached(:campaigns, params[:campaigns_type]) do
         visit_query
                    .select(
                      "COALESCE(#{params[:campaigns_type]}, 'Direct/None') as label",
@@ -20,7 +20,7 @@ module AhoyCaptain
                    .order(Arel.sql("count(COALESCE(#{params[:campaigns_type]}, 'Direct/None')) desc"))
                    .limit(limit)
       end
-                     .map { |campaign| CampaignDecorator.new(campaign) }
+      @campaigns = paginate(results).map { |campaign| CampaignDecorator.new(campaign) }
       @campaign_type = params[:campaigns_type]&.titleize&.gsub("Utm", "UTM")
     end
   end

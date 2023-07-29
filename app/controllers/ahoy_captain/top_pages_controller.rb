@@ -9,7 +9,7 @@ module AhoyCaptain
     end
 
     def index
-      @pages = cached(:top_pages) do
+      results = cached(:top_pages) do
         event_query.with_routes.select(
           "#{AhoyCaptain.config.event[:url_column]} as url",
           "count(*) as count",
@@ -20,7 +20,7 @@ module AhoyCaptain
                    .limit(limit)
       end
 
-      @pages = @pages.map { |page| TopPageDecorator.new(page) }
+      @pages = paginate(results).map { |page| TopPageDecorator.new(page) }
     end
   end
 end

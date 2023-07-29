@@ -17,7 +17,7 @@ module AhoyCaptain
     end
 
     def search_query(args = {})
-      query = h.search_params
+      query = h.search_params.dup
       query[:q] ||= {}
       args.each { |k,v| query[:q]["#{k}"] = v }
       query.to_query

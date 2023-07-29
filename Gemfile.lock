@@ -6,6 +6,7 @@ PATH
       chartkick (>= 4)
       groupdate (>= 5)
       importmap-rails (>= 1)
+      pagy
       rails (>= 6)
       ransack (>= 2.3)
       stimulus-rails (>= 1.1)
@@ -136,6 +137,7 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.3-arm64-darwin)
       racc (~> 1.4)
+    pagy (6.0.4)
     pg (1.4.6)
     puma (5.6.5)
       nio4r (~> 2.0)

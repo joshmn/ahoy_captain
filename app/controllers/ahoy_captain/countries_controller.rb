@@ -10,13 +10,15 @@ module AhoyCaptain
     end
 
     def index
-      @countries = cached(:countries) do
+      results = cached(:countries) do
         visit_query
           .reselect("country as label, count(country) as count, sum(count(country)) OVER() as total_count")
           .group("country")
           .order("count(country) desc")
           .limit(limit)
-      end.map { |country| CountryDecorator.new(country) }
+      end
+
+      @countries = paginate(results).map { |country| CountryDecorator.new(country) }
     end
   end
 end

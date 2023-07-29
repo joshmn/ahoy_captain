@@ -1,3 +1,5 @@
 <%= turbo_frame_tag :details do %>
   <%= render AhoyCaptain::TableComponent.new(items: @pages, category_name: 'Exit Pages', unit_name: 'Visitors') %>
+  <%= render_pagination %>
+
 <% end %>

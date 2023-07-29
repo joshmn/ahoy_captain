@@ -9,12 +9,12 @@ module AhoyCaptain
     end
 
     def index
-      @pages = cached(:exit_pages) do
+      results = cached(:exit_pages) do
         ExitPagesQuery.call(params, event_query)
                       .order(Arel.sql "count(#{AhoyCaptain.config.event[:url_column]}) desc")
                               .limit(limit)
       end
-      @pages = @pages.map { |page| ExitPageDecorator.new(page) }
+      @pages = paginate(results).map { |page| ExitPageDecorator.new(page) }
     end
   end
 end
