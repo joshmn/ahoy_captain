@@ -40,7 +40,6 @@ module AhoyCaptain
 
     def configure
       yield config
-      init_config
     end
 
     def event
