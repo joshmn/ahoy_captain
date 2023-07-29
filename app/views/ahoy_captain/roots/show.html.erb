@@ -80,11 +80,10 @@
         <%= render AhoyCaptain::FilterComponent.new(label: "Action", column: :route, url: "filters/pages/actions", predicates: [:in, :not_in]) %>
         <%= render AhoyCaptain::FilterComponent.new(label: "Entry page", column: :entry_page, url: "filters/pages/entry_pages", predicates: [:in, :not_in]) %>
         <%= render AhoyCaptain::FilterComponent.new(label: "Exit page", column: :exit_page, url: "filters/pages/exit_pages", predicates: [:in, :not_in]) %>
-        
-        <form method="dialog" class="modal-backdrop">
-          <button>close</button>
-        </form>
       </fieldset>
+    </form>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
     </form>
   </dialog>
 </main>
@@ -97,9 +96,9 @@
       <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: "filters/locations/countries", predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: "filters/locations/regions", predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: "filters/locations/cities", predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
     </fieldset>
+  </form>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
   </form>
 </dialog>
