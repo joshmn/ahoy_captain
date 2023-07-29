@@ -2,9 +2,8 @@ module AhoyCaptain
   module Filters
     class UtmsController < BaseController
       def index
-        query = visit_query.all
-
-        render json: query.select("distinct #{params[:type]}").where.not(params[:type] => nil).group(params[:type]).order(Arel.sql "count(*) desc").pluck(params[:type]).map { |city| serialize(city) }
+        query = visit_query.select("#{params[:type]}", "count(#{params[:type]}) as total").group(params[:type]).order(Arel.sql "count(#{params[:type]}) desc").pluck(params[:type]).map { |city| serialize(city || "Direct/none") }
+        render json: query
       end
     end
   end
