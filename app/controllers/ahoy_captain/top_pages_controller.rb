@@ -10,7 +10,11 @@ module AhoyCaptain
 
     def index
       @pages = cached(:top_pages) do
-        event_query.within_range.select("#{AhoyCaptain.config.event[:url_column]} as url, count(*) as total")
+        event_query.within_range.select(
+          "#{AhoyCaptain.config.event[:url_column]} as url",
+          "count(*) as count",
+          "sum(count(*)) over() as total_count"
+        )
                                 .group(Arel.sql ("(#{AhoyCaptain.config.event[:url_column]})"))
                                 .order(Arel.sql("count(#{AhoyCaptain.config.event[:url_column]}) desc"))
                                 .limit(limit)

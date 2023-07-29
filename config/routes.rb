@@ -50,6 +50,7 @@ AhoyCaptain::Engine.routes.draw do
     scope :pages, module: :pages do
       resources :actions, only: [:index]
       resources :entry_pages, only: [:index]
+      resources :exit_pages, only: [:index]
     end
   end
 end
