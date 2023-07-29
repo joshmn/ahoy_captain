@@ -5,7 +5,7 @@ module AhoyCaptain
     end
 
     def unit_amount
-      object.total
+      object.count
     end
   end
 end

@@ -10,14 +10,14 @@ module AhoyCaptain
       klass.private_methods :call
     end
 
-    def self.call(params)
-      new(params).send(:call)
+    def self.call(params, query = nil)
+      new(params, query).send(:call)
     end
 
     attr_reader :params
-    def initialize(params)
+    def initialize(params, query)
       @params = params
-      @query = nil
+      @query = query
     end
 
     protected

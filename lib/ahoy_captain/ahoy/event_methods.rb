@@ -6,14 +6,88 @@ module AhoyCaptain
       included do
         scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
 
-        ransacker :route do |_parent|
-          Arel.sql(captain_url_signature)
-        end
+
+        scope :with_url, -> {
+          select(Arel.sql("#{AhoyCaptain.config.event.url_column} AS url"))
+        }
+
+        scope :distinct_url, -> {
+          distinct(Arel.sql("#{AhoyCaptain.config.event.url_column}"))
+        }
+
+        scope :url_in, ->(*args) {
+          where("#{AhoyCaptain.config.event.url_column} IN (?)", args)
+        }
+
+        scope :url_not_in, ->(*args) {
+          where("#{AhoyCaptain.config.event.url_column} NOT IN (?)", args)
+        }
+
+        scope :url_i_cont, ->(arg) {
+          where("#{AhoyCaptain.config.event.url_column} ILIKE ?", "%#{arg}%")
+        }
+
+        scope :route_in, ->(*args) {
+          url_in(*args)
+        }
+
+        scope :route_not_in, ->(*args) {
+          url_not_in(*args)
+        }
+
+        scope :route_i_cont, ->(arg) {
+          url_i_cont(arg)
+        }
+
+        scope :entry_page_in, ->(*args) {
+          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
+
+          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_in(*args).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
+        }
+
+        scope :entry_page_not_in, ->(*args) {
+          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
+          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_not_in(*args).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
+        }
+
+        scope :entry_page_i_cont, ->(arg) {
+          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
+          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_i_cont(arg).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
+        }
+
+        scope :exit_page_in, ->(*args) {
+          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
+
+          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_in(*args).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
+        }
+
+        scope :exit_page_not_in, ->(*args) {
+          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
+
+          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_not_in(*args).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
+        }
+
+        scope :exit_page_i_cont, ->(arg) {
+          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
+
+          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_i_cont(*arg).group(:visit_id)
+          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
+        }
+
       end
 
       class_methods do
         def ransackable_attributes(auth_object = nil)
-          ["action", "controller", "id", "id_property", "name", "name_property", "page", "properties", "route", "time", "url", "user_id", "visit_id"]
+          super + ["action", "controller", "id", "id_property", "name", "name_property", "page", "properties", "route", "time", "url", "user_id", "visit_id"] + self._ransackers.keys
+        end
+
+        def ransackable_scopes(auth_object = nil)
+          super + [:entry_page_in, :entry_page_not_in, :exit_page_in, :entry_page_not_in, :route_in, :route_not_in, :route_i_cont, :entry_page_i_cont, :exit_page_i_cont]
         end
       end
     end
