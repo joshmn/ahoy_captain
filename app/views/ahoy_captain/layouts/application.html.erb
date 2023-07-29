@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ahoy Captain</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <meta name="creator" content="joshmn">
+  <meta name="author" content="joshmn">
+  <meta name="contact" content="https://github.com/joshmn">
+  <meta name="twitter:creator" content="joshmn">
+  <meta name="twitter:site" content="josh.mn">
+  <meta name="og:site" content="josh.mn">
+  <meta name="description" content="Ahoy Captain">
+  <meta name="og:description" content="Ahoy Captain">
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.css" rel="stylesheet" type="text/css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= ahoy_captain_importmap_tags %>
+</head>
+
+<body data-theme='<%= AhoyCaptain.config.theme %>' data-controller="navigation">
+<%= yield %>
+</body>
+</html>
