@@ -12,8 +12,8 @@
           <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-0.5">
             <%= item.display_name %>
           </span>
-          <span class="w-8 ml-8">
-            <%= item.unit_amount %>
+          <span class="w-8 ml-8 text-right">
+            <%= render AhoyCaptain::TooltipComponent.new(item: item) %>
           </span>
         </div>
       <% end %>
