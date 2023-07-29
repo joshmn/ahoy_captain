@@ -2,7 +2,7 @@ import {Controller} from "@hotwired/stimulus"
 import SlimSelect from 'slim-select'
 
 export default class extends Controller {
-  static values = { 
+  static values = {
     url: String,
     column: String
   };
@@ -10,13 +10,13 @@ export default class extends Controller {
 
   connect() {
     this.selectTargets.forEach(async (target) => {
-      const url = window.location.pathname + target.dataset.filterUrlValue;
+      const url = target.dataset.filterUrlValue;
       const optionsSearch = this.fetchOptions(url, target);
       const select = await new SlimSelect({
         select: target,
         data: [],
         settings: {
-          contentPosition: 'relative', 
+          contentPosition: 'relative',
           contentLocation: target.closest('fieldset'),
         },
         events: {
@@ -62,9 +62,9 @@ export default class extends Controller {
     return (newVal, oldVal) => {
         const otherFilters = this.selectTargets.filter(filter => filter != target);
         otherFilters.forEach(async target => {
-          if (this.#hasData(target)) { 
+          if (this.#hasData(target)) {
             target.slim.setData(target.slim.getSelected().map(text => ({ text })))
-          } 
+          }
         })
       return true;
     }
@@ -78,5 +78,5 @@ export default class extends Controller {
     return target.slim.getSelected().length !== 0;
   }
 
-  
+
 }
