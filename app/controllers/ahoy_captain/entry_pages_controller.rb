@@ -15,7 +15,7 @@ module AhoyCaptain
                       .limit(limit)
       end
 
-      @pages = @pages.map { |page| PageDecorator.new(page) }
+      @pages = @pages.map { |page| EntryPageDecorator.new(page) }
     end
   end
 end

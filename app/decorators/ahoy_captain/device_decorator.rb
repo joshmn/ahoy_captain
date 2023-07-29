@@ -1,7 +1,8 @@
 module AhoyCaptain
   class DeviceDecorator < ApplicationDecorator
     def display_name
-      object.label
+      search = search_query("#{params[:devices_type]}_eq" => object.label)
+      frame_link(object.label, search)
     end
 
     def unit_amount

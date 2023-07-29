@@ -1,5 +1,6 @@
 module AhoyCaptain
   module ApplicationHelper
+    SPECIAL_PARAMS = [:campaigns_type, :devices_type]
     def ahoy_captain_importmap_tags(entry_point = "application", shim: true)
       safe_join [
         (javascript_importmap_shim_tag if shim),
@@ -12,6 +13,10 @@ module AhoyCaptain
 
     def search_params
       request.query_parameters
+    end
+
+    def special_params
+      params.to_unsafe_h.slice(*SPECIAL_PARAMS)
     end
   end
 end

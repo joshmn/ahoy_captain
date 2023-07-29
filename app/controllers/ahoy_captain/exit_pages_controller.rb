@@ -14,7 +14,7 @@ module AhoyCaptain
                       .order(Arel.sql "count(#{AhoyCaptain.config.event[:url_column]}) desc")
                               .limit(limit)
       end
-      @pages = @pages.map { |page| PageDecorator.new(page) }
+      @pages = @pages.map { |page| ExitPageDecorator.new(page) }
     end
   end
 end

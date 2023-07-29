@@ -19,11 +19,31 @@ module AhoyCaptain
     layout 'ahoy_captain/layouts/application'
 
     before_action do
+      Current.request = self
+    end
+
+    before_action do
+      #    default_url_options.merge(host: request.host, port: request.port, protocol: request.protocol)
+    end
+
+    before_action do
       if request.headers['Turbo-Frame'] == 'details'
         request.variant = :details
       end
     end
 
+    before_action do
+      unless request.format.turbo? || request.headers['Turbo-Frame']
+        if request.path != root_path
+          requested_params = Rails.application.routes.recognize_path(request.path).except(:controller, :action)
+          params.merge!(requested_params)
+          unless params[:debug]
+            render template: 'ahoy_captain/roots/show'
+          end
+        end
+      end
+
+    end
     rescue_from Widget::WidgetDisabled do |e|
       render template: 'ahoy_captain/shared/widget_disabled', locals: { frame: e.frame }
     end

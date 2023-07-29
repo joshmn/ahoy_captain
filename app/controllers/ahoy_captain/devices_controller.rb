@@ -3,18 +3,18 @@ module AhoyCaptain
     include Limitable
 
     before_action do
-      if Widget.disabled?(:devices, params[:type])
+      if Widget.disabled?(:devices, params[:devices_type])
         raise Widget::WidgetDisabled.new("Widget disabled", :devices)
       end
     end
 
     def index
-      @devices = cached(:devices, params[:type]) do
+      @devices = cached(:devices, params[:devices_type]) do
           visit_query
           .within_range
-          .select("#{params[:type]} as label", "count(#{params[:type]}) as count", "sum(count(#{params[:type]})) over() as total_count")
-          .group(params[:type])
-          .order("count(#{params[:type]}) desc")
+          .select("#{params[:devices_type]} as label", "count(#{params[:devices_type]}) as count", "sum(count(#{params[:devices_type]})) over() as total_count")
+          .group(params[:devices_type])
+          .order("count(#{params[:devices_type]}) desc")
           .limit(limit)
       end.map { |device| DeviceDecorator.new(device) }
     end

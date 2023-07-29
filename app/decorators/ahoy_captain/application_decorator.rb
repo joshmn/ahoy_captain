@@ -5,5 +5,30 @@ module AhoyCaptain
     def initialize(object)
       @object = object
     end
+
+    private
+
+    def h
+      @h ||= Current.request.view_context
+    end
+
+    def params
+      h.params
+    end
+
+    def search_query(args = {})
+      query = h.search_params
+      query[:q] ||= {}
+      args.each { |k,v| query[:q]["#{k}"] = v }
+      query.to_query
+    end
+
+    def frame_link(label, search)
+      h.link_to(label, "#{request.path}?#{search}", data: { turbo_frame: "_top" }).html_safe
+    end
+
+    def request
+      Current.request.request
+    end
   end
 end
