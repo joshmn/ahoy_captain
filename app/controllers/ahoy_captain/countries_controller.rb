@@ -20,5 +20,4 @@ module AhoyCaptain
       end.map { |country| CountryDecorator.new(country) }
     end
   end
-
 end

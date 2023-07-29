@@ -27,6 +27,9 @@
 
     <%= render ::AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
+        <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Top Pages</a>
+        <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Entry Pages</a>
+        <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Exit Pages</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :pages, src: top_pages_path(search_params) %>
@@ -37,6 +40,9 @@
 
     <%= render ::AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
+        <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Countries</a>
+        <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Regions</a>
+        <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Cities</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :geography, src: countries_path(search_params) %>
@@ -47,6 +53,9 @@
 
     <%= render ::AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
+        <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" class="link link-primary">Browser</a>
+        <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" class="link link-primary">OS</a>
+        <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices" class="link link-primary">Size</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params) %>
