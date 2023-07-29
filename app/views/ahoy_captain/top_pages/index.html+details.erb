@@ -1,0 +1,3 @@
+<%= turbo_frame_tag :details do %>
+  <%= render AhoyCaptain::TableComponent.new(items: @pages, category_name: 'Page', unit_name: 'Visitors') %>
+<% end %>
