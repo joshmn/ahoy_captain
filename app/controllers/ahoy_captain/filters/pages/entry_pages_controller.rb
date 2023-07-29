@@ -12,7 +12,7 @@ module AhoyCaptain
             other_query = event_query
             routes.each do |route|
               cname, aname = route.split("#", 2)
-              other_query = other_query.where("#{::AhoyCaptain.event.table_name}.properties->>'controller' = ? AND #{::AhoyCaptain.event_name}.properties->>'action' = ?", cname, aname)
+              other_query = other_query.where("#{::AhoyCaptain.event.table_name}.properties->>'controller' = ? AND #{::AhoyCaptain.config.event[:view_name]}.properties->>'action' = ?", cname, aname)
             end
             result = result.where(visit_id: other_query.pluck(:visit_id))
           end
