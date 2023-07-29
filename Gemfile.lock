@@ -5,7 +5,7 @@ PATH
       ahoy_matey (>= 1.1)
       chartkick (>= 4)
       groupdate (>= 5)
-      importmap-rails (>= 1.1)
+      importmap-rails (>= 1)
       rails (>= 6)
       ransack (>= 3.0)
       stimulus-rails (>= 1.1)
