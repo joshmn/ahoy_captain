@@ -9,7 +9,7 @@
         <% end %>
         <% dropdown.with_option do %>
           <button onClick="pageModal.showModal()" class='link no-underline'>Page</button>
-          <button onClick="screenModal.showModal()" class='link no-underline'>Screen</button>
+          <button onClick="countryModal.showModal()" class='link no-underline'>Geography</button>
         <% end %>
       <% end %>
     </div>
@@ -73,28 +73,30 @@
       <% end %>
     <% end %>
   </div>
+  <dialog id="pageModal" class="modal max-w-2xl mx-auto">
+    <form method="dialog" class="modal-box w-11/12 max-w-5xl">
+      <fieldset data-controller='filter'>
+        <h5>Filter by Page</h5>
+        <%= render AhoyCaptain::FilterComponent.new(label: "Action", column: :route, url: "filters/pages/actions", predicates: [:in, :not_in]) %>
+        <%= render AhoyCaptain::FilterComponent.new(label: "Entry page", column: :entry_page, url: "filters/pages/entry_pages", predicates: [:in, :not_in]) %>
+        <%= render AhoyCaptain::FilterComponent.new(label: "Exit page", column: :exit_page, url: "filters/pages/exit_pages", predicates: [:in, :not_in]) %>
+        
+        <form method="dialog" class="modal-backdrop">
+          <button>close</button>
+        </form>
+      </fieldset>
+    </form>
+  </dialog>
 </main>
 
-<dialog id="pageModal" class="modal max-w-2xl mx-auto">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset>
-      <h5>Filter by Page</h5>
-      hilter
-      bilter
-      lilter
-      
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
-    </fieldset>
-  </form>
-</dialog>
 
-<dialog id="screenModal" class="modal max-w-2xl mx-auto">
+<dialog id="countryModal" class="modal max-w-2xl mx-auto">
   <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset>
-      <h5>Filter by Screen size</h5>
-      
+    <fieldset data-controller='filter'>
+      <h5>Filter by Country</h5>
+      <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: "filters/locations/countries", predicates: [:in, :not_in]) %>
+      <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: "filters/locations/regions", predicates: [:in, :not_in]) %>
+      <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: "filters/locations/cities", predicates: [:in, :not_in]) %>
       <form method="dialog" class="modal-backdrop">
         <button>close</button>
       </form>

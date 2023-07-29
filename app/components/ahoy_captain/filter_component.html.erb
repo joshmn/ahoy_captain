@@ -1,0 +1,20 @@
+<fieldset class="flex space-x-4 items-end">
+  <div class="flex flex-col w-[20%]">
+    <label class="label"><%= label %></label>
+    <select class='select select-bordered'>
+      <% predicates.each do |predicate| %>
+        <option value="<%= column %>_<%= predicate %>">
+          <%= predicate.to_s.humanize %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+  <select 
+    class='w-[50%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
+    name="q[<%= column %>_<%= predicates[0] %>]"
+    multiple
+    data-filter-target="select"
+    data-filter-column-value="<%= column %>"
+    data-filter-url-value="<%= url %>"
+    ></select>
+</fieldset>
