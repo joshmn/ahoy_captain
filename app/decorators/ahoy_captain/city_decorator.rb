@@ -2,7 +2,7 @@ module AhoyCaptain
   class CityDecorator < CountryDecorator
     def display_name
       search = search_query(country_eq: object.country, city_eq: object.city)
-      frame_link("#{country_emoji(object.country)} #{object.city}", path)
+      frame_link("#{country_emoji(object.country)} #{object.city}", search)
     end
 
     def unit_amount

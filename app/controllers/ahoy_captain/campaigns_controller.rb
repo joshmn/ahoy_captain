@@ -10,7 +10,7 @@ module AhoyCaptain
 
     def index
       @campaigns = cached(:campaigns, params[:campaigns_type]) do
-        visit_query.within_range
+        visit_query
                    .select(
                      "COALESCE(#{params[:campaigns_type]}, 'Direct/None') as label",
                      "count(COALESCE(#{params[:campaigns_type]}, 'Direct/None')) as count",

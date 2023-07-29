@@ -3,18 +3,10 @@ module AhoyCaptain
     include Rangeable
 
     def build
-      if params[:q]
-                 ::Ahoy::Event.ransack(params[:q]).result
-               else
-                 ::Ahoy::Event.all
-               end
+      ::Ahoy::Event.ransack(ransack_params).result
     end
 
     def within_range
-      if range
-        @query = @query.where("time >= ? and time < ?", range[0], range[1])
-      end
-
       self
     end
 
@@ -23,5 +15,6 @@ module AhoyCaptain
 
       self
     end
+
   end
 end

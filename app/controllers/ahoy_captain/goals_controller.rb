@@ -4,7 +4,7 @@ module AhoyCaptain
       @goals = {}
       AhoyCaptain.configuration.goals.each do |goal|
         @goals[goal.title] = cached(:goal, goal.id) do
-          event_query.within_range.where(name: goal.event_name).count
+          event_query.where(name: goal.event_name).count
         end
       end
 

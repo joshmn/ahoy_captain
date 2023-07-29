@@ -6,7 +6,6 @@ module AhoyCaptain
       included do
         scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
 
-
         scope :with_url, -> {
           select(Arel.sql("#{AhoyCaptain.config.event.url_column} AS url"))
         }
@@ -19,12 +18,23 @@ module AhoyCaptain
           where("#{AhoyCaptain.config.event.url_column} IN (?)", args)
         }
 
+        scope :url_eq, ->(arg) {
+          if arg.is_a?(Array)
+            arg = arg[0]
+          end
+          where("#{AhoyCaptain.config.event.url_column} = ?", arg)
+        }
+
         scope :url_not_in, ->(*args) {
           where("#{AhoyCaptain.config.event.url_column} NOT IN (?)", args)
         }
 
         scope :url_i_cont, ->(arg) {
           where("#{AhoyCaptain.config.event.url_column} ILIKE ?", "%#{arg}%")
+        }
+
+        scope :route_eq, ->(arg) {
+          url_eq(arg)
         }
 
         scope :route_in, ->(*args) {
@@ -83,7 +93,7 @@ module AhoyCaptain
 
       class_methods do
         def ransackable_attributes(auth_object = nil)
-          super + ["action", "controller", "id", "id_property", "name", "name_property", "page", "properties", "route", "time", "url", "user_id", "visit_id"] + self._ransackers.keys
+          super + ["action", "controller", "id", "id_property", "name", "name_property", "page", "properties", "time", "url", "user_id", "visit_id"] + self._ransackers.keys
         end
 
         def ransackable_scopes(auth_object = nil)

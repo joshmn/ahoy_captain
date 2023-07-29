@@ -10,12 +10,11 @@ module AhoyCaptain
 
     def index
       @sources = cached(:sources) do
-        visit_query.within_range.select("substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)') as referring_domain, count(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)')) as count, sum(count(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)'))) OVER() as total_count")
+        visit_query.select("substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)') as referring_domain, count(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)')) as count, sum(count(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)'))) OVER() as total_count")
                    .where.not(referring_domain: nil)
                    .group("substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)')")
                    .order(Arel.sql "count(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)')) desc")
                    .limit(limit)
-
       end
 
       @sources = @sources.map { |source| AhoyCaptain::SourceDecorator.new(source) }

@@ -1,7 +1,7 @@
 module AhoyCaptain
   class TopPageDecorator < PageDecorator
     def type
-      :route_in
+      :route_eq
     end
   end
 end

@@ -3,7 +3,6 @@ module AhoyCaptain
     class AverageVisitDurationQuery < ApplicationQuery
       def build
         events = event_query
-                   .within_range
                    .reselect("visit_id, max(time) - min(time) as visit_duration")
                    .group("visit_id")
 

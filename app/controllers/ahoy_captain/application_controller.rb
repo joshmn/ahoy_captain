@@ -22,18 +22,16 @@ module AhoyCaptain
       Current.request = self
     end
 
-    before_action do
-      #    default_url_options.merge(host: request.host, port: request.port, protocol: request.protocol)
-    end
-
+    # show the details frame
     before_action do
       if request.headers['Turbo-Frame'] == 'details'
         request.variant = :details
       end
     end
 
+    # act like an spa without being an spa
     before_action do
-      unless request.format.turbo? || request.headers['Turbo-Frame']
+      if request.format.html? && !request.referer.present?
         if request.path != root_path
           requested_params = Rails.application.routes.recognize_path(request.path).except(:controller, :action)
           params.merge!(requested_params)
@@ -42,8 +40,8 @@ module AhoyCaptain
           end
         end
       end
-
     end
+
     rescue_from Widget::WidgetDisabled do |e|
       render template: 'ahoy_captain/shared/widget_disabled', locals: { frame: e.frame }
     end

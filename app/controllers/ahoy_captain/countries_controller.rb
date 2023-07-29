@@ -12,7 +12,6 @@ module AhoyCaptain
     def index
       @countries = cached(:countries) do
         visit_query
-          .within_range
           .reselect("country as label, count(country) as count, sum(count(country)) OVER() as total_count")
           .group("country")
           .order("count(country) desc")

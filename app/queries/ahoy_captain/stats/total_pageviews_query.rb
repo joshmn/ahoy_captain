@@ -2,7 +2,7 @@ module AhoyCaptain
   module Stats
     class TotalPageviewsQuery < ApplicationQuery
       def build
-        event_query.within_range.where(name: AhoyCaptain.config.view_name)
+        event_query.where(name: AhoyCaptain.config.view_name)
       end
     end
   end

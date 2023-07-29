@@ -3,13 +3,20 @@ module AhoyCaptain
     module VisitMethods
       extend ActiveSupport::Concern
 
+      included do
+        ransacker :ref_domain do
+          Arel.sql("(substring(referring_domain from '(?:.*://)?(?:www\.)?([^/?]*)'))")
+        end
+      end
+
       class_methods do
         def ransackable_attributes(auth = nil)
-          columns_hash.keys
+          columns_hash.keys + ["ref_domain"]
         end
 
-        def ransackable_associations(auth = nil)
-          [:events]
+
+        def ransackable_attributes(auth = nil)
+          columns_hash.keys + ["ref_domain"]
         end
       end
     end

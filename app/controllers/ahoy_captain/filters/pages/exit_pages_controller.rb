@@ -4,7 +4,7 @@ module AhoyCaptain
       # TODO: ACCOMODATE ENTRY_PAGES
       class ExitPagesController < BaseController
         def index
-          query = event_query.within_range.with_url.distinct_url
+          query = event_query.with_url.distinct_url
 
           render json: query.map { |row| { text: row.url } }
         end

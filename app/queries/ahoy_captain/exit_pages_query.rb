@@ -2,7 +2,7 @@ module AhoyCaptain
   class ExitPagesQuery < ApplicationQuery
 
     def build
-      max_id_query = @query.with_routes.select("max(id) as id").group("visit_id")
+      max_id_query = @query.with_routes.select("max(#{AhoyCaptain.event.table_name}.id) as id").group("visit_id")
       @query = @query.with_routes.select(
         "#{AhoyCaptain.config.event[:url_column]} as url",
         "count(#{AhoyCaptain.config.event[:url_column]}) as count",
