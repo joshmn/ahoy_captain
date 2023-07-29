@@ -1,3 +1,39 @@
-.fill-primary {
-  fill: hsl(var(--p)/ var(--tw-text-opacity, 1))
+/* Application styles */
+:root {
+  --ss-bg-color: hsl(var(--b1) / 1);
+  --ss-font-color: hsl(var(--bc) / var(--tw-text-opacity, 1));
+}
+
+.ss-content{
+  position:absolute;
+  display:none;
+  height:auto;
+  flex-direction:column;
+  width:auto;
+  max-height:var(--ss-content-height);
+  box-sizing:border-box;
+  border:solid 1px var(--ss-border-color);
+  background-color:var(--ss-bg-color);
+  transition:transform var(--ss-animation-timing),opacity var(--ss-animation-timing);
+  opacity:0;
+  transform:scaleY(0);
+  transform-origin:center top;
+  overflow:hidden;
+  z-index:10000;
+}
+
+.ss-content.ss-open-below{
+  opacity:1;
+  transform:scaleY(1);
+  transform-origin:center top;
+  border-bottom-left-radius:var(--ss-border-radius);
+  border-bottom-right-radius:var(--ss-border-radius);
+  bottom: -100%;
+  right: 41%;
+  display: flex;
+}
+
+.ss-open-below.ss-content.ss-relevant {
+  bottom: -100%;
+  right: 41%;
 }

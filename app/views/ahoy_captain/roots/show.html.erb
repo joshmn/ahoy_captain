@@ -1,5 +1,5 @@
 <main class='bg-base-300 min-h-screen'>
-  <div class="flex flex-row-reverse col-span-2">
+  <div class="flex flex-row-reverse col-span-2 max-w-6xl mx-auto">
     <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>
       <% dropdown.with_header_icon do %>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-ml-1 mr-1 h-4 w-4 md:h-4 md:w-4">
@@ -12,6 +12,7 @@
       <% end %>
     <% end %>
   </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
@@ -73,7 +74,7 @@
       <% end %>
     <% end %>
   </div>
-  <dialog id="pageModal" class="modal max-w-2xl mx-auto">
+  <dialog id="pageModal" class="modal">
     <form method="dialog" class="modal-box w-11/12 max-w-5xl">
       <fieldset data-controller='filter'>
         <h5>Filter by Page</h5>
@@ -90,7 +91,7 @@
 </main>
 
 
-<dialog id="countryModal" class="modal max-w-2xl mx-auto">
+<dialog id="countryModal" class="modal">
   <form method="dialog" class="modal-box w-11/12 max-w-5xl">
     <fieldset data-controller='filter'>
       <h5>Filter by Country</h5>
@@ -98,7 +99,8 @@
       <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: "filters/locations/regions", predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: "filters/locations/cities", predicates: [:in, :not_in]) %>
       <form method="dialog" class="modal-backdrop">
-        <button>close</button>
+        <button class="btn btn-primary mt-4" >Apply</button>
+        <button class="btn btn-secondary mt-4">Close</button>
       </form>
     </fieldset>
   </form>

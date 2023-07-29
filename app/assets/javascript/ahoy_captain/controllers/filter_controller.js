@@ -63,7 +63,7 @@ export default class extends Controller {
         const otherFilters = this.selectTargets.filter(filter => filter != target);
         otherFilters.forEach(async target => {
           if (this.#hasData(target)) { 
-            target.slim.setData(target.slim.getSelected())
+            target.slim.setData(target.slim.getSelected().map(text => ({ text })))
           } 
         })
       return true;
@@ -77,4 +77,6 @@ export default class extends Controller {
   #hasSelections(target) {
     return target.slim.getSelected().length !== 0;
   }
+
+  
 }
