@@ -1,18 +1,19 @@
 <main class='bg-base-300 min-h-screen'>
-  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
-    <div class="flex flex-row-reverse col-span-2">
-      <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>
-        <% dropdown.with_header_icon do %>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-ml-1 mr-1 h-4 w-4 md:h-4 md:w-4">
-            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path>
-          </svg>
-        <% end %>
-        <% dropdown.with_option do %>
-          <button onClick="pageModal.showModal()" class='link no-underline'>Page</button>
-          <button onClick="countryModal.showModal()" class='link no-underline'>Geography</button>
-        <% end %>
+  <div class="flex flex-row-reverse col-span-2 max-w-6xl mx-auto">
+    <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>
+      <% dropdown.with_header_icon do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-ml-1 mr-1 h-4 w-4 md:h-4 md:w-4">
+          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path>
+        </svg>
       <% end %>
-    </div>
+      <% dropdown.with_option do %>
+        <button onClick="pageModal.showModal()" class='link no-underline'>Page</button>
+        <button onClick="countryModal.showModal()" class='link no-underline'>Geography</button>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
@@ -73,7 +74,7 @@
       <% end %>
     <% end %>
   </div>
-  <dialog id="pageModal" class="modal max-w-2xl mx-auto">
+  <dialog id="pageModal" class="modal">
     <form method="dialog" class="modal-box w-11/12 max-w-5xl">
       <fieldset data-controller='filter'>
         <h5>Filter by Page</h5>
@@ -87,13 +88,17 @@
     </form>
   </dialog>
 
-  <dialog id="countryModal" class="modal max-w-2xl mx-auto">
+<dialog id="countryModal" class="modal">
   <form method="dialog" class="modal-box w-11/12 max-w-5xl">
     <fieldset data-controller='filter'>
       <h5>Filter by Country</h5>
       <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: "filters/locations/countries", predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: "filters/locations/regions", predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: "filters/locations/cities", predicates: [:in, :not_in]) %>
+      <form method="dialog" class="modal-backdrop">
+        <button class="btn btn-primary mt-4" >Apply</button>
+        <button class="btn btn-secondary mt-4">Close</button>
+      </form>
     </fieldset>
   </form>
   <form method="dialog" class="modal-backdrop">
