@@ -2,9 +2,9 @@ module AhoyCaptain
   module Stats
     class BounceRatesQuery < ApplicationQuery
       def build
-        visit_query.select(
-          "(COUNT(ahoy_events.id)::float / COUNT(DISTINCT ahoy_visits.id) * 100) AS bounce_rate"
-        ).left_joins(:events).where(ahoy_events: { id: nil })
+        visit_query.joins(:events).reselect(
+          "(COUNT(ahoy_events.id)::float / COUNT(DISTINCT ahoy_visits.id)) AS bounce_rate"
+        )
       end
     end
   end

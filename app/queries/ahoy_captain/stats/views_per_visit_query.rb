@@ -2,9 +2,9 @@ module AhoyCaptain
   module Stats
     class ViewsPerVisitQuery < ApplicationQuery
       def build
+
         events = event_query
-                   .with_visit
-                   .select("#{::AhoyCaptain.visit_name}.started_at as started_at, count(name) / count(distinct visit_id) as views_per_visit")
+                   .select("#{::AhoyCaptain.visit.table_name}.started_at as started_at, count(name) / count(distinct visit_id) as views_per_visit")
                    .where(name: AhoyCaptain.config.view_name)
                    .group("started_at, visit_id")
 

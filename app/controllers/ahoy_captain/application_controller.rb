@@ -33,7 +33,7 @@ module AhoyCaptain
 
     # act like an spa without being an spa
     before_action do
-      if request.format.html? && !request.referer.present?
+      if request.format.html? && request.headers['Turbo-Frame'].blank?
         if request.path != root_path
           requested_params = Rails.application.routes.recognize_path(request.path).except(:controller, :action)
           params.merge!(requested_params)

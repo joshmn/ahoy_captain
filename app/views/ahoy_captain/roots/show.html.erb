@@ -1,4 +1,7 @@
 <main class='bg-base-300 min-h-screen'>
+  <div class="relative">
+    <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller: "realtime" } %>
+  </div>
   <div class="flex flex-row-reverse col-span-2 max-w-6xl mx-auto">
     <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>
       <% dropdown.with_header_icon do %>
@@ -15,6 +18,7 @@
       <% end %>
     <% end %>
   </div>
+  <%= turbo_frame_tag :stats, src: stats_path(search_params) %>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
 

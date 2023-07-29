@@ -8,7 +8,7 @@ class Ahoy::Event < ApplicationRecord
   belongs_to :user, optional: true
 
   ransacker :route do |parent|
-    Arel.sql(AhoyCaptain.config.event.url_column)
+    Arel.sql(AhoyCaptain.config.event.url_column.gsub("properties", "ahoy_events.properties"))
   end
 
 end

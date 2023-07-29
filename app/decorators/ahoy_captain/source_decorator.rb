@@ -10,7 +10,7 @@ module AhoyCaptain
           <span>#{object.referring_domain}</span>
         </div>
       ).html_safe
-      path = search_query(referring_domain_eq: object.referring_domain)
+      path = search_query(ref_domain_eq: object.referring_domain)
       frame_link(display, path)
     end
 

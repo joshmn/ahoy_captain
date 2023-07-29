@@ -79,10 +79,10 @@ module AhoyCaptain
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now.to_i).result.to_sql
       if params[:period]
         if self.class.name == "AhoyCaptain::EventQuery"
-          ransackable_params['time_gt_eq'] = range[0]
-          ransackable_params['time_lt_eq'] = range[1]
-          ransackable_params["visits_started_at_gt"] = range[0]
-          ransackable_params["visits_started_at_lt"] = range[1]
+          ransackable_params['time_gt'] = range[0]
+          ransackable_params['time_lt'] = range[1]
+          ransackable_params["visit_started_at_gt"] = range[0]
+          ransackable_params["visit_started_at_lt"] = range[1]
         elsif self.class.name == "AhoyCaptain::VisitQuery"
           ransackable_params["started_at_gt"] = range[0]
           ransackable_params["started_at_lt"] = range[1]
@@ -90,6 +90,7 @@ module AhoyCaptain
           ransackable_params["events_time_lt"] = range[1]
         end
       end
+
 
       ransackable_params
     end

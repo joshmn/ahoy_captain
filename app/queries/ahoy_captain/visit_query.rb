@@ -19,5 +19,13 @@ module AhoyCaptain
 
       self
     end
+
+    def is_a?(other)
+      if other == ActiveRecord::Relation
+        return true
+      end
+
+      super(other)
+    end
   end
 end

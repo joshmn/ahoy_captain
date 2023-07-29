@@ -29,24 +29,32 @@ module AhoyCaptain
     def views_per_visit
       cached(:views_per_visit) do
         begin
-          result = Stats::AverageViewsPerVisitQuery.call(params)
-          result[0].average_views_per_visit.round(2)
-        rescue ActiveRecord::StatementInvalid => e
+          result = Stats::AverageViewsPerVisitQuery.call(params).count
+          (result.values.sum.to_f / result.size).round(2)
+        rescue ::ActiveRecord::StatementInvalid => e
           if e.message.include?("PG::DivisionByZero")
             return "0"
           else
             raise e
           end
-
         end
       end
 
     end
 
     def bounce_rate
-      cached(:boucne_rate) do
+      cached(:bounce_rate) do
+        begin
         result = Stats::BounceRatesQuery.call(params)
-        result[0].bounce_rate
+        result[0].bounce_rate.round(2)
+        rescue ::ActiveRecord::StatementInvalid => e
+        if e.message.include?("PG::DivisionByZero")
+          return "0"
+        else
+          raise e
+        end
+      end
+
       end
     end
 
