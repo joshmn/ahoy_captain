@@ -3,8 +3,8 @@ PATH
   specs:
     ahoy_captain (0.1.0)
       ahoy_matey (>= 1.1)
-      chartkick (>= 5)
-      groupdate (>= 6)
+      chartkick (>= 4)
+      groupdate (>= 5)
       importmap-rails (>= 1.1)
       rails (>= 6)
       ransack (>= 3.0)

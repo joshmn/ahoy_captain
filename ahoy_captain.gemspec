@@ -24,8 +24,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "importmap-rails", ">= 1.1"
   spec.add_dependency "stimulus-rails", ">= 1.1"
   spec.add_dependency "ahoy_matey", ">= 1.1"
-  spec.add_dependency "chartkick", ">= 5"
-  spec.add_dependency "groupdate", ">= 6"
+  spec.add_dependency "chartkick", ">= 4"
+  spec.add_dependency "groupdate", ">= 5"
 
   spec.add_development_dependency "rails", ">= 6"
   spec.add_development_dependency "sprockets-rails"
