@@ -1,1 +1,3 @@
-/* Application styles */
+.fill-primary {
+  fill: hsl(var(--p)/ var(--tw-text-opacity, 1))
+}

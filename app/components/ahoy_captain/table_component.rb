@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AhoyCaptain::TableComponent < ViewComponent::Base
   def initialize(items:, category_name:, unit_name:)
     @items = items

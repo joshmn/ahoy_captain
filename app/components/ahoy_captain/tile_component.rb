@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AhoyCaptain::TileComponent < ViewComponent::Base
   renders_one :statistic_display
   renders_one :display_links

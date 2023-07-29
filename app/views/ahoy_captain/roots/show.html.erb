@@ -1,5 +1,18 @@
 <main class='bg-base-300 min-h-screen'>
   <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
+    <div class="flex flex-row-reverse">
+      <button 
+        class="btn btn-ghost"
+        type="button"
+        onclick="filters.showModal()"
+        aria-haspopup="menu" 
+        aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-ml-1 mr-1 h-4 w-4 md:h-4 md:w-4">
+          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="inline-block">Filter</span>
+      </button>
+    </div>
     <div class="flex container p-4 col-span-1 lg:col-span-2">
       <%= link_to "utm medium", campaigns_path(type: :utm_medium) %><br/>
       <%= link_to "cities", cities_path %>
@@ -15,8 +28,18 @@
       <%= link_to "top_pages_path", top_pages_path %>
     </div>
 
-    <%= render ::AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
+        <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class='link link-primary'>All</a>
+        <%= render AhoyCaptain::DropdownComponent.new(title: "Campaign") do |dropdown| %>
+          <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
+            <% dropdown.with_option do %>
+              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources">
+                <%= source.titleize.gsub("Utm", "UTM") %>
+              </a>
+            <% end %>    
+          <% end %>    
+        <% end %>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :sources, src: sources_path(search_params) %>
@@ -25,7 +48,7 @@
       <% end %>
     <% end %>
 
-    <%= render ::AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
         <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Top Pages</a>
         <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Entry Pages</a>
@@ -38,7 +61,7 @@
       <% end %>
     <% end %>
 
-    <%= render ::AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
         <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Countries</a>
         <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Regions</a>
@@ -51,7 +74,7 @@
       <% end %>
     <% end %>
 
-    <%= render ::AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
         <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" class="link link-primary">Browser</a>
         <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" class="link link-primary">OS</a>
