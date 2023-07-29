@@ -10,7 +10,7 @@ module AhoyCaptain
 
     def index
       @pages = cached(:top_pages) do
-        event_query.within_range.select(
+        event_query.within_range.with_routes.select(
           "#{AhoyCaptain.config.event[:url_column]} as url",
           "count(*) as count",
           "sum(count(*)) over() as total_count"
