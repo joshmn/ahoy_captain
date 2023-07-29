@@ -11,6 +11,7 @@ export default class extends Controller {
   connect() {
     this.selectTargets.forEach(async (target) => {
       const url = window.location.pathname + target.dataset.filterUrlValue;
+      const optionsSearch = this.fetchOptions(url, target);
       const select = await new SlimSelect({
         select: target,
         data: [],
@@ -21,11 +22,15 @@ export default class extends Controller {
         events: {
           beforeOpen: async () => {
             if (!this.#hasData(target) & !this.#hasSelections(target) ) {
-              const options = await this.fetchOptions(url, target)();
-              await target.slim.setData(options)
+              const data = await optionsSearch();
+              target.slim.setData(data);
             }
           },
-          search: this.fetchOptions(url, target),
+          search: async (search, currentData) => {
+            const data = await optionsSearch(search);
+            const filteredData = data.filter(item => !currentData.some((selectedItem) => selectedItem.text == item.text ))
+            return filteredData;
+          },
           beforeChange: this.#beforeChange(target, url),
         }
       });
@@ -33,13 +38,10 @@ export default class extends Controller {
   }
 
   fetchOptions(url, target) {
-    return async (search, currentData) => {
+    return async (search) => {
       const query = this.#buildQueryFilters(search, target);
       const response = await fetch(`${url}?${query.toString()}`);
       const data = await response.json();
-      if (currentData) {
-        return data.filter(item => !currentData.some((selectedItem) => selectedItem.text == item.text ))
-      }
       return data;
     }
   }
@@ -52,20 +54,18 @@ export default class extends Controller {
         query.append(`${filter.name}[]`, val);
       })
     });
-    query.set(`${target.dataset.filterColumnValue}_i_cont`, search || "");
+    query.set(`q[${target.dataset.filterColumnValue}_i_cont]`, search || "");
     return query;
   }
 
   #beforeChange(target, url) {
     return (newVal, oldVal) => {
-      if (newVal.length < oldVal.length) {
         const otherFilters = this.selectTargets.filter(filter => filter != target);
         otherFilters.forEach(async target => {
           if (this.#hasData(target)) { 
-            target.slim.setData([])
+            target.slim.setData(target.slim.getSelected().map(text => ({ text })))
           } 
         })
-      }
       return true;
     }
   }
@@ -77,4 +77,6 @@ export default class extends Controller {
   #hasSelections(target) {
     return target.slim.getSelected().length !== 0;
   }
+
+  
 }
