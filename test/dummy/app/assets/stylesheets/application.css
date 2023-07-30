@@ -37,3 +37,53 @@
   bottom: -100%;
   right: 41%;
 }
+
+.pagy-nav.pagination {
+  isolation: isolate;
+  display: inline-flex;
+  margin-right: -1px;
+  /* border-radius: 0.375rem; */
+  box-shadow: 0 1px 2px 0 hsl(var(--n) / var(--tw-text-opacity, 1));
+}
+
+.page.next a, .page.prev a, .page.next.disabled, .page.prev.disabled, .page a, .page.gap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid hsl(var(--n) / var(--tw-text-opacity, 1));
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--bc) / var(--tw-text-opacity, 1));
+}
+
+.page.next a:hover, .page.prev a:hover, .page a:hover {
+  background-color: hsl(var(--b3) / var(--tw-text-opacity, 1));
+  color: hsl(var(--ac) / var(--tw-text-opacity, 1));
+}
+
+.page.next a:focus, .page.prev a:focus, .page.next.disabled:focus, .page.prev.disabled:focus, .page a:focus, .page.gap:focus {
+  z-index: 20;
+}
+
+.page.prev a, .page.next a {
+  border-radius: 0.375rem 0 0 0.375rem;
+  background-color: hsl(var(--b2) /1);
+}
+
+
+.page.next.disabled, .page.prev.disabled {
+  border-radius: 0.375rem 0 0 0.375rem;
+  background-color: hsl(var(--b2) / 0.5);
+}
+
+.page.active {
+  z-index: 10;
+  border-color: hsl(var(--a) / var(--tw-text-opacity, 1));
+  background-color: hsl(var(--b3) / var(--tw-text-opacity, 1));
+  color: hsl(var(--ac) / var(--tw-text-opacity, 1));
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

@@ -1,4 +1,4 @@
 <%= turbo_frame_tag :details do %>
   <%= render AhoyCaptain::TableComponent.new(items: @campaigns, category_name: @campaign_type, unit_name: 'Visitors') %>
-  <%= render_pagination %>
+  <span class="flex justify-center"><%= render_pagination %></span>
 <% end %>
