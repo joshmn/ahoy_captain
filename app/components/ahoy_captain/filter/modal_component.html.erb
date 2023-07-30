@@ -1,5 +1,5 @@
-<dialog id="<%= id %>" class="modal" data-controller='filter' data-action="submit->filter#applyFilters">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
+<dialog id="<%= id %>" class="modal">
+  <form method="dialog" class="modal-box w-11/12 max-w-5xl" data-controller='filter' data-action="submit->filter#applyFilters">
     <fieldset>
       <h5><%= title %></h5>
       <%= modal_display %>
