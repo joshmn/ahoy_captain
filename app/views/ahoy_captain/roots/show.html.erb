@@ -1,14 +1,14 @@
 <main class='bg-base-300 min-h-screen pb-4 max-w-6xl mx-auto'>
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
-      <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" } %>
+      <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" }, loading: :lazy %>
     <% end %>
   <% end %>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4">
     <%= render AhoyCaptain::TileComponent.new(wide: true) do |component| %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :stats, src: stats_path(search_params) %>
+        <%= turbo_frame_tag :stats, src: stats_path(search_params), loading: :lazy %>
       <% end %>
     <% end %>
 
@@ -26,7 +26,7 @@
         <% end %>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :sources, src: sources_path(search_params) %>
+        <%= turbo_frame_tag :sources, src: sources_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#sources" class="link no-underline">Details</button>
@@ -40,7 +40,7 @@
         <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Exit Pages</a>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :pages, src: top_pages_path(search_params) %>
+        <%= turbo_frame_tag :pages, src: top_pages_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#pages" class="link no-underline">Details</button>
@@ -54,7 +54,7 @@
         <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Cities</a>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :geography, src: countries_path(search_params) %>
+        <%= turbo_frame_tag :geography, src: countries_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#geography" class="link no-underline">Details</button>
@@ -68,7 +68,7 @@
         <a href="<%= devices_device_types_path(search_params) %>"  data-turbo-frame="devices" class="link link-primary">Size</a>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params) %>
+        <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline">Details</button>
@@ -91,7 +91,7 @@
 
       <% end %>
         <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
+        <%= turbo_frame_tag :goals, src: goals_path(search_params), loading: :lazy %>
       <% end %>
     <% end %>
   </div>
