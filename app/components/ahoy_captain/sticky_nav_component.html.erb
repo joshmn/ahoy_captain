@@ -4,13 +4,13 @@
       <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full'>
     </a>
     <% if params[:q] %>
-      <%= render AhoyCaptain::Filter::TagContainerComponent.new(filters: params[:q]) %>
+      <%= render AhoyCaptain::Filter::TagContainerComponent.new(filters: params.require(:q)) %>
     <% else %>
       <%= realtime_update %>
     <% end %>
   </div>
   <div class="flex flex-row-reverse col-span-2 items-center">
-    <%= render AhoyCaptain::DropdownLinkComponent.new(title: 'Period', classes: 'btn btn-ghost no-underline text-base-content hover:text-base-content') do |dropdown| %>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: 'Period', classes: 'btn btn-base-100 no-underline text-base-content hover:text-base-content hover:bg-neutral') do |dropdown| %>
       <% dropdown.with_option do %>
         <button class='link no-underline'>Today</button>
         <button class='link no-underline'>Realtime</button>

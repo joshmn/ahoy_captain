@@ -1,5 +1,4 @@
 <%= turbo_frame_tag :stats do %>
-  <h3 class="text-base font-semibold leading-6 text-base-content">Last 30 days</h3>
   <dl class="mt-5 grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg  shadow grid-cols-2 md:grid-cols-6 md:divide-x md:divide-y-0">
     <div class="p-3 md:p-3">
       <a  href="<%= stats_unique_visitors_url(search_params) %>" data-turbo-frame="chart">
