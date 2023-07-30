@@ -58,22 +58,22 @@ AhoyCaptain.configure do
   # Defaults come from lib/ahoy_captain/period_collection.rb
   #
   # If you want your own entirely, first call reset.
-  # config.periods.reset
+  # config.ranges.reset
   #
   # Then you can add your own.
-  # config.periods.add :param_name, "Label", -> { [3.days.ago, Date.today] }
+  # config.ranges.add :param_name, "Label", -> { [3.days.ago, Date.today] }
   #
   # You can also remove an existing one:
-  # config.periods.delete(:mtd)
+  # config.ranges.delete(:mtd)
   #
   # Or add to the defaults:
-  # config.periods.add :custom, "Custom", -> { [6.hours.ago, 2.minutes.ago] }
+  # config.ranges.add :custom, "Custom", -> { [6.hours.ago, 2.minutes.ago] }
   #
   # Or overwrite the defaults:
-  # config.periods.add :mtd, "Custom MTD", -> { [2.weeks.ago, Time.current] }
+  # config.ranges.add :mtd, "Custom MTD", -> { [2.weeks.ago, Time.current] }
   #
   # And handle the default range, which will be used if no range is given:
-  # config.periods.default = '3d'
+  # config.ranges.default = '3d'
 
   # ==> Caching
   # config.cache.enabled = false
