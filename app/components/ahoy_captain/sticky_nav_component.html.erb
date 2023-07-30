@@ -1,6 +1,8 @@
 <div class="max-w-6xl flex justify-between sticky top-0 min-h-sm z-[99999] bg-base-300 py-4">
   <div class="flex items-center">
-    <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full hover:bg-accent-content'>
+    <a href="/">
+      <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full'>
+    </a>
     <% if params[:q] %>
       <%= render AhoyCaptain::Filter::TagContainerComponent.new(filters: params[:q]) %>
     <% else %>
