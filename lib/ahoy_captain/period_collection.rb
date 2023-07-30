@@ -14,7 +14,7 @@ module AhoyCaptain
       {
         realtime: {
           label: "Realtime",
-          range: -> { [3.minute.ago, Time.current] },
+          range: -> { [1.minute.ago] },
         },
         day: {
           label: "Day",

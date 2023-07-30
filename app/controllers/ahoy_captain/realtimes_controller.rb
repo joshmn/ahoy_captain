@@ -1,7 +1,7 @@
 module AhoyCaptain
   class RealtimesController < ApplicationController
     def show
-      @total =::Ahoy::Visit.where(started_at: 1.minute.ago..).count
+      @total = visit_query.where('started_at > ?', 1.minute.ago).distinct(:id).count
     end
   end
 end

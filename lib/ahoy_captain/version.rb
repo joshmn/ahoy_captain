@@ -1,3 +1,3 @@
 module AhoyCaptain
-  VERSION = "0.696969"
+  VERSION = "0.7"
 end

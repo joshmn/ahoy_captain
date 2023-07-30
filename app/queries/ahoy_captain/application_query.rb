@@ -77,15 +77,25 @@ module AhoyCaptain
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now.to_i).result.to_sql
       if range
         if type == :event
-          ransackable_params['time_gt'] = range[0]
-          ransackable_params['time_lt'] = range[1]
-          ransackable_params["visit_started_at_gt"] = range[0]
-          ransackable_params["visit_started_at_lt"] = range[1]
+          if range.size == 2
+            ransackable_params['time_gt'] = range[0]
+            ransackable_params['time_lt'] = range[1]
+            ransackable_params["visit_started_at_gt"] = range[0]
+            ransackable_params["visit_started_at_lt"] = range[1]
+          else
+            ransackable_params['time_gt'] = range[0]
+            ransackable_params["visit_started_at_gt"] = range[0]
+          end
         elsif type == :visit
-          ransackable_params["started_at_gt"] = range[0]
-          ransackable_params["started_at_lt"] = range[1]
-          ransackable_params["events_time_gt"] = range[0]
-          ransackable_params["events_time_lt"] = range[1]
+          if range.size == 2
+            ransackable_params["started_at_gt"] = range[0]
+            ransackable_params["started_at_lt"] = range[1]
+            ransackable_params["events_time_gt"] = range[0]
+            ransackable_params["events_time_lt"] = range[1]
+          else
+            ransackable_params["started_at_gt"] = range[0]
+            ransackable_params["events_time_gt"] = range[0]
+          end
         end
       end
 
