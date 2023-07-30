@@ -59,7 +59,15 @@ export default class extends Controller {
     const otherFilters = this.selectTargets.filter(filter => filter != target);
     otherFilters.forEach(function(filter) {
       filter.slim.getSelected().forEach(val => {
-        query.append(`${filter.name}[]`, val);
+        const filterName = `${filter.name}[]`
+        if(query.has(filterName)) {
+          console.log("has the filter")
+          if(!query.get(`${filter.name}[]`).includes(val)) {
+            query.append(filterName, value)
+          }
+        } else {
+          query.append(filterName, value)
+        }
       })
     });
     query.set(`q[${target.dataset.filterColumnValue}_i_cont]`, search || "");
@@ -113,8 +121,16 @@ export default class extends Controller {
     const searchParams = new URLSearchParams(window.location.search);
     const filters = this.#filtersForQuery();
     filters.forEach(filter => {
+      const name = `q[${filter.column_predicate}][]`
+      const selectedValues = searchParams.getAll(name)
       filter.selections.forEach(selection => {
-        searchParams.append(`q[${filter.column_predicate}][]`,selection);
+        if(selectedValues) {
+          if(!selectedValues.includes(selection)) {
+            searchParams.append(name, selection)
+          }
+        } else {
+          searchParams.append(name, selection)
+        }
       })
     });
     ['input[name="start_date"]', 'input[name="end_date"]'].forEach(selector => {
