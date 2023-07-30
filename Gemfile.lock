@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ahoy_captain (0.6969)
+    ahoy_captain (0.696969)
       ahoy_matey (>= 1.1)
       chartkick (>= 4)
       groupdate (>= 5)
