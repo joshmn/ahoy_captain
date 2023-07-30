@@ -26,7 +26,8 @@ AhoyCaptain.configure do |config|
     event "$appointment.updated"
   end
 
-  config.funnel "Appointments" do
+  config.funnel :appointments do
+    label "Appointments"
     goal :appointment_created
     goal :appointment_updated
   end

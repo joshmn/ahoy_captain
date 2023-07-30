@@ -1,15 +1,24 @@
 module AhoyCaptain
   class Funnel
-    attr_accessor :label
+    attr_accessor :id
     attr_reader :goals
 
     def initialize
+      @id = nil
       @label = nil
       @goals = []
     end
 
     def goal(id)
       @goals << AhoyCaptain.config.goals[id]
+    end
+
+    def label(value)
+      @label = value
+    end
+
+    def title
+      @label
     end
   end
 
@@ -21,7 +30,7 @@ module AhoyCaptain
     end
 
     def register(funnel)
-      @funnels[funnel.label] = funnel
+      @funnels[funnel.id] = funnel
     end
 
     def each(&block)
@@ -29,7 +38,7 @@ module AhoyCaptain
     end
 
     def [](value)
-      @funnels[value]
+      @funnels[value.to_sym]
     end
   end
 end

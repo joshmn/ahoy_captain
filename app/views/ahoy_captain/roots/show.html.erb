@@ -80,15 +80,15 @@
           Goals
         </a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
-          <% AhoyCaptain.config.funnels.each do |label, id| %>
+          <% AhoyCaptain.config.funnels.each do |id, funnel| %>
             <% dropdown.with_option do %>
-              <a href="<%= funnel_path(1, search_params) %>" data-turbo-frame="goals" class="link link-primary">
-                <%= label.humanize %>
+              <a href="<%= funnel_path(id, search_params) %>" data-turbo-frame="goals" class="link link-primary">
+                <%= funnel.title %>
               </a>
             <% end %>
           <% end %>
         <% end %>
-        
+
       <% end %>
         <% component.with_statistic_display do %>
         <%= turbo_frame_tag :goals, src: goals_path(search_params) %>

@@ -33,9 +33,9 @@ module AhoyCaptain
       @goals.register(instance)
     end
 
-    def funnel(label, &block)
+    def funnel(id, &block)
       instance = Funnel.new
-      instance.label = label
+      instance.id = id
       instance.instance_exec(&block)
       @funnels.register(instance)
     end
