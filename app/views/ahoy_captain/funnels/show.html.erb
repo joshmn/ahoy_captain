@@ -1,11 +1,17 @@
 <%= turbo_frame_tag :funnel do %>
-  <% @funnel.steps.each do |step| %>
-    <h1><%= step.title %></h1>
+  <% prev_step = nil %>
+  <% @funnel.steps.each do |funnel| %>
+    <h1><%= funnel.step %></h1>
     <ul>
-      <li><%= step.enter_label %>: <%= step.goal_1_count %></li>
-      <li><%= step.exit_label %>: <%= step.goal_2_count %></li>
+      <% if prev_step %>
+        <li>Visitors: <%= prev_step.count %></li>
+        <li>Dropoff: <%= funnel.drop_off %></li>
+      <% else %>
+      <li>Entered funnel: <%= funnel.count %></li>
+      <li>Never entered funnel: <%= @funnel.total %></li>
+      <% end %>
     </ul>
+    <% prev_step = funnel %>
   <% end %>
 
-  <%= column_chart @funnel.to_chart, stacked: true %>
 <% end %>
