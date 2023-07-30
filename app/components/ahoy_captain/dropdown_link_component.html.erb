@@ -2,13 +2,14 @@
   <label 
     tabindex="0" 
     class="cursor-pointer flex <%= classes %>" 
+    data-action='click->dropdown-label#removeHidden'
     >
     <span data-dropdown-label-target="label"><%= title %></span>
     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path fill="currentColor" d="M16.53 8.97a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 1 1 1.06-1.06L12 12.44l3.47-3.47a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
     </svg>
   </label>
-  <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+  <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52" data-dropdown-label-target="close">
     <% options.each do |option| %>
       <li data-action="click->dropdown-label#setLabel">
         <%= option %>
