@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AhoyCaptain::FilterComponent < ViewComponent::Base
+class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
   def initialize(label:, column:, url:, predicates:)
     @label = label
     @column = column

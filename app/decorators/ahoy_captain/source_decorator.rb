@@ -3,8 +3,8 @@ module AhoyCaptain
     def display_name
 
       display = %Q(
-        <div class='flex justify-start space-x-8 col-span-1'>
-          <img class='transparent w-5 h-5 mt-2'
+        <div class='flex justify-start space-x-8 col-span-1 items-center'>
+          <img class='transparent w-5 h-5'
             src='https://www.google.com/s2/favicons?domain=#{object.referring_domain}&sz=32'
           />
           <span>#{object.referring_domain}</span>

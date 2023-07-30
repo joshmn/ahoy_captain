@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AhoyCaptain::FilterModalComponent < ViewComponent::Base
+class AhoyCaptain::Filter::ModalComponent < ViewComponent::Base
   renders_one :modal_display
 
   def initialize(title: nil, id:)
