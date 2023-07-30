@@ -46,7 +46,7 @@ module AhoyCaptain
       cached(:bounce_rate) do
         begin
         result = Stats::BounceRatesQuery.call(params)
-        result[0].bounce_rate.round(2) / 10
+        result[0].bounce_rate.round(2)
         rescue ::ActiveRecord::StatementInvalid => e
         if e.message.include?("PG::DivisionByZero")
           return "0"
