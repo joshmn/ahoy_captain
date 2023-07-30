@@ -1,12 +1,10 @@
 module AhoyCaptain
   class GoalsController < ApplicationController
     def index
-      @goals = {}
-      AhoyCaptain.configuration.goals.each do |goal|
-        @goals[goal.title] = cached(:goal, goal.id) do
-          event_query.where(name: goal.event_name).count
-        end
-      end
+      @goals = [
+        OpenStruct.new(name: "Appointment Created", uniques: 3, total: 5, conversion_rate: 0.02)
+      ]
+
     end
   end
 end
