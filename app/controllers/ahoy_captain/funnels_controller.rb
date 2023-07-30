@@ -3,7 +3,7 @@ module AhoyCaptain
     def index
       @funnels = {}
       AhoyCaptain.configuration.funnels.each do |funnel|
-        @funnels[funnel.label] = FunnelPresenter.new(funnel, visit_query).build
+        @funnels[funnel.label] = FunnelPresenter.new(funnel, event_query).build
       end
 
       abort
@@ -11,7 +11,7 @@ module AhoyCaptain
 
     def show
       funnel = AhoyCaptain.configuration.funnels["Appointments"]
-      @funnel = FunnelPresenter.new(funnel, visit_query).build
+      @funnel = FunnelPresenter.new(funnel, event_query).build
     end
   end
 end
