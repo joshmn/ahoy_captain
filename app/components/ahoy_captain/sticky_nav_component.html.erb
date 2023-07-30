@@ -10,21 +10,12 @@
     <% end %>
   </div>
   <div class="flex flex-row-reverse col-span-2 items-center">
-    <%= render AhoyCaptain::DropdownLinkComponent.new(title: 'Period', classes: 'btn btn-base-100 no-underline text-base-content hover:text-base-content hover:bg-neutral') do |dropdown| %>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period]).try(:label) || "Period"), classes: 'btn btn-base-100 no-underline text-base-content hover:text-base-content hover:bg-neutral') do |dropdown| %>
       <% dropdown.with_option do %>
-        <button class='link no-underline'>Today</button>
-        <button class='link no-underline'>Realtime</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Last 7 days</button>
-        <button class='link no-underline'>Last 30 days</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Month to Date</button>
-        <button class='link no-underline'>Last month</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Year to Date</button>
-        <button class='link no-underline'>Last 12 months</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>All time</button>
+        <% AhoyCaptain.config.ranges.each do |param, range| %>
+          <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.merge("period" => param).to_query %>"><%= range.label %></a>
+        <% end %>
+
         <button class='link no-underline'>Custom range</button>
       <% end %>
     <% end %>
