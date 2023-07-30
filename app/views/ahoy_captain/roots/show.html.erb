@@ -14,11 +14,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= sources_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="sources" class='link link-primary'>All</a>
+        <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class='link link-primary'>All</a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
           <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
             <% dropdown.with_option do %>
-              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-action="advance" data-turbo-frame="sources">
+              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources">
                 <%= source.titleize.gsub("Utm", "UTM") %>
               </a>
             <% end %>
@@ -35,9 +35,9 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= top_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Top Pages</a>
-        <a href="<%= entry_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Entry Pages</a>
-        <a href="<%= exit_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Exit Pages</a>
+        <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Top Pages</a>
+        <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Entry Pages</a>
+        <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" class="link link-primary">Exit Pages</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :pages, src: top_pages_path(search_params) %>
@@ -49,9 +49,9 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= countries_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Countries</a>
-        <a href="<%= regions_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Regions</a>
-        <a href="<%= cities_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Cities</a>
+        <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Countries</a>
+        <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Regions</a>
+        <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" class="link link-primary">Cities</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :geography, src: countries_path(search_params) %>
@@ -63,9 +63,9 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= devices_browsers_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">Browser</a>
-        <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">OS</a>
-        <a href="<%= devices_device_types_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">Size</a>
+        <a href="<%= devices_browsers_path(search_params) %>"  data-turbo-frame="devices" class="link link-primary">Browser</a>
+        <a href="<%= devices_operating_systems_path(search_params) %>"  data-turbo-frame="devices" class="link link-primary">OS</a>
+        <a href="<%= devices_device_types_path(search_params) %>"  data-turbo-frame="devices" class="link link-primary">Size</a>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params) %>
@@ -74,23 +74,27 @@
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline">Details</button>
       <% end %>
     <% end %>
+    <%= render AhoyCaptain::TileComponent.new(wide: true) do |component| %>
+      <% component.with_display_links do %>
+        <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link link-primary">
+          Goals
+        </a>
+        <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
+          <% AhoyCaptain.config.funnels.each do |label, id| %>
+            <% dropdown.with_option do %>
+              <a href="<%= funnel_path(1, search_params) %>" data-turbo-frame="goals" class="link link-primary">
+                <%= label.humanize %>
+              </a>
+            <% end %>
+          <% end %>
+        <% end %>
+        
+      <% end %>
+        <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
+      <% end %>
+    <% end %>
   </div>
-
-  <div class='col-span-1 p-4'>
-    <div class="card-header flex justify-between">
-      <h5 class='text-lg'>Goals</h5>
-
-    </div>
-    <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
-  </div>
-  <div class='col-span-1 p-4'>
-    <div class="card-header flex justify-between">
-      <h5 class='text-lg'>Funnels</h5>
-
-    </div>
-    <%= turbo_frame_tag :funnels, src: funnels_path(search_params), data: { "navigation-target" => 'navigable' } %>
-  </div>
-
 </main>
 
 <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>

@@ -5,17 +5,21 @@
   </div>
   <div class='min-h-[420px]'>
     <div class="grow">
-      <% items.each do |item| %>
-        <div class='leading-10 flex relative'>
-          <progress class='progress-primary bg-base-100 h-8 grow' value="<%= item.unit_amount %>" max="<%= max_amount %>">
-          </progress>
-          <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-3 h-8">
-            <%= item.display_name %>
-          </span>
-          <span class="w-8 ml-8 text-right">
-            <%= render AhoyCaptain::TooltipComponent.new(item: item) %>
-          </span>
-        </div>
+      <% if items.respond_to?(:each) && items.any? %>
+        <% items.each do |item| %>
+          <div class='leading-10 flex relative'>
+            <progress class='progress-primary bg-base-100 h-8 grow' value="<%= item.unit_amount %>" max="<%= max_amount %>">
+            </progress>
+            <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-3 h-8">
+              <%= item.display_name %>
+            </span>
+            <span class="w-8 ml-8 text-right">
+              <%= render AhoyCaptain::TooltipComponent.new(item: item) %>
+            </span>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No data found</p>
       <% end %>
     </div>
   </div>
