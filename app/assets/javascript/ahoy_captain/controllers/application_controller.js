@@ -1,8 +1,6 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["label"]
-
     connect() {
         if(new URLSearchParams(window.location.search).get("period") === 'realtime') {
             this.element.querySelectorAll('turbo-frame').forEach(frame => {
