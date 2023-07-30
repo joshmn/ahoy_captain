@@ -15,7 +15,11 @@ class AhoyCaptain::Filter::TagComponent < ViewComponent::Base
 
   def url
     search_params = helpers.search_params.deep_dup
-    search_params["q"][@column_predicate] = search_params["q"][@column_predicate] - [@category]
+    if search_params["q"][@column_predicate].is_a?(Array)
+      search_params["q"][@column_predicate] = search_params["q"][@column_predicate] - [@category]
+    else
+      search_params["q"].delete(@column_predicate)
+    end
 
     request.path + "?" + search_params.to_query
   end

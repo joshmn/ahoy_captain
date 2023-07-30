@@ -1,18 +1,3 @@
 <%= turbo_frame_tag :goals do %>
-  <% prev_step = nil %>
-  <% @funnel.steps.each do |funnel| %>
-    <h1><%= funnel.step %></h1>
-    <ul>
-      <% if prev_step %>
-        <li>Visitors: <%= prev_step.count %></li>
-        <li>Dropoff: <%= funnel.drop_off %></li>
-      <% else %>
-      <li>Entered funnel: <%= funnel.count %></li>
-      <li>Never entered funnel: <%= @funnel.total %></li>
-      <% end %>
-    </ul>
-    <% prev_step = funnel %>
-  <% end %>
-
   <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>"></canvas>
 <% end %>
