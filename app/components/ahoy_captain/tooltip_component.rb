@@ -4,8 +4,8 @@ class AhoyCaptain::TooltipComponent < ViewComponent::Base
   end
 
   def abbreviate
-    
-    if amount >= 1000
+
+    if amount.to_i >= 1000
       number_to_human(amount, format: '%n%u', precision: 2, units: { thousand: 'k', million: 'm', billion: 'b' })
     else
       amount.to_s

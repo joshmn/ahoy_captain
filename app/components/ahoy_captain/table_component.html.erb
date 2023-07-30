@@ -25,7 +25,7 @@
             <span class="w-8 ml-8 text-right">
               <%= render AhoyCaptain::TooltipComponent.new(amount: item.unit_amount) %>
             </span>
-            
+
             <% if additional_cols.include?(:percent_total) %>
               <span class="w-8 ml-8 text-right"><%= percent_total(item) %></span>
             <% end %>

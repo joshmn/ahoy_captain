@@ -1,3 +1,40 @@
 <%= turbo_frame_tag :goals do %>
-  <%= render AhoyCaptain::TableComponent.new(items: @goals, category_name: 'Goal', unit_name: 'Unique', additional_cols: [:total, :conversion_rate]) %>
+  <div class="flex flex-col min-h-[380px] w-full pt-4">
+    <div class="flex text-sm font-bold text-base-content mb-4">
+      <span class="grow">Goal</span>
+      <span >Uniques</span>
+      <span class="w-8 ml-8 text-right">Total</span>
+      <span class="w-8 ml-8 text-right">CR</span>
+    </div>
+    <div class='min-h-[420px]'>
+      <div class="grow">
+        <% if @presenter.goals.respond_to?(:each) && @presenter.goals.any? %>
+          <% @presenter.goals.each do |item| %>
+            <div class='leading-10 flex relative'>
+              <progress class='progress-primary bg-base-100 h-8 grow' value="<%= item.uniques %>" max="<%= item.total %>">
+              </progress>
+              <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-3 h-8 text-base-content">
+              <%= item.name %>
+            </span>
+<% abort if item.name.blank? %>
+              <span class="w-8 ml-8 text-right">
+              <%= render AhoyCaptain::TooltipComponent.new(amount: item.uniques) %>
+            </span>
+              <span class="w-8 ml-8 text-right">
+              <%= render AhoyCaptain::TooltipComponent.new(amount: item.total) %>
+            </span>
+
+              <span class="w-8 ml-8 text-right">
+                <%= item.conversion_rate %>%
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <p>No data found</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
 <% end %>
