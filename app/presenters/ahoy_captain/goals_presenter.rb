@@ -23,12 +23,18 @@ module AhoyCaptain
         queries
       ).select(select).from("#{last_goal.id}")
 
-      items = ::Ahoy::Event.with(steps: steps).select("total, uniques, name, 0 as conversion_rate").from("steps")
-      items.each do |item|
-        item.name = map[item.name].title
-        item.conversion_rate = ((item.total / total.to_d) * 100).round(2) * 100
+      items = ::Ahoy::Event.with(steps: steps).select("total, uniques, name, 0 as conversion_rate").from("steps").index_by(&:name)
+      @goals = []
+      map.each do |name, goal|
+        if items[name]
+          items[name].name = map[name].title
+          items[name].conversion_rate = ((items[name].total / total.to_d) * 100).round(2) * 100
+          @goals << items[name]
+        else
+          @goals << OpenStruct.new(name: map[name].title, uniques: 0, total: 0, conversion_rate: 0)
+        end
       end
-      @goals = items
+
       self
     end
 
