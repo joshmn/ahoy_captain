@@ -10,7 +10,7 @@
     <% end %>
   </div>
   <div class="flex flex-row-reverse col-span-2 items-center">
-    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period]).try(:label) || "Period"), classes: 'btn btn-base-100 no-underline text-base-content hover:text-base-content hover:bg-neutral') do |dropdown| %>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period]).try(:label) || "Period"), classes: 'btn btn-base-100 no-underline text-base-content dark:hover:text-base-content dark:hover:bg-neutral') do |dropdown| %>
       <% dropdown.with_option do %>
         <% AhoyCaptain.config.ranges.each do |param, range| %>
           <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.except("start_date", "end_date").merge("period" => param).to_query %>"><%= range.label %></a>
