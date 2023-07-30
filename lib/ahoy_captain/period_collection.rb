@@ -82,7 +82,7 @@ module AhoyCaptain
     end
 
     def find(value)
-      @periods[value.to_sym]
+      @periods[value.try(:to_sym)]
     end
 
     def all
