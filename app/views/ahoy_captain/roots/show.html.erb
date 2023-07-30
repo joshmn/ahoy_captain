@@ -59,6 +59,11 @@
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#geography" class="link no-underline">Details</button>
       <% end %>
+      <% unless @countries.present? %>
+        <%= turbo_frame_tag :not_found do %>
+          <%= render AhoyCaptain::TableComponent.new(items: 'No data found', category_name: 'Country', unit_name: 'Visitors') %>
+        <% end %>
+      <% end %>
     <% end %>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
