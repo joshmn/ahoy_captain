@@ -1,10 +1,7 @@
 module AhoyCaptain
   class GoalsController < ApplicationController
     def index
-      @goals = [
-        OpenStruct.new(name: "Appointment Created", uniques: 3, total: 5, conversion_rate: 0.02)
-      ]
-
+      @goals = 10.times.map {|item| OpenStruct.new(display_name: "Appointment Created", item_amount: 3, total: 5, conversion_rate: 0.02) }
     end
   end
 end
