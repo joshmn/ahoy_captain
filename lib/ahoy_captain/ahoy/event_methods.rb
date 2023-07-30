@@ -4,6 +4,10 @@ module AhoyCaptain
       extend ActiveSupport::Concern
 
       included do
+        ransacker :route do |parent|
+          Arel.sql(AhoyCaptain.config.event[:url_column].gsub("properties", "ahoy_events.properties"))
+        end
+
         scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
 
         scope :with_url, -> {
@@ -98,6 +102,10 @@ module AhoyCaptain
 
         def ransackable_scopes(auth_object = nil)
           super + [:entry_page_in, :entry_page_not_in, :exit_page_in, :entry_page_not_in, :route_in, :route_not_in, :route_i_cont, :entry_page_i_cont, :exit_page_i_cont]
+        end
+
+        def ransackable_associations(auth_object = nil)
+          super + [:visit]
         end
       end
     end

@@ -16,6 +16,7 @@ Ransack.configure do |c|
 end
 
 AhoyCaptain.configure do |config|
+  config.ranges.delete :all
   config.goal :appointment_created do
     label "Appointment Created"
     event "$appointment.created"
