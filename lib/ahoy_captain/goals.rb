@@ -31,5 +31,9 @@ module AhoyCaptain
     def each(&block)
       @goals.values.each(&block)
     end
+
+    def [](value)
+      @goals[value]
+    end
   end
 end

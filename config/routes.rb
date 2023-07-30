@@ -13,7 +13,7 @@ AhoyCaptain::Engine.routes.draw do
   end
 
   resource :realtime, only: [:show]
-  resources :funnels, only: [:index]
+  resources :funnels, only: [:index, :show]
   resources :goals, only: [:index]
   resource :stats, only: [:show]
   resources :countries, only: [:index]

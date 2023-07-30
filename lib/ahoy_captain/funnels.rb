@@ -9,7 +9,7 @@ module AhoyCaptain
     end
 
     def goal(id)
-      @goals << id
+      @goals << AhoyCaptain.config.goals[id]
     end
   end
 
@@ -17,15 +17,19 @@ module AhoyCaptain
     include Enumerable
 
     def initialize
-      @funnels = []
+      @funnels = {}
     end
 
     def register(funnel)
-      @funnels << funnel
+      @funnels[funnel.label] = funnel
     end
 
     def each(&block)
       @funnels.each(&block)
+    end
+
+    def [](value)
+      @funnels[value]
     end
   end
 end

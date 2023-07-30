@@ -1,0 +1,7 @@
+<%= turbo_frame_tag :goals do %>
+  <ul>
+    <% @goals.each do |label, count| %>
+      <li><%= label %>: <%= count %></li>
+    <% end %>
+  </ul>
+<% end %>

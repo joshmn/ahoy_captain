@@ -1,0 +1,9 @@
+<%= turbo_frame_tag :funnel do %>
+  <% @funnel.steps.each do |step| %>
+    <h1><%= step.title %></h1>
+    <ul>
+      <li><%= step.enter_label %>: <%= step.goal_1_count %></li>
+      <li><%= step.exit_label %>: <%= step.goal_2_count %></li>
+    </ul>
+  <% end %>
+<% end %>

@@ -7,8 +7,6 @@ module AhoyCaptain
           event_query.where(name: goal.event_name).count
         end
       end
-
-      render json: @goals
     end
   end
 end

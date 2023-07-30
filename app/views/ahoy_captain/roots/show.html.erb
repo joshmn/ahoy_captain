@@ -76,9 +76,21 @@
     <% end %>
   </div>
 
-  <div>
+  <div class='col-span-1 p-4'>
+    <div class="card-header flex justify-between">
+      <h5 class='text-lg'>Goals</h5>
 
+    </div>
+    <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
   </div>
+  <div class='col-span-1 p-4'>
+    <div class="card-header flex justify-between">
+      <h5 class='text-lg'>Funnels</h5>
+
+    </div>
+    <%= turbo_frame_tag :funnels, src: funnels_path(search_params), data: { "navigation-target" => 'navigable' } %>
+  </div>
+
 </main>
 
 <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>

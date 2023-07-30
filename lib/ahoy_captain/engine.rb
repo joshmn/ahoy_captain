@@ -16,5 +16,9 @@ module AhoyCaptain
       app.config.assets.paths << AhoyCaptain::Engine.root.join("app/images")
       app.config.assets.precompile << "ahoy_captain/application.js"
     end
+
+    ActiveSupport.on_load(:active_record) do
+      require "ahoy_captain/active_record"
+    end
   end
 end
