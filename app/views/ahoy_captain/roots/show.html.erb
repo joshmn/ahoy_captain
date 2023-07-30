@@ -75,6 +75,10 @@
       <% end %>
     <% end %>
   </div>
+
+  <div>
+
+  </div>
 </main>
 
 <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
@@ -101,7 +105,7 @@
 
 <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
   <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_types, url: filters_screens_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_type, url: filters_screens_path, predicates: [:in, :not_in]) %>
   <% end %>
 <% end %>
 
