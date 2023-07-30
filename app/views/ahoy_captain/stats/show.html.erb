@@ -1,73 +1,71 @@
 <%= turbo_frame_tag :stats do %>
-  <div>
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Last 30 days</h3>
-    <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow grid-cols-2 md:grid-cols-6 md:divide-x md:divide-y-0">
-      <div class="p-3 md:p-3">
-        <a  href="<%= stats_unique_visitors_url(search_params) %>" data-turbo-frame="chart">
-          <dt class="text-base font-normal text-gray-900">Unique Visitors</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= number_with_delimiter @presenter.unique_visitors %>
-            </div>
-          </dd>
-        </a>
-      </div>
-      <div class="p-3 md:p-3">
-        <a href="<%= stats_total_visits_path(search_params) %>" data-turbo-frame="chart">
-          <dt class="text-base font-normal text-gray-900">Total Visits</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= number_with_delimiter @presenter.total_visits %>
-            </div>
-          </dd>
-        </a>
-      </div>
-      <div class="p-3 md:p-3">
-        <a href="<%= stats_total_pageviews_path(search_params) %>" data-turbo-frame="chart">
+  <h3 class="text-base font-semibold leading-6 text-base-content">Last 30 days</h3>
+  <dl class="mt-5 grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg  shadow grid-cols-2 md:grid-cols-6 md:divide-x md:divide-y-0">
+    <div class="p-3 md:p-3">
+      <a  href="<%= stats_unique_visitors_url(search_params) %>" data-turbo-frame="chart">
+        <dt class="text-base font-normal text-base-content">Unique Visitors</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= number_with_delimiter @presenter.unique_visitors %>
+          </div>
+        </dd>
+      </a>
+    </div>
+    <div class="p-3 md:p-3">
+      <a href="<%= stats_total_visits_path(search_params) %>" data-turbo-frame="chart">
+        <dt class="text-base font-normal text-base-content">Total Visits</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= number_with_delimiter @presenter.total_visits %>
+          </div>
+        </dd>
+      </a>
+    </div>
+    <div class="p-3 md:p-3">
+      <a href="<%= stats_total_pageviews_path(search_params) %>" data-turbo-frame="chart">
 
-          <dt class="text-base font-normal text-gray-900">Total Pageviews</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= number_with_delimiter @presenter.total_pageviews %>
-            </div>
-          </dd>
-        </a>
-      </div>
-      <div class="p-3 md:p-3">
-        <a href="<%= stats_views_per_visits_path(search_params) %>" data-turbo-frame="chart">
+        <dt class="text-base font-normal text-base-content">Total Pageviews</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= number_with_delimiter @presenter.total_pageviews %>
+          </div>
+        </dd>
+      </a>
+    </div>
+    <div class="p-3 md:p-3">
+      <a href="<%= stats_views_per_visits_path(search_params) %>" data-turbo-frame="chart">
 
-          <dt class="text-base font-normal text-gray-900">Views per visit</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= number_with_delimiter @presenter.views_per_visit %>
-            </div>
-          </dd>
-        </a>
-      </div>
-      <div class="p-3 md:p-3">
-        <a href="<%= stats_bounce_rates_path(search_params) %>" data-turbo-frame="chart">
+        <dt class="text-base font-normal text-base-content">Views per visit</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= number_with_delimiter @presenter.views_per_visit %>
+          </div>
+        </dd>
+      </a>
+    </div>
+    <div class="p-3 md:p-3">
+      <a href="<%= stats_bounce_rates_path(search_params) %>" data-turbo-frame="chart">
 
-          <dt class="text-base font-normal text-gray-900">Bounce rate</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= number_with_delimiter @presenter.bounce_rate %>
-            </div>
-          </dd>
-        </a>
-      </div>
-      <div class="p-3 md:p-3">
-        <a href="<%= stats_visit_durations_path(search_params) %>" data-turbo-frame="chart">
+        <dt class="text-base font-normal text-base-content">Bounce rate</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= number_with_delimiter @presenter.bounce_rate %>
+          </div>
+        </dd>
+      </a>
+    </div>
+    <div class="p-3 md:p-3">
+      <a href="<%= stats_visit_durations_path(search_params) %>" data-turbo-frame="chart">
 
-          <dt class="text-base font-normal text-gray-900">Visit duration</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-            <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-              <%= @presenter.visit_duration %>
-            </div>
-          </dd>
-        </a>
-      </div>
-    </dl>
-    <%= turbo_frame_tag :chart, src: stats_unique_visitors_path(search_params) do %>
-    <% end %>
-  </div>
+        <dt class="text-base font-normal text-base-content">Visit duration</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-accent-content">
+            <%= @presenter.visit_duration %>
+          </div>
+        </dd>
+      </a>
+    </div>
+  </dl>
+  <%= turbo_frame_tag :chart, src: stats_unique_visitors_path(search_params) do %>
+  <% end %>
 <% end %>

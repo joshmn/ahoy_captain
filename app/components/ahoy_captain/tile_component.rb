@@ -5,11 +5,12 @@ class AhoyCaptain::TileComponent < ViewComponent::Base
   renders_one :display_links
   renders_one :details_cta
 
-  def initialize(title:)
+  def initialize(title: nil, wide: false)
     @title = title
+    @wide = wide
   end
 
   private
 
-  attr_reader :title
+  attr_reader :title, :wide
 end

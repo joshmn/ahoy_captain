@@ -1,26 +1,16 @@
-<main class='bg-base-300 min-h-screen pb-4'>
-  <div class="relative">
-    <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller: "realtime" } %>
-  </div>
-  <div class="flex flex-row-reverse col-span-2 max-w-6xl mx-auto">
-    <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>
-      <% dropdown.with_header_icon do %>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-ml-1 mr-1 h-4 w-4 md:h-4 md:w-4">
-          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path>
-        </svg>
-      <% end %>
-      <% dropdown.with_option do %>
-        <button onClick="pageModal.showModal()" class='link no-underline'>Page</button>
-        <button onClick="countryModal.showModal()" class='link no-underline'>Geography</button>
-        <button onClick="screenModal.showModal()" class='link no-underline'>Screen</button>
-        <button onClick="osModal.showModal()" class='link no-underline'>Operating System</button>
-        <button onClick="utmModal.showModal()" class='link no-underline'>UTM Tags</button>
+<main class='bg-base-300 min-h-screen pb-4 max-w-6xl mx-auto'>
+  <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
+    <% nav.with_realtime_update do %>
+      <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" } %>
+    <% end %>
+  <% end %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4">
+    <%= render AhoyCaptain::TileComponent.new(wide: true) do |component| %>
+      <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :stats, src: stats_path(search_params) %>
       <% end %>
     <% end %>
-  </div>
-  <%= turbo_frame_tag :stats, src: stats_path(search_params) %>
-
-  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 max-w-6xl mx-auto">
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
