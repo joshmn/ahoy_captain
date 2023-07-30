@@ -8,6 +8,7 @@ module AhoyCaptain
 
     def within_range
       if range
+        abort
         @query = @query.where('started_at >= ? and started_at < ?', range[0], range[1])
       end
 

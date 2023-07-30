@@ -14,31 +14,31 @@ module AhoyCaptain
       {
         realtime: {
           label: "Realtime",
-          range: -> { [1.minute.ago.to_datetime, Time.current] },
+          range: -> { [3.minute.ago, Time.current] },
         },
         day: {
           label: "Day",
-          range: -> { [Date.today.beginning_of_day.to_datetime, Time.current] },
+          range: -> { [Time.current.beginning_of_day, Time.current] },
         },
         '7d': {
           label: "7 Days",
-          range: -> {  [7.days.ago.to_datetime, Time.current] },
+          range: -> {  [7.days.ago, Time.current] },
         },
         '30d': {
           label: "30 Days",
-          range: -> { [30.days.ago.to_datetime, Time.current] },
+          range: -> { [30.days.ago, Time.current] },
         },
         mtd: {
           label: "Month-to-date",
-          range: -> { [Time.current.beginning_of_month.to_datetime, Time.current] },
+          range: -> { [Time.current.beginning_of_month, Time.current] },
         },
         lastmonth: {
           label: "Last month",
-          range: -> { [1.month.ago.beginning_of_month.to_datetime, Time.current] },
+          range: -> { [1.month.ago.beginning_of_month, 1.month.ago.end_of_month] },
         },
         ytd: {
           label: "This year",
-          range: -> { [Time.current.beginning_of_year.to_datetime, Time.current] },
+          range: -> { [Time.current.beginning_of_year, Time.current] },
         },
         '12mo': {
           label: "12 months",
