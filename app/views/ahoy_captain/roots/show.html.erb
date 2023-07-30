@@ -1,4 +1,4 @@
-<main class='bg-base-300 min-h-screen pb-4 max-w-6xl mx-auto'>
+<main class='bg-base-300 min-h-screen pb-4 max-w-6xl mx-auto' data-controller="application">
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
       <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" }, loading: :lazy %>
