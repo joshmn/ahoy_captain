@@ -13,6 +13,13 @@ class AhoyCaptain::Filter::TagComponent < ViewComponent::Base
     @category = category
   end
 
+  def url
+    search_params = helpers.search_params.deep_dup
+    search_params["q"][@column_predicate] = search_params["q"][@column_predicate] - [@category]
+
+    request.path + "?" + search_params.to_query
+  end
+
   private
   attr_reader :column_predicate, :category
 

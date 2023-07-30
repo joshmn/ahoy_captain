@@ -1,9 +1,9 @@
 <div class="bg-base-100 py-2 px-4 mx-2 flex items-center" data-controller='filter-tag' data-filter-tag-category-value="<%= category %>" data-filter-tag-column-predicate-value="<%= column_predicate %>">
   <%= column_with_predicate %>
   <span class="font-bold mx-2"> <%= category %></span>
-  <button class="hover:text-primary" data-action="click->filter-tag#remove">
+  <a class="hover:text-primary" href="<%= url %>">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-4 h-4">
       <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"></path>
     </svg>
-  </button>
+  </a>
 </div>
