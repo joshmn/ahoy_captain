@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    ahoy_captain (0.1.1)
+    ahoy_captain (0.69)
       ahoy_matey (>= 1.1)
       chartkick (>= 4)
       groupdate (>= 5)
       importmap-rails (>= 1)
-      pagy
+      pagy (>= 4)
       rails (>= 6)
       ransack (>= 2.3)
       stimulus-rails (>= 1.1)
@@ -109,10 +109,6 @@ GEM
     importmap-rails (1.1.6)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    lol_dba (2.4.0)
-      actionpack
-      activerecord
-      railties
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -189,7 +185,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.3-arm64-darwin)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
     thor (1.2.2)
@@ -217,13 +212,11 @@ DEPENDENCIES
   ahoy_captain!
   better_errors
   binding_of_caller
-  lol_dba
   pg
   puma
   rails (>= 6)
   sassc
   sprockets-rails
-  sqlite3
 
 BUNDLED WITH
    2.4.13

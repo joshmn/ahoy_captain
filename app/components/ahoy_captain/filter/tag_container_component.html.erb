@@ -1,5 +1,5 @@
 <% filters.each do |param| %>
   <% column_predicate, category = param %>
-  <%= render AhoyCaptain::Filter::TagComponent.new(column_predicate:, category:) %>
+  <%= render AhoyCaptain::Filter::TagComponent.new(column_predicate: column_predicate, category: category) %>
 <% end %>
 

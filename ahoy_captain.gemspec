@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version     = AhoyCaptain::VERSION
   spec.authors     = ["joshmn"]
   spec.homepage    = spec.metadata["homepage_uri"]
-  spec.summary     = "A full-featured, mountable analytics dashboard for your Rails app."
+  spec.summary     = "A full-featured, mountable analytics dashboard for your Rails app, powered by Ahoy."
   spec.description = spec.summary
   spec.license     = "MIT"
 
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "ahoy_matey", ">= 1.1"
   spec.add_dependency "chartkick", ">= 4"
   spec.add_dependency "groupdate", ">= 5"
-  spec.add_dependency "pagy"
+  spec.add_dependency "pagy", ">= 4"
 
   spec.add_development_dependency "rails", ">= 6"
   spec.add_development_dependency "sprockets-rails"
@@ -35,5 +35,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sassc"
   spec.add_development_dependency "puma"
   spec.add_development_dependency "pg"
-  spec.add_development_dependency "lol_dba"
 end
