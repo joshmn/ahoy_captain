@@ -1,53 +1,39 @@
 module AhoyCaptain
   class GoalsPresenter
-
-    attr_reader :steps
+    attr_reader :goals
     def initialize(event_query)
-      @funnel = funnel
-      @event_query = event_query.joins(:visit)
+      @event_query = event_query
+      @goals = nil
     end
 
     def build
       queries = {}
-      prev_goal = nil
-      prev_table = nil
       selects = []
-      @funnel.goals.each do |goal|
-        if prev_goal
-          query = ::Ahoy::Event
-                    .select("distinct ahoy_events.visit_id")
-                    .from(prev_table.to_s)
-                    .joins("inner join ahoy_events on ahoy_events.visit_id = #{prev_table}.id")
-                    .where("ahoy_events.name = ?", goal.event_name.to_s).to_sql
-          prev_table = "#{goal.id}"
-          selects << ["SELECT '#{prev_goal.title} > #{goal.title}' as step, count(*) from #{prev_table}"]
-          queries[prev_table] = query
-        else
-          prev_table = :visitors
-          prev_goal = goal
-
-          query = @event_query
-                    .select("distinct(visit_id) as id, min(time) as min_time")
-                    .where(name: goal.event_name.to_s)
-                    .group("1").to_sql
-          selects << ["'#{goal.title}' as step, count(*) from #{prev_table}"]
-
-          queries[prev_table] = query
-        end
+      last_goal = nil
+      map = {}
+      AhoyCaptain.config.goals.each do |goal|
+        queries[goal.id] = @event_query.select("count(distinct(visit_id)) as uniques, count(name) as total, name").where(name: goal.event_name).group("name")
+        selects << ["SELECT total, uniques, name from #{goal.id}"]
+        map[goal.event_name] = goal
+        last_goal = goal
       end
-
-      select = selects.join(" UNION ").delete_suffix(" from #{prev_table}")
-
+      select = selects.join(" UNION ").delete_suffix(" from #{last_goal.id}")
+      select = select.delete_prefix("SELECT ")
       steps = ::Ahoy::Event.with(
         queries
-      ).select(select).from(prev_table).order("count desc")
+      ).select(select).from("#{last_goal.id}")
 
-      @steps = ::Ahoy::Event.with(steps: steps).select("step, count, lag(count, 1) over () as lag, abs(count::numeric - lag(count, 1) over ())::integer as drop_off, round((1.0 - count::numeric/lag(count, 1) over ()),2) as conversion_rate").from("steps")
+      items = ::Ahoy::Event.with(steps: steps).select("total, uniques, name, 0 as conversion_rate").from("steps")
+      items.each do |item|
+        item.name = map[item.name].title
+        item.conversion_rate = ((item.total / total.to_d) * 100).round(2) * 100
+      end
+      @goals = items
       self
     end
 
     def total
-      @event_query.distinct(:visitor_token).count
+      @total ||= @event_query.distinct(:visitor_token).count
     end
 
     def as_json

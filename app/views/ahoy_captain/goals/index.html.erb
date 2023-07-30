@@ -1,7 +1,7 @@
 <%= turbo_frame_tag :goals do %>
   <ul>
-    <% @goals.each do |label, count| %>
-      <li><%= label %>: <%= count %></li>
+    <% @presenter.goals.each do |goal| %>
+      <li><%= goal.name %>: <%= goal.total %> count, <%= goal.uniques %> uniques (<%= goal.conversion_rate %>%)</li>
     <% end %>
   </ul>
 <% end %>
