@@ -32,4 +32,6 @@ AhoyCaptain.configure do |config|
     goal :appointment_created
     goal :appointment_updated
   end
+
+  config.ranges.max = 100.days
 end

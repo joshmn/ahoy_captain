@@ -55,10 +55,11 @@ module AhoyCaptain
       instance
     end
 
-    attr_reader :default
+    attr_reader :default, :max
     def initialize
       @periods = {}
       @default = nil
+      @max = nil
     end
 
     def add(param, label, range_proc)
@@ -91,6 +92,10 @@ module AhoyCaptain
 
     def default=(val)
       @default = val.to_sym
+    end
+
+    def max=(amount)
+      @max = amount
     end
 
     def for(value)
