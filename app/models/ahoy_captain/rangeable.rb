@@ -3,7 +3,7 @@ module AhoyCaptain
     include AhoyCaptain::RangeOptions
 
     def period
-      params[:period]
+      params[:period] || AhoyCaptain.config.ranges.default
     end
 
   end

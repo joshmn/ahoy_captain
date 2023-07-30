@@ -77,7 +77,7 @@ module AhoyCaptain
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now).result.to_sql
       # is not
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now.to_i).result.to_sql
-      if params[:period]
+      if range
         if self.class.name == "AhoyCaptain::EventQuery"
           ransackable_params['time_gt'] = range[0]
           ransackable_params['time_lt'] = range[1]

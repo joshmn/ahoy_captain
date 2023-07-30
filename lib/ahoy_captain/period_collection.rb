@@ -55,6 +55,7 @@ module AhoyCaptain
       instance
     end
 
+    attr_reader :default
     def initialize
       @periods = {}
       @default = nil
