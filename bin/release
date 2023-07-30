@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+VERSION=$1
+
+printf "module AhoyCaptain\n  VERSION = \"$VERSION\"\nend\n" > ./lib/ahoy_captain/version.rb
+bundle
+git add Gemfile.lock lib/ahoy_captain/version.rb
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
+gem build ahoy_captain.gemspec
+gem push "ahoy_captain-$VERSION.gem" --host https://rubygems.org
+rm "ahoy_captain-$VERSION.gem"
