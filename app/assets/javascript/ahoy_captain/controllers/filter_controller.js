@@ -6,13 +6,13 @@ export default class extends Controller {
     url: String,
     column: String
   };
-  static targets = ["select"];
+  static targets = ["select", 'predicate'];
 
   connect() {
     this.selectTargets.forEach(async (target) => {
       const url = target.dataset.filterUrlValue;
       const optionsSearch = this.fetchOptions(url, target);
-      const select = await new SlimSelect({
+      await new SlimSelect({
         select: target,
         data: [],
         settings: {
@@ -63,7 +63,7 @@ export default class extends Controller {
   }
 
   #beforeChange(target, url) {
-    return (newVal, oldVal) => {
+    return () => {
       const otherFilters = this.selectTargets.filter(filter => filter != target);
       otherFilters.forEach(async target => {
         if (this.#hasData(target)) {
@@ -83,5 +83,29 @@ export default class extends Controller {
 
   #hasSelections(target) {
     return target.slim.getSelected().length !== 0;
+  }
+
+  #filtersForQuery() {
+    const predicates = this.predicateTargets.map(el => ({name: el.name, column_predicate: el.value}));
+    const filterValues = this.selectTargets.map(el => ({name: el.name, selections: el.slim.getSelected()}));
+    const mergedData = predicates.map(predicate => {
+      const matchingFilter = filterValues.find(filter => filter.name === predicate.name);
+      if (matchingFilter.selections.length > 0) {
+        return {...predicate, ...matchingFilter}
+      }
+    }).filter(el => el !== undefined);
+    return mergedData;
+  }
+
+  applyFilters(e) {
+    e.preventDefault();
+    const searchParams = new URLSearchParams(window.location.search);
+    const filters = this.#filtersForQuery();
+    filters.forEach(filter => {
+      filter.selections.forEach(selection => {
+        searchParams.append(`q[${filter.column_predicate}][]`,selection);
+      })
+    });
+    Turbo.visit(window.location.pathname.replace(/\/$/, "")  + `?${searchParams.toString()}`)
   }
 }

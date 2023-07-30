@@ -1,4 +1,4 @@
-<main class='bg-base-300 min-h-screen'>
+<main class='bg-base-300 min-h-screen pb-4'>
   <div class="relative">
     <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller: "realtime" } %>
   </div>
@@ -100,17 +100,14 @@
     <button>close</button>
   </form>
 </dialog>
-<dialog id="countryModal" class="modal">
+<dialog id="countryModal" class="modal" data-controller='filter' data-action="submit->filter#applyFilters">
   <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
+    <fieldset>
       <h5>Filter by Country</h5>
       <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in]) %>
       <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn btn-primary mt-4" >Apply</button>
-        <button class="btn btn-secondary mt-4">Close</button>
-      </form>
+      <button class="btn btn-primary mt-4" >Apply</button>
     </fieldset>
   </form>
   <form method="dialog" class="modal-backdrop">
