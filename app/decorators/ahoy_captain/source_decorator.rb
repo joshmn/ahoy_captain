@@ -1,7 +1,6 @@
 module AhoyCaptain
   class SourceDecorator < ApplicationDecorator
     def display_name
-
       display = %Q(
         <div class='flex justify-start space-x-8 col-span-1 items-center'>
           <img class='transparent w-5 h-5'
