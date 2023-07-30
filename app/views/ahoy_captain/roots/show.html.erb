@@ -14,16 +14,18 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= sources_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="sources" class='link link-primary'>All</a>
+        <div data-controller='link' data-link-top_sources-class="text-primary underline">
+        <a href="<%= sources_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>All</a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
           <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
             <% dropdown.with_option do %>
-              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-action="advance" data-turbo-frame="sources">
+              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-action="advance" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>
                 <%= source.titleize.gsub("Utm", "UTM") %>
               </a>
             <% end %>
           <% end %>
         <% end %>
+        </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :sources, src: sources_path(search_params) %>
@@ -35,9 +37,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= top_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Top Pages</a>
-        <a href="<%= entry_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Entry Pages</a>
-        <a href="<%= exit_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" class="link link-primary">Exit Pages</a>
+      <div data-controller='link' data-link-top_pages-class="text-primary underline" >
+        <a href="<%= top_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Top Pages</a>
+        <a href="<%= entry_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Entry Pages</a>
+        <a href="<%= exit_pages_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Exit Pages</a>
+      </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :pages, src: top_pages_path(search_params) %>
@@ -49,9 +53,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= countries_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Countries</a>
-        <a href="<%= regions_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Regions</a>
-        <a href="<%= cities_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" class="link link-primary">Cities</a>
+      <div data-controller='link' data-link-countries-class="text-primary underline">
+        <a href="<%= countries_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Countries</a>
+        <a href="<%= regions_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Regions</a>
+        <a href="<%= cities_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Cities</a>
+      </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :geography, src: countries_path(search_params) %>
@@ -63,9 +69,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= devices_browsers_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">Browser</a>
-        <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">OS</a>
-        <a href="<%= devices_device_types_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" class="link link-primary">Size</a>
+      <div data-controller='link' data-link-devices-class="text-primary underline">
+        <a href="<%= devices_browsers_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Browser</a>
+        <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>OS</a>
+        <a href="<%= devices_device_types_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Size</a>
+      </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params) %>
