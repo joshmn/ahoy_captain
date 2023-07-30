@@ -7,6 +7,10 @@ module AhoyCaptain
     end
 
     def build
+      if AhoyCaptain.config.goals.none?
+        @goals = []
+        return self
+      end
       queries = {}
       selects = []
       last_goal = nil
