@@ -19,8 +19,6 @@ module AhoyCaptain
       end
 
       @countries = paginate(results).map { |country| CountryDecorator.new(country) }
-
-      # render :not_found, turbo_frame: 'not_found' if @countries.empty?
     end
   end
 end
