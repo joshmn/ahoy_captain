@@ -14,3 +14,21 @@ Ransack.configure do |c|
   # Default is true (do not raise error on unknown conditions).
   c.ignore_unknown_conditions = false
 end
+
+AhoyCaptain.configure do |config|
+  config.goal :appointment_created do
+    label "Appointment Created"
+    event "$appointment.created"
+  end
+
+  config.goal :appointment_updated do
+    label "Appointment Updated"
+    event "$appointment.updated"
+  end
+
+  config.funnel :appointments do
+    label "Appointments"
+    goal :appointment_created
+    goal :appointment_updated
+  end
+end

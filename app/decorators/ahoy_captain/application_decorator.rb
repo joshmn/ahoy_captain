@@ -24,7 +24,6 @@ module AhoyCaptain
     end
 
     def frame_link(label, search)
-
       h.link_to(label, "#{request.base_url}?#{search}", data: { turbo_frame: "_top" }).html_safe
     end
 

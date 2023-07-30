@@ -4,15 +4,14 @@ import SlimSelect from 'slim-select'
 export default class extends Controller {
   static values = {
     url: String,
-    column: String
+    column: String,
   };
   static targets = ["select", 'predicate'];
-
   connect() {
     this.selectTargets.forEach(async (target) => {
       const url = target.dataset.filterUrlValue;
       const optionsSearch = this.fetchOptions(url, target);
-      await new SlimSelect({
+      const select = await new SlimSelect({
         select: target,
         data: [],
         settings: {
@@ -38,6 +37,11 @@ export default class extends Controller {
           beforeChange: this.#beforeChange(target, url),
         }
       });
+      const json = JSON.parse(target.dataset.filterSelected)
+      if(json.length) {
+        select.setData(json.map(item => ({ "text": item, "value": item })))
+        select.setSelected(json)
+      }
     })
   }
 
@@ -55,7 +59,15 @@ export default class extends Controller {
     const otherFilters = this.selectTargets.filter(filter => filter != target);
     otherFilters.forEach(function(filter) {
       filter.slim.getSelected().forEach(val => {
-        query.append(`${filter.name}[]`, val);
+        const filterName = `${filter.name}[]`
+        if(query.has(filterName)) {
+          console.log("has the filter")
+          if(!query.get(`${filter.name}[]`).includes(val)) {
+            query.append(filterName, value)
+          }
+        } else {
+          query.append(filterName, value)
+        }
       })
     });
     query.set(`q[${target.dataset.filterColumnValue}_i_cont]`, search || "");
@@ -97,14 +109,36 @@ export default class extends Controller {
     return mergedData;
   }
 
+  resetFilters(event) {
+    this.selectTargets.forEach(el => {
+      el.slim.setSelected([])
+    })
+    this.applyFilters(event)
+  }
+
   applyFilters(e) {
     e.preventDefault();
     const searchParams = new URLSearchParams(window.location.search);
     const filters = this.#filtersForQuery();
     filters.forEach(filter => {
+      const name = `q[${filter.column_predicate}][]`
+      const selectedValues = searchParams.getAll(name)
       filter.selections.forEach(selection => {
-        searchParams.append(`q[${filter.column_predicate}][]`,selection);
+        if(selectedValues) {
+          if(!selectedValues.includes(selection)) {
+            searchParams.append(name, selection)
+          }
+        } else {
+          searchParams.append(name, selection)
+        }
       })
+    });
+    ['input[name="start_date"]', 'input[name="end_date"]'].forEach(selector => {
+      const el = document.querySelector(selector)
+      if(el.value.length) {
+        searchParams.delete("period")
+      }
+      searchParams.set(el.name, el.value);
     });
     Turbo.visit(window.location.pathname.replace(/\/$/, "")  + `?${searchParams.toString()}`)
   }

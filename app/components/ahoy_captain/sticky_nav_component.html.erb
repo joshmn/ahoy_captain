@@ -1,29 +1,22 @@
 <div class="max-w-6xl flex justify-between sticky top-0 min-h-sm z-[99999] bg-base-300 py-4">
   <div class="flex items-center">
-    <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full hover:bg-accent-content'>
+    <a href="/">
+      <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full'>
+    </a>
     <% if params[:q] %>
-      <%= render AhoyCaptain::Filter::TagContainerComponent.new(filters: params[:q]) %>
+      <%= render AhoyCaptain::Filter::TagContainerComponent.new(filters: params.require(:q)) %>
     <% else %>
       <%= realtime_update %>
     <% end %>
   </div>
   <div class="flex flex-row-reverse col-span-2 items-center">
-    <%= render AhoyCaptain::DropdownLinkComponent.new(title: 'Period', classes: 'btn btn-ghost no-underline text-base-content hover:text-base-content') do |dropdown| %>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period]).try(:label) || "Period"), classes: 'btn btn-base-100 no-underline text-base-content hover:text-base-content hover:bg-base-100') do |dropdown| %>
       <% dropdown.with_option do %>
-        <button class='link no-underline'>Today</button>
-        <button class='link no-underline'>Realtime</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Last 7 days</button>
-        <button class='link no-underline'>Last 30 days</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Month to Date</button>
-        <button class='link no-underline'>Last month</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>Year to Date</button>
-        <button class='link no-underline'>Last 12 months</button>
-        <div class="divider m-1 p-0 h-0"></div>
-        <button class='link no-underline'>All time</button>
-        <button class='link no-underline'>Custom range</button>
+        <% AhoyCaptain.config.ranges.each do |param, range| %>
+          <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.except("start_date", "end_date").merge("period" => param).to_query %>"><%= range.label %></a>
+        <% end %>
+
+        <a class='link no-underline' href='#' onclick="event.preventDefault(); customRangeModal.showModal()">Custom range</a>
       <% end %>
     <% end %>
     <%= render AhoyCaptain::DropdownButtonComponent.new(title: 'Filter') do |dropdown| %>

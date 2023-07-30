@@ -30,6 +30,7 @@ module AhoyCaptain
         pin "slim-select", to: "https://ga.jspm.io/npm:slim-select@2.6.0/dist/slimselect.es.js", preload: true
         pin "chartkick", to: "chartkick.js"
         pin "Chart.bundle", to: "Chart.bundle.js"
+        pin "chartjs-plugin-datalabels", to: "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2", preload: true
         pin_all_from AhoyCaptain::Engine.root.join("app/assets/javascript/ahoy_captain/controllers"), under: "controllers", to: "ahoy_captain/controllers"
       end
     end

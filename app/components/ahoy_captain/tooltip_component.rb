@@ -1,18 +1,18 @@
 class AhoyCaptain::TooltipComponent < ViewComponent::Base
-  def initialize(item:)
-      @item = item
+  def initialize(amount:)
+    @amount = amount
   end
 
   def abbreviate
-      number = item.unit_amount
-      if number >= 1000
-        number_to_human(number, format: '%n%u', precision: 2, units: { thousand: 'k', million: 'm', billion: 'b' })
-      else
-        number.to_s
-      end
+    
+    if amount >= 1000
+      number_to_human(amount, format: '%n%u', precision: 2, units: { thousand: 'k', million: 'm', billion: 'b' })
+    else
+      amount.to_s
+    end
   end
 
-    private
+  private
 
-    attr_reader :item
+  attr_reader :amount
 end

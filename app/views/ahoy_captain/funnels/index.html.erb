@@ -1,0 +1,7 @@
+<%= turbo_frame_tag :funnels do %>
+  <ul>
+    <% @funnels.each do |label, count| %>
+      <li><%= label %>: <%= count %></li>
+    <% end %>
+  </ul>
+<% end %>

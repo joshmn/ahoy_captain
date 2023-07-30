@@ -107,14 +107,16 @@ AhoyCaptain.configure do
   #
   # Basically:
   #
-  #   config.funnel "Label/Title" do
+  #   config.funnel :id do
+  #     label "Some label"
   #     goal :goal_id_1
   #     goal :goal_id_2
   #   end
   #
   # Real-world example:
   #
-  #   config.funnel "Appointment Workflow" do
+  #   config.funnel :appointments do
+  #     label "Appointment Workflow"
   #     goal :appointment_created
   #     goal :appointment_paid
   #   end

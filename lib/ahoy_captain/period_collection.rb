@@ -81,6 +81,10 @@ module AhoyCaptain
       @periods.each(&block)
     end
 
+    def find(value)
+      @periods[value.try(:to_sym)]
+    end
+
     def all
       @periods
     end

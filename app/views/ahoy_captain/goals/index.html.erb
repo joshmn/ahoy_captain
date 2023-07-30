@@ -1,0 +1,3 @@
+<%= turbo_frame_tag :goals do %>
+  <%= render AhoyCaptain::TableComponent.new(items: @goals, category_name: 'Goal', unit_name: 'Unique', additional_cols: [:total, :conversion_rate]) %>
+<% end %>

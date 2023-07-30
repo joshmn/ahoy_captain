@@ -3,7 +3,7 @@ module AhoyCaptain
     include Rangeable
 
     def build
-      ::Ahoy::Event.ransack(ransack_params).result
+      ::Ahoy::Event.ransack(ransack_params_for(:event)).result
     end
 
     def within_range

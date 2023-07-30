@@ -3,13 +3,12 @@ module AhoyCaptain
     class VisitDurationQuery < ApplicationQuery
       def build
         events = event_query
-                   .with_visit
-                   .select("#{::AhoyCaptain.visit_name}.started_at as started_at, visit_id, max(time) - min(time) as visit_duration")
-                   .group("started_at, visit_id")
+                   .reselect("visit_id, max(time) - min(time) as visit_duration")
+                   .group("visit_id")
+        ::Ahoy::Visit.joins("INNER JOIN #{::AhoyCaptain.visit.table_name} ON #{::AhoyCaptain.visit.table_name}.id = visit_durations.visit_id")
+                                .reselect("started_at, avg(visit_durations.visit_duration) as average_visit_duration")
+                                .from(events, :visit_durations)
 
-        visit_query
-                   .reselect("started_at, visit_duration as visit_duration")
-                   .from(events, :visit_durations)
       end
     end
   end

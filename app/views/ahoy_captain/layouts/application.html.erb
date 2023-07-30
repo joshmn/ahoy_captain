@@ -22,18 +22,105 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.css" rel="stylesheet" type="text/css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= ahoy_captain_importmap_tags %>
+  <style>
+      /* Application styles */
+      :root {
+          --ss-bg-color: hsl(var(--b1) / 1);
+          --ss-font-color: hsl(var(--bc) / var(--tw-text-opacity, 1));
+      }
+
+      .ss-content{
+          position:absolute;
+          display:none;
+          height:auto;
+          flex-direction:column;
+          width:auto;
+          max-height:var(--ss-content-height);
+          box-sizing:border-box;
+          border:solid 1px var(--ss-border-color);
+          background-color:var(--ss-bg-color);
+          transition:transform var(--ss-animation-timing),opacity var(--ss-animation-timing);
+          opacity:0;
+          transform:scaleY(0);
+          transform-origin:center top;
+          overflow:hidden;
+          z-index:10000;
+      }
+
+      .ss-content.ss-open-below{
+          opacity:1;
+          transform:scaleY(1);
+          transform-origin:center top;
+          border-bottom-left-radius:var(--ss-border-radius);
+          border-bottom-right-radius:var(--ss-border-radius);
+          bottom: -100%;
+          right: 41%;
+          display: flex;
+      }
+
+      .ss-open-below.ss-content.ss-relevant {
+          bottom: -100%;
+          right: 41%;
+      }
+
+      .pagy-nav.pagination {
+          isolation: isolate;
+          display: inline-flex;
+          margin-right: -1px;
+          /* border-radius: 0.375rem; */
+          box-shadow: 0 1px 2px 0 hsl(var(--n) / var(--tw-text-opacity, 1));
+      }
+
+      .page.next a, .page.prev a, .page.next.disabled, .page.prev.disabled, .page a, .page.gap {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid hsl(var(--n) / var(--tw-text-opacity, 1));
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: hsl(var(--bc) / var(--tw-text-opacity, 1));
+      }
+
+      .page.next a:hover, .page.prev a:hover, .page a:hover {
+          background-color: hsl(var(--b3) / var(--tw-text-opacity, 1));
+          color: hsl(var(--ac) / var(--tw-text-opacity, 1));
+      }
+
+      .page.next a:focus, .page.prev a:focus, .page.next.disabled:focus, .page.prev.disabled:focus, .page a:focus, .page.gap:focus {
+          z-index: 20;
+      }
+
+      .page.prev a, .page.next a {
+          border-radius: 0.375rem 0 0 0.375rem;
+          background-color: hsl(var(--b2) /1);
+      }
+
+
+      .page.next.disabled, .page.prev.disabled {
+          border-radius: 0.375rem 0 0 0.375rem;
+          background-color: hsl(var(--b2) / 0.5);
+      }
+
+      .page.active {
+          z-index: 10;
+          border-color: hsl(var(--a) / var(--tw-text-opacity, 1));
+          background-color: hsl(var(--b3) / var(--tw-text-opacity, 1));
+          color: hsl(var(--ac) / var(--tw-text-opacity, 1));
+          border-radius: 0.375rem;
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+          font-weight: 500;
+      }
+  </style>
 </head>
 
-<body data-theme='<%= AhoyCaptain.config.theme %>' class='bg-base-300'>
+<body data-theme='<%= AhoyCaptain.config.theme %>' class='bg-base-300' data-controller='navigation' data-action="filter-tag:remove->navigation#removeQueryParam">
   <%= yield %>
   <div class="flex justify-center bg-base-300 border-t-4 border-base-100 py-4">
     <div class="flex justify-around space-x-4 my-4">
-      <h5>Powered by Ahoy Captain v<%= AhoyCaptain::VERSION %><h5>
-      <a href='https://github.com/joshmn/ahoy_captain' target=”_blank”>
-        <img src="<%= image_path "ahoy_captain/github-mark.png" %>" alt="Github" class='w-8 h-8 bg-base-content rounded-full hover:bg-accent-content'>
-      </a>
+      <h5>Powered by <a href='https://github.com/joshmn/ahoy_captain' target=”_blank”>Ahoy Captain v<%= AhoyCaptain::VERSION %></a></h5>
     </div>
   </div>
 </body>

@@ -1,8 +1,8 @@
 # AhoyCaptain
 
-<img src="logo.png" />
+<img src="logo.png" style="max-width:100px" />
 
-A full-featured, mountable analytics dashboard for your Rails app, powered by the Ahoy gem.
+A full-featured, mountable analytics dashboard for your Rails app, shamelessly inspired by Plausible Analytics, powered by the Ahoy gem.
 
 ## Notice
 
@@ -45,16 +45,18 @@ If you have a large dataset (> 1GB) you probably want some indexes. `rails g aho
 * Top devices, by browser, OS, and device type
 * Goal tracking
 * Funnels
-* CSV exports
 * Filter by:
     * Page
-    * Source
     * Location
     * Device type
-    * Browser
     * OS
-    * UTM
-    * Any other property you are tracking
+    * UTM tags
+
+## Coming soon ™️
+
+* Date comparison
+* More filters
+* CSV exports
 
 ## Contributors
 
