@@ -18,6 +18,10 @@ export default class extends Controller {
         settings: {
           contentPosition: 'relative',
           contentLocation: target.closest('fieldset'),
+          searchText: 'Sorry, no results found',
+          searchPlaceholder: 'Type to populate results',
+          placeholderText: `Search for ${target.dataset.filterColumnValue}`,
+          searchHighlight: true
         },
         events: {
           beforeOpen: async () => {
@@ -60,13 +64,16 @@ export default class extends Controller {
 
   #beforeChange(target, url) {
     return (newVal, oldVal) => {
-        const otherFilters = this.selectTargets.filter(filter => filter != target);
-        otherFilters.forEach(async target => {
-          if (this.#hasData(target)) {
-            target.slim.setData(target.slim.getSelected().map(text => ({ text })))
-          }
-        })
-      return true;
+      const otherFilters = this.selectTargets.filter(filter => filter != target);
+      otherFilters.forEach(async target => {
+        if (this.#hasData(target)) {
+          const selected = target.slim.getSelected()
+          target.slim.setData(selected.map(text => ({ text })))
+          // setting data triggers a slim render, so need to also set selected again
+          target.slim.setSelected(selected)
+        }
+      })
+    return true;
     }
   }
 
@@ -77,6 +84,4 @@ export default class extends Controller {
   #hasSelections(target) {
     return target.slim.getSelected().length !== 0;
   }
-
-
 }
