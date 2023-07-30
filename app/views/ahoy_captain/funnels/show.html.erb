@@ -13,4 +13,6 @@
     </ul>
     <% prev_step = funnel %>
   <% end %>
+
+  <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>"></canvas>
 <% end %>

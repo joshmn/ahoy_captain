@@ -43,7 +43,7 @@ module AhoyCaptain
         queries
       ).select(select).from(prev_table).order("count desc")
 
-      @steps = ::Ahoy::Event.with(steps: steps).select("step, count, lag(count, 1) over () as lag, abs(count::numeric - lag(count, 1) over ())::integer as drop_off").from("steps")
+      @steps = ::Ahoy::Event.with(steps: steps).select("step, count, lag(count, 1) over () as lag, abs(count::numeric - lag(count, 1) over ())::integer as drop_off, round((1.0 - count::numeric/lag(count, 1) over ()),2) as conversion_rate").from("steps")
       self
     end
 
@@ -51,8 +51,15 @@ module AhoyCaptain
       @event_query.distinct(:visitor_token).count
     end
 
-    def to_chart
-      @result.group("step").sum("count")
+    def as_json
+      {
+        steps: @steps.as_json,
+        total: total
+      }
+    end
+
+    def to_json
+      as_json.to_json
     end
   end
 end
