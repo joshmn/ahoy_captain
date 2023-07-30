@@ -1,7 +1,16 @@
 <div class="flex flex-col min-h-[380px] w-full pt-4">
   <div class="flex text-sm font-bold text-base-content mb-4">
     <span class="grow"><%= category_name %></span>
-    <span><%= unit_name %></span>
+    <span ><%= unit_name %></span>
+     <% if additional_cols.include?(:percent_total) %>
+      <span class="w-8 ml-8 text-right">%</span>
+    <% end %>
+     <% if additional_cols.include?(:total) %>
+      <span class="w-8 ml-8 text-right">Total</span>
+    <% end %>
+     <% if additional_cols.include?(:conversion_rate) %>
+      <span class="w-8 ml-8 text-right">CR</span>
+    <% end %>
   </div>
   <div class='min-h-[420px]'>
     <div class="grow">
@@ -14,8 +23,22 @@
               <%= item.display_name %>
             </span>
             <span class="w-8 ml-8 text-right">
-              <%= render AhoyCaptain::TooltipComponent.new(item: item) %>
+              <%= render AhoyCaptain::TooltipComponent.new(amount: item.unit_amount) %>
             </span>
+            
+            <% if additional_cols.include?(:percent_total) %>
+              <span class="w-8 ml-8 text-right"><%= percent_total(item) %></span>
+            <% end %>
+            <% if additional_cols.include?(:total) %>
+              <span class="w-8 ml-8 text-right">
+                <%= render AhoyCaptain::TooltipComponent.new(amount: item.total) %>
+              </span>
+            <% end %>
+            <% if additional_cols.include?(:conversion_rate) %>
+              <span class="w-8 ml-8 text-right">
+                <%= item.conversion_rate * 100.0 %>%
+              </span>
+            <% end %>
           </div>
         <% end %>
       <% else %>

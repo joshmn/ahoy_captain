@@ -31,7 +31,7 @@ module AhoyCaptain
           items[name].conversion_rate = ((items[name].total / total.to_d) * 100).round(2) * 100
           @goals << items[name]
         else
-          @goals << OpenStruct.new(name: map[name].title, uniques: 0, total: 0, conversion_rate: 0)
+          @goals << OpenStruct.new(display_name: map[name].title, item_amount: 0, total: 0, conversion_rate: 0)
         end
       end
 

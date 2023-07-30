@@ -1,7 +1,3 @@
 <%= turbo_frame_tag :goals do %>
-  <ul>
-    <% @presenter.goals.each do |goal| %>
-      <li><%= goal.name %>: <%= goal.total %> count, <%= goal.uniques %> uniques (<%= goal.conversion_rate %>%)</li>
-    <% end %>
-  </ul>
+  <%= render AhoyCaptain::TableComponent.new(items: @goals, category_name: 'Goal', unit_name: 'Unique', additional_cols: [:total, :conversion_rate]) %>
 <% end %>
