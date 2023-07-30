@@ -13,6 +13,10 @@ module AhoyCaptain
         def ransackable_attributes(auth = nil)
           columns_hash.keys + ["ref_domain"]
         end
+
+        def ransackable_associations(auth = nil)
+          super + ["events"]
+        end
       end
     end
   end
