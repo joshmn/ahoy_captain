@@ -13,11 +13,6 @@ module AhoyCaptain
         def ransackable_attributes(auth = nil)
           columns_hash.keys + ["ref_domain"]
         end
-
-
-        def ransackable_attributes(auth = nil)
-          columns_hash.keys + ["ref_domain"]
-        end
       end
     end
   end
