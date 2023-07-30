@@ -142,6 +142,25 @@
   <% end %>
 <% end %>
 
+<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Range", id: "customRangeModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <div class="flex gap-2 w-full">
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Start Date</span>
+        </label>
+        <input type="datetime-local" name="start_date" class="input input-bordered w-full" value="<%= params[:start_date] %>" />
+      </div>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">End Date</span>
+        </label>
+        <input type="datetime-local" name="end_date" class="input input-bordered w-full" value="<%= params[:end_date] %>" />
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <dialog id="detailsModal" class="modal">
   <div class="modal-box w-11/12 max-w-5xl">
     <%= turbo_frame_tag :details %>

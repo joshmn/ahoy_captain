@@ -106,6 +106,13 @@ export default class extends Controller {
         searchParams.append(`q[${filter.column_predicate}][]`,selection);
       })
     });
+    ['input[name="start_date"]', 'input[name="end_date"]'].forEach(selector => {
+      const el = document.querySelector(selector)
+      if(el.value.length) {
+        searchParams.delete("period")
+      }
+      searchParams.set(el.name, el.value);
+    });
     Turbo.visit(window.location.pathname.replace(/\/$/, "")  + `?${searchParams.toString()}`)
   }
 }

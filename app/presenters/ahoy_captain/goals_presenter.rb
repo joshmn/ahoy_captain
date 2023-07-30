@@ -25,7 +25,7 @@ module AhoyCaptain
 
       items = ::Ahoy::Event.with(steps: steps).select("total, uniques, name, 0 as conversion_rate").from("steps").index_by(&:name)
       @goals = []
-      map.each do |name, goal|
+      map.each do |name, _|
         if items[name]
           items[name].name = map[name].title
           items[name].conversion_rate = ((items[name].total / total.to_d) * 100).round(2) * 100
