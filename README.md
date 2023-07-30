@@ -4,9 +4,10 @@
 
 A full-featured, mountable analytics dashboard for your Rails app, shamelessly inspired by Plausible Analytics, powered by the Ahoy gem.
 
+<a href="https://github.com/joshmn/ahoy_captain/blob/main/ss.jpg"><img src="ss.jpg" style="max-width:300px" /></a>
 ## Notice
 
-While this is fine to use in production, it was only built against a PostgreSQL instance.
+While this is fine to use in production, it was only built against a PostgreSQL instance. Some of the queries are certainly broken.
 
 ## Some assumptions
 
