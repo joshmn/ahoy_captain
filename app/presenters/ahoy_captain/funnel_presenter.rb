@@ -83,5 +83,11 @@ module AhoyCaptain
       self
     end
 
+    def to_chart
+
+      @steps.map do |step|
+        [step.title, step.goal_1_count]
+      end
+    end
   end
 end

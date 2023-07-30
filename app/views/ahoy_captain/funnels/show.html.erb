@@ -6,4 +6,6 @@
       <li><%= step.exit_label %>: <%= step.goal_2_count %></li>
     </ul>
   <% end %>
+
+  <%= column_chart @funnel.to_chart, stacked: true %>
 <% end %>
