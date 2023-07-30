@@ -38,7 +38,7 @@
       <dt class="text-base font-normal text-base-content">Bounce rate</dt>
       <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
         <div class="flex items-baseline text-2xl font-semibold text-accent-content">
-          <%= number_with_delimiter @presenter.bounce_rate %>
+          <%= number_with_delimiter @presenter.bounce_rate * 100 %>%
         </div>
       </dd>
     </a>
