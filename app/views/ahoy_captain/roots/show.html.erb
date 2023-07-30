@@ -87,107 +87,50 @@
   </div>
 </main>
 
-<dialog id="pageModal" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
-      <h5>Filter by Page</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Action", column: :route, url: filters_actions_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Entry page", column: :entry_page, url: filters_entry_pages_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Exit page", column: :exit_page, url: filters_exit_pages_path, predicates: [:in, :not_in]) %>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
-<dialog id="countryModal" class="modal" data-controller='filter' data-action="submit->filter#applyFilters">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset>
-      <h5>Filter by Country</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in]) %>
-      <button class="btn btn-primary mt-4" >Apply</button>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Action", column: :route, url: filters_actions_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Entry page", column: :entry_page, url: filters_entry_pages_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Exit page", column: :exit_page, url: filters_exit_pages_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Country", id: "countryModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
-<dialog id="sourceModal" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
-      <h5>Filter by Source</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn btn-primary mt-4" >Apply</button>
-        <button class="btn btn-secondary mt-4">Close</button>
-      </form>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Source", id: "sourceModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Screen size", column: :device_types, url: filters_screens_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
-<dialog id="screenModal" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
-      <h5>Filter by Screen size</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Screen size", column: :device_types, url: filters_screens_path, predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn btn-primary mt-4" >Apply</button>
-        <button class="btn btn-secondary mt-4">Close</button>
-      </form>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Browser", id: "osModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
-
-<dialog id="osModal" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
-      <h5>Filter by Browser</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn btn-primary mt-4" >Apply</button>
-        <button class="btn btn-secondary mt-4">Close</button>
-      </form>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
-
-
-<dialog id="utmModal" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl">
-    <fieldset data-controller='filter'>
-      <h5>Filter by Browser</h5>
-      <%= render AhoyCaptain::FilterComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in]) %>
-      <%= render AhoyCaptain::FilterComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in]) %>
-      <form method="dialog" class="modal-backdrop">
-        <button class="btn btn-primary mt-4" >Apply</button>
-        <button class="btn btn-secondary mt-4">Close</button>
-      </form>
-    </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
-
+<%= render AhoyCaptain::FilterModalComponent.new(title: "Filter by Campaign", id: "utmModal") do |modal| %>
+  <% modal.with_modal_display do %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in]) %>
+    <%= render AhoyCaptain::FilterComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in]) %>
+  <% end %>
+<% end %>
 
 <dialog id="detailsModal" class="modal">
   <div class="modal-box w-11/12 max-w-5xl">
