@@ -1,3 +1,6 @@
 <%= turbo_frame_tag :goals do %>
-  <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>"></canvas>
+  <div >
+    <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>" ></canvas>
+
+  </div>
 <% end %>

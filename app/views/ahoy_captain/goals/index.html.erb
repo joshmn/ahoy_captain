@@ -16,7 +16,6 @@
               <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-3 h-8 text-base-content">
               <%= item.name %>
             </span>
-<% abort if item.name.blank? %>
               <span class="w-8 ml-8 text-right">
               <%= render AhoyCaptain::TooltipComponent.new(amount: item.uniques) %>
             </span>
