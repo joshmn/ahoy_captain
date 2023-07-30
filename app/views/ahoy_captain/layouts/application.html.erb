@@ -19,6 +19,10 @@
   <link rel="mask-icon" href="<%= image_path "ahoy_captain/safari-pinned-tab.svg" %>" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.css" rel="stylesheet" type="text/css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
+  <%= ahoy_captain_importmap_tags %>
   <style>
       /* Application styles */
       :root {
@@ -110,10 +114,6 @@
           font-weight: 500;
       }
   </style>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.css" rel="stylesheet" type="text/css"/>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
-  <%= ahoy_captain_importmap_tags %>
 </head>
 
 <body data-theme='<%= AhoyCaptain.config.theme %>' class='bg-base-300' data-controller='navigation' data-action="filter-tag:remove->navigation#removeQueryParam">
