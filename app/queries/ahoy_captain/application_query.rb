@@ -50,9 +50,7 @@ module AhoyCaptain
       EventQuery.call(params)
     end
 
-    # merge both sets of ransackable params and ensure that they're being set on the correct association
-    # if we have params that reach across associations
-    def ransack_params
+    def ransack_params_for(type)
       ransackable_params = {}
 
       if params[:q]
@@ -60,13 +58,12 @@ module AhoyCaptain
           visit: (AhoyCaptain.visit.ransackable_attributes + AhoyCaptain.visit.ransackable_scopes).map(&:to_s),
           event: (AhoyCaptain.event.ransackable_attributes + AhoyCaptain.event.ransackable_scopes).map(&:to_s),
         }
-
         pattern = /(?:_not_eq|_eq|_in|_not_in|_cont|_not_cont|_i_cont)$/
         params[:q].each do |key, value|
           attribute_name = key.gsub(pattern, '')
-          if self.class.name == "AhoyCaptain::EventQuery" && ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key)
+          if type == :event && ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key)
             ransackable_params["visit_#{key}"] = value
-          elsif self.class.name == "AhoyCaptain::VisitQuery" && ransackable_attributes[:event].include?(attribute_name) || ransackable_attributes[:event].include?(key)
+          elsif type == :visit && ransackable_attributes[:event].include?(attribute_name) || ransackable_attributes[:event].include?(key)
             ransackable_params["events_#{key}"] = value
           else
             ransackable_params[key] = value
@@ -79,12 +76,12 @@ module AhoyCaptain
       # is not
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now.to_i).result.to_sql
       if range
-        if self.class.name == "AhoyCaptain::EventQuery"
+        if type == :event
           ransackable_params['time_gt'] = range[0]
           ransackable_params['time_lt'] = range[1]
           ransackable_params["visit_started_at_gt"] = range[0]
           ransackable_params["visit_started_at_lt"] = range[1]
-        elsif self.class.name == "AhoyCaptain::VisitQuery"
+        elsif type == :visit
           ransackable_params["started_at_gt"] = range[0]
           ransackable_params["started_at_lt"] = range[1]
           ransackable_params["events_time_gt"] = range[0]
@@ -94,6 +91,18 @@ module AhoyCaptain
 
 
       ransackable_params
+    end
+
+    # merge both sets of ransackable params and ensure that they're being set on the correct association
+    # if we have params that reach across associations
+    def ransack_params
+      if self.class.name == "AhoyCaptain::EventQuery"
+        ransack_params_for(:event)
+      elsif self.class.name == "AhoyCaptain::VisitQuery"
+        ransack_params_for(:visit)
+      else
+        raise ArgumentError, "use ransack_params_for(type)"
+      end
     end
   end
 end

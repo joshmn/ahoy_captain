@@ -8,7 +8,7 @@ module AhoyCaptain
                    .where(name: AhoyCaptain.config.event[:view_name])
                    .group("started_at, visit_id")
 
-        ::Ahoy::Visit.ransack(ransack_params).result
+        ::Ahoy::Visit
                      .select("views_per_visit as views_per_visit")
                      .from(events, :views_per_visit_table)
       end
