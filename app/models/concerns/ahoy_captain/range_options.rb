@@ -11,7 +11,6 @@ module AhoyCaptain
         duration = (custom[1].to_date -  custom[0].to_date)
 
         if AhoyCaptain.config.ranges.max && (duration.days <= AhoyCaptain.config.ranges.max)
-          abort
           return custom
         end
       end
