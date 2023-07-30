@@ -74,23 +74,27 @@
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline">Details</button>
       <% end %>
     <% end %>
+    <%= render AhoyCaptain::TileComponent.new(wide: true) do |component| %>
+      <% component.with_display_links do %>
+        <a href="<%= goals_path(search_params) %>" data-turbo-action="advance" data-turbo-frame="goals" class="link link-primary">
+          Goals
+        </a>
+        <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
+          <% AhoyCaptain.config.funnels.each do |label, id| %>
+            <% dropdown.with_option do %>
+              <a href="<%= funnel_path(1, search_params) %>" data-turbo-action="advance" data-turbo-frame="goals" class="link link-primary">
+                <%= label.humanize %>
+              </a>
+            <% end %>
+          <% end %>
+        <% end %>
+        
+      <% end %>
+        <% component.with_statistic_display do %>
+        <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
+      <% end %>
+    <% end %>
   </div>
-
-  <div class='col-span-1 p-4'>
-    <div class="card-header flex justify-between">
-      <h5 class='text-lg'>Goals</h5>
-
-    </div>
-    <%= turbo_frame_tag :goals, src: goals_path(search_params) %>
-  </div>
-  <div class='col-span-1 p-4'>
-    <div class="card-header flex justify-between">
-      <h5 class='text-lg'>Funnels</h5>
-
-    </div>
-    <%= turbo_frame_tag :funnels, src: funnels_path(search_params), data: { "navigation-target" => 'navigable' } %>
-  </div>
-
 </main>
 
 <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
