@@ -74,6 +74,12 @@ AhoyCaptain.configure do
   #
   # And handle the default range, which will be used if no range is given:
   # config.ranges.default = '3d'
+  #
+  # The max range if a custom range is sent
+  # config.ranges.max = 180.days
+  #
+  # Set to false to disable custom ranges
+  # config.ranges.custom = true
 
   # ==> Caching
   # config.cache.enabled = false

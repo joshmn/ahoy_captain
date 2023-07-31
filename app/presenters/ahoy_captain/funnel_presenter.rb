@@ -28,7 +28,7 @@ module AhoyCaptain
           prev_goal = goal
 
           query = @event_query
-                    .select("distinct(visit_id) as id, min(time) as min_time")
+                    .select("distinct(ahoy_events.visit_id) as id, min(ahoy_events.time) as min_time")
                     .where(name: goal.event_name.to_s)
                     .group("1").to_sql
           selects << ["'#{goal.title}' as step, count(*) from #{prev_table}"]

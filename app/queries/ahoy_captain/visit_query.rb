@@ -3,22 +3,22 @@ module AhoyCaptain
     include Rangeable
 
     def build
-      ::Ahoy::Visit.ransack(ransack_params_for(:visit)).result
-    end
+      shared_context = Ransack::Context.for(AhoyCaptain.visit)
 
-    def within_range
-      if range
-        abort
-        @query = @query.where('started_at >= ? and started_at < ?', range[0], range[1])
-      end
+      search_parents = AhoyCaptain.visit.ransack(
+        ransack_params_for(:visit).reject { |k,v| k.start_with?("events_") }, context: shared_context
+      )
+      search_children = AhoyCaptain.event.ransack(
+        ransack_params_for(:event).reject { |k,v| k.start_with?("visit_") }.transform_keys { |key| "events_#{key}" }, context: shared_context
+      )
 
-      self
-    end
+      shared_conditions = [search_parents, search_children].map { |search|
+        Ransack::Visitor.new.accept(search.base)
+      }
 
-    def with_events
-      @query = @query.joins(:events)
+      AhoyCaptain.visit.joins(shared_context.join_sources)
+            .where(shared_conditions.reduce(&:or))
 
-      self
     end
 
     def is_a?(other)

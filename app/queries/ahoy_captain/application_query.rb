@@ -90,8 +90,8 @@ module AhoyCaptain
           if range.size == 2
             ransackable_params["started_at_gt"] = range[0]
             ransackable_params["started_at_lt"] = range[1]
-            ransackable_params["events_time_gt"] = range[0]
-            ransackable_params["events_time_lt"] = range[1]
+            ransackable_params["events_time_gteq"] = range[0]
+            ransackable_params["events_time_lteq"] = range[1]
           else
             ransackable_params["started_at_gt"] = range[0]
             ransackable_params["events_time_gt"] = range[0]

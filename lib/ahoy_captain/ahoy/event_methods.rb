@@ -5,7 +5,7 @@ module AhoyCaptain
 
       included do
         ransacker :route do |parent|
-          Arel.sql(AhoyCaptain.config.event[:url_column].gsub("properties", "ahoy_events.properties"))
+          Arel.sql(AhoyCaptain.config.event[:url_column])
         end
 
         scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
