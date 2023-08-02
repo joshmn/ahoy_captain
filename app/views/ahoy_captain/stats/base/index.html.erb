@@ -1,3 +1,14 @@
 <%= turbo_frame_tag :chart do %>
-  <%= line_chart @stats %>
+  <div class="flex justify-end ...">
+    <%= form_with url: url_for(params.permit!), method: :get, data: { controller: "interval" } do %>
+      <%= select_tag :interval, options_for_select(available_intervals.collect { |interval| [interval.titleize, interval] }, selected: selected_interval), class: "select select-bordered select-sm w-full max-w-sm", 'data-action': "change->interval#handleChange" %>
+    <% end %>
+
+  </div>
+
+  <div>
+
+
+    <%= line_chart @stats %>
+  </div>
 <% end %>

@@ -15,7 +15,7 @@
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
         <div data-controller='link' data-link-top_sources-class="text-primary underline">
-        <a href="<%= sources_path(search_params) %>"data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>All</a>
+        <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>All</a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
           <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
             <% dropdown.with_option do %>
