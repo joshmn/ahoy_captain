@@ -28,6 +28,10 @@ module AhoyCaptain
       end
 
       def default_interval_for_date_range(range)
+        if range[1].nil?
+          # assume we're in a realtime
+          return INTERVAL_PERIOD["realtime"][0]
+        end
         diff = (range[1] - range[0]).seconds
         if diff.in_months > 1
           "month"
