@@ -1,1 +1,3 @@
-class ApplicationRecord < ActiveRecord::Base; end 
+class ApplicationRecord < ActiveRecord::Base
+  include PpSql::ToSqlBeautify
+end
