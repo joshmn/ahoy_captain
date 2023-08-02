@@ -21,6 +21,9 @@ module AhoyCaptain
       @query = query
     end
 
+    def inspect
+      "<#{self.class.name}>"
+    end
     protected
 
     def build

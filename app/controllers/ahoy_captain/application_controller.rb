@@ -78,7 +78,7 @@ module AhoyCaptain
       if AhoyCaptain.cache.class == ActiveSupport::Cache::NullStore
         return yield
       end
-      AhoyCaptain.cache.fetch("ahoy_captain:#{names.join(":")}:#{request.query_parameters.sort.map { |k,v| "#{k}-#{v}" }.join(":")}", expire_in: AhoyCaptain.config.cache.ttl) do
+      AhoyCaptain.cache.fetch("ahoy_captain:#{names.join(":")}:#{request.query_parameters.sort.map { |k,v| "#{k}-#{v}" }.join(":")}", expire_in: AhoyCaptain.config.cache[:ttl]) do
         yield
       end
     end

@@ -10,26 +10,26 @@ module AhoyCaptain
 
     def unique_visitors
       cached(:unique_visitors) do
-        Stats::UniqueVisitorsQuery.call(params).count(:ip)
+        Stats::UniqueVisitorsQuery.call(params).count(:visitor_token)
       end
     end
 
     def total_visits
       cached(:total_visits) do
-        Stats::TotalVisitorsQuery.call(params).count
+        Stats::TotalVisitorsQuery.call(params).count(:id)
       end
     end
 
     def total_pageviews
       cached(:total_pageviews) do
-        Stats::TotalPageviewsQuery.call(params).count
+        Stats::TotalPageviewsQuery.call(params).count(:id)
       end
     end
 
     def views_per_visit
       cached(:views_per_visit) do
         begin
-          result = Stats::AverageViewsPerVisitQuery.call(params).count
+          result = Stats::AverageViewsPerVisitQuery.call(params).count(:id)
           (result.values.sum.to_f / result.size).round(2)
         rescue ::ActiveRecord::StatementInvalid => e
           if e.message.include?("PG::DivisionByZero")
@@ -39,22 +39,25 @@ module AhoyCaptain
           end
         end
       end
-
     end
 
     def bounce_rate
       cached(:bounce_rate) do
         begin
-        result = Stats::BounceRatesQuery.call(params)
-        result[0].bounce_rate.round(2)
+          result = Stats::BounceRatesQuery.call(params)
+          average = result.average("bounce_rate")
+          if average
+            average.round(2)
+          else
+            "0"
+          end
         rescue ::ActiveRecord::StatementInvalid => e
-        if e.message.include?("PG::DivisionByZero")
-          return "0"
-        else
-          raise e
+          if e.message.include?("PG::DivisionByZero")
+            return "0"
+          else
+            raise e
+          end
         end
-      end
-
       end
     end
 
@@ -63,7 +66,7 @@ module AhoyCaptain
         result = Stats::AverageVisitDurationQuery.call(params)
         duration = result[0].average_visit_duration
         if duration
-          "#{duration.parts[:minutes]}M #{duration.parts[:seconds].round}S"
+          "#{duration.in_minutes.to_i}M #{duration.parts[:seconds].to_i}S"
         else
           "0M 0S"
         end
@@ -73,7 +76,7 @@ module AhoyCaptain
     private
 
     def cached(*names)
-      AhoyCaptain.cache.fetch("ahoy_captain:#{names.join(":")}:#{params.permit!.except("controller", "action").to_unsafe_h.map { |k,v| "#{k}-#{v}" }.join(":")}", expire_in: AhoyCaptain.config.cache.ttl) do
+      AhoyCaptain.cache.fetch("ahoy_captain:#{names.join(":")}:#{params.permit!.except("controller", "action").to_unsafe_h.map { |k,v| "#{k}-#{v}" }.join(":")}", expire_in: AhoyCaptain.config.cache[:ttl]) do
         yield
       end
     end
