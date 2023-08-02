@@ -97,14 +97,23 @@ AhoyCaptain.configure do
   #
   #   config.goal :unique_id do
   #     label "Some label here"
-  #     event "The event name you're tracking in your Ahoy::Event table"
+  #     name "The event name you're tracking in your Ahoy::Event table"
   #   end
   #
   # Real-world example:
   #
   #   config.goal :appointment_paid do
   #     label "Appointment Paid"
-  #     event "$appointment.paid"
+  #     name "$appointment.paid"
+  #   end
+  #
+  # You can also use queries:
+  #
+  #   config.goal :appointment_paid do
+  #     label "Appointment Paid"
+  #     query do
+  #       ::Ahoy::Event.where(...)
+  #     end
   #   end
 
   # ==> Funnels

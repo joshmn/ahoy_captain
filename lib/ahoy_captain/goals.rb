@@ -1,19 +1,23 @@
 module AhoyCaptain
   class Goal
     attr_accessor :id
-    attr_reader :title, :event_name
+    attr_reader :title, :event_query
     def initialize
       @id = nil
       @title = nil
-      @event_name = nil
+      @event_query = nil
     end
 
     def label(value)
       @title = value
     end
 
-    def event(value)
-      @event_name = value
+    def name(value)
+      @event_query = -> { AhoyCaptain.event.where(name: value) }
+    end
+
+    def query(&block)
+      @event_query = block
     end
   end
 

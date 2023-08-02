@@ -4,7 +4,7 @@
 
 ### Added
 
-* Nothing, yet
+* Goals now support queries instead of just event names
 
 ### Fixed
 

@@ -17,20 +17,24 @@ end
 
 AhoyCaptain.configure do |config|
   config.ranges.delete :all
-  config.goal :appointment_created do
-    label "Appointment Created"
-    event "$appointment.created"
+  config.goal :viewed_booking_form do
+    label "Viewed booking form"
+    query do
+      ::Ahoy::Event.where("ahoy_events.properties @> ?", { controller: "booking/schedules", action: "show"}.to_json)
+    end
   end
 
-  config.goal :appointment_updated do
+  config.goal :created_appointment do
     label "Appointment Updated"
-    event "$appointment.updated"
+    query do
+      ::Ahoy::Event.where("ahoy_events.properties @> ?", { controller: "booking/appointments", action: "show"}.to_json)
+    end
   end
 
   config.funnel :appointments do
     label "Appointments"
-    goal :appointment_created
-    goal :appointment_updated
+    goal :viewed_booking_form
+    goal :created_appointment
   end
 
   config.ranges.max = 100.days

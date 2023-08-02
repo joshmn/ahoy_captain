@@ -9,43 +9,46 @@ module AhoyCaptain
     end
 
     def build
-      queries = {}
-      prev_goal = nil
-      prev_table = nil
-      selects = []
-      @funnel.goals.each do |goal|
-        if prev_goal
-          query = ::Ahoy::Event
-                    .select("distinct ahoy_events.visit_id")
-                    .from(prev_table.to_s)
-                    .joins("inner join ahoy_events on ahoy_events.visit_id = #{prev_table}.id")
-                    .where("ahoy_events.name = ?", goal.event_name.to_s).to_sql
-          prev_table = "#{goal.id}"
-          selects << ["SELECT '#{prev_goal.title} > #{goal.title}' as step, count(*) from #{prev_table}"]
-          queries[prev_table] = query
-        else
-          prev_table = :visitors
-          prev_goal = goal
+      if AhoyCaptain.config.goals.none?
+        @goals = []
+        return self
+      end
 
-          query = @event_query
-                    .select("distinct(ahoy_events.visit_id) as id, min(ahoy_events.time) as min_time")
-                    .where(name: goal.event_name.to_s)
-                    .group("1").to_sql
-          selects << ["'#{goal.title}' as step, count(*) from #{prev_table}"]
+      queries = {
+        totals: @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '_internal_total_visits_' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, 0 as sort_order")
+      }
+      selects = ["SELECT unique_visits, name, total_events, sort_order from totals"]
+      last_goal = nil
+      map = {}.with_indifferent_access
 
-          queries[prev_table] = query
+      AhoyCaptain.config.goals.each_with_index do |goal, index|
+        queries[goal.id] = @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '#{goal.id}' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, #{index + 1} as sort_order").merge(goal.event_query.call).group("#{AhoyCaptain.event.table_name}.name")
+        selects << ["SELECT unique_visits, name, total_events, sort_order from #{goal.id}"]
+        map[goal.id] = goal
+        last_goal = goal
+      end
+
+      # activerecord quirk / with bug
+      select = selects.join(" UNION ").delete_suffix(" from #{last_goal.id}")
+      select = select.delete_prefix("SELECT ")
+      steps = ::Ahoy::Event.with(
+        queries,
+        ).select(select).from("#{last_goal.id}").order("sort_order asc")
+
+      items = ::Ahoy::Event.with(steps: steps).select("total_events, unique_visits, name, round((total_events::numeric/lag(total_events, 1) over ()),2) as drop_off").from("steps").order("sort_order asc").index_by(&:name)
+      items.delete("_internal_total_visits_")
+      @steps = []
+
+      items.values.each do |item|
+        if map[item.name]
+          item.name = map[item.name].title
         end
       end
 
-      select = selects.join(" UNION ").delete_suffix(" from #{prev_table}")
-
-      steps = ::Ahoy::Event.with(
-        queries
-      ).select(select).from(prev_table).order("count desc")
-
-      @steps = ::Ahoy::Event.with(steps: steps).select("step, count, lag(count, 1) over () as lag, abs(count::numeric - lag(count, 1) over ())::integer as drop_off, round((1.0 - count::numeric/GREATEST(lag(count, 1) over (), 1)),2) as conversion_rate").from("steps")
+      @steps = items.values
       self
     end
+
 
     def total
       @event_query.distinct(:visitor_token).count

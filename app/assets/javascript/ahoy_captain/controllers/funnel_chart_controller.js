@@ -39,34 +39,10 @@ export default class extends Controller {
     connect() {
         const funnel = JSON.parse(this.element.dataset.data);
 
-        const getPalette = () => {
-            return {
-                dataLabelBackground: 'rgba(25, 30, 56, 0.97)',
-                dataLabelTextColor: 'rgb(243, 244, 246)',
-                visitorsBackground: 'rgb(99, 102, 241)',
-                dropoffBackground: '#2F3949',
-                dropoffStripes: 'rgb(25, 30, 56)',
-                stepNameLegendColor: 'rgb(228, 228, 231)',
-                visitorsLegendClass: 'bg-indigo-500',
-                dropoffLegendClass: 'bg-gray-600',
-                smallBarClass: 'bg-indigo-500'
-            }
-        }
-
-
-
-        var fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
-        const calcBarThickness = (ctx) => {
-            if (ctx.dataset.data.length <= 3) {
-                return 160
-            } else {
-                return Math.floor(650 / ctx.dataset.data.length)
-            }
-        }
-
-        const labels = funnel.steps.map((step) => step.step)
-        const stepData = funnel.steps.map((step) => step.count)
-        const dropOffData = funnel.steps.map((step) => step.drop_off)
+        const fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+        const labels = funnel.steps.map((step) => step.name)
+        const stepData = funnel.steps.map((step) => step.total_events)
+        const dropOffData = funnel.steps.map((step) => step.drop_off * 100)
 
         const data = {
             labels: labels,
@@ -86,7 +62,6 @@ export default class extends Controller {
             ],
         }
 
-        console.log(data)
         const config = {
             responsive:true,
             maintainAspectRatio: false,
@@ -97,7 +72,6 @@ export default class extends Controller {
                 layout: {
                     padding: 100,
                 },
-                barThickness: calcBarThickness,
                 plugins: {
                     legend: {
                         display: false,

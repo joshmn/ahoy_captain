@@ -6,42 +6,48 @@ module AhoyCaptain
       @goals = nil
     end
 
+    # this is a dumpster fire
     def build
       if AhoyCaptain.config.goals.none?
         @goals = []
         return self
       end
-      queries = {}
-      selects = []
-      last_goal = nil
-      map = {}
-      total_event_count_by_name = @event_query.reselect("count(ahoy_events.name) as total").where(name: AhoyCaptain.config.goals.map(&:event_name)).group("ahoy_events.name").count("distinct ahoy_events.id")
-      AhoyCaptain.config.goals.each do |goal|
-        queries[goal.id] = @event_query.select("count(distinct(ahoy_events.visit_id)) as uniques, ahoy_events.name as name, count(distinct ahoy_events.id) as total").where(name: goal.event_name).group("ahoy_events.name")
-        selects << ["SELECT uniques, name, total from #{goal.id}"]
 
-        map[goal.event_name] = goal
+      queries = {
+        totals: @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '_internal_total_visits_' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, 0 as sort_order")
+      }
+      selects = ["SELECT unique_visits, name, total_events, sort_order, 0 as cr from totals"]
+      last_goal = nil
+      map = {}.with_indifferent_access
+
+      AhoyCaptain.config.goals.each_with_index do |goal, index|
+        queries[goal.id] = @event_query.select(
+          [
+            "count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits" ,
+            "'#{goal.id}' as name",
+            "count(distinct #{AhoyCaptain.event.table_name}.id) as total_events",
+            "#{index + 1} as sort_order",
+          ]
+        ).merge(goal.event_query.call).group("#{AhoyCaptain.event.table_name}.name")
+        selects << ["SELECT unique_visits, name, total_events, sort_order, 0::decimal as cr from #{goal.id}"]
+        map[goal.id] = goal
         last_goal = goal
       end
+
+      # activerecord quirk / with bug
       select = selects.join(" UNION ").delete_suffix(" from #{last_goal.id}")
       select = select.delete_prefix("SELECT ")
       steps = ::Ahoy::Event.with(
         queries,
-      ).select(select).from("#{last_goal.id}")
+        ).select(select).from("#{last_goal.id}").order("sort_order asc").index_by(&:name)
+      totals = steps.delete("_internal_total_visits_")
 
-      items = ::Ahoy::Event.with(steps: steps).select("total as total_events, 0 as total_visitors, uniques, name, 0 as conversion_rate").from("steps").index_by(&:name)
-      @goals = []
-      map.each do |name, _|
-        if items[name]
-          items[name].name = map[name].title
-          items
-          items[name].conversion_rate = (((items[name].total_events / total_visitors.to_d) * 100) / 100.to_d).round(2)
-          @goals << items[name]
-        else
-          @goals << OpenStruct.new(name: map[name].title, uniques: 0, total: 0, conversion_rate: 0)
-        end
+      @goals = steps.keys.collect do |name|
+        step = steps[name]
+        step.name = map[name].title
+        step.cr = ((step.total_events.to_d / totals.total_events.to_d) * 100).round(2)
+        step
       end
-
       self
     end
 
