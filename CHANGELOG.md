@@ -16,6 +16,8 @@
 ### Changed
 
 * Changed the configuration file to properly reflect method names 
+* The background/progress bar on a goal (in the goals list) now reflects the conversion rate
+  - before, this was relative to other goals
 
 ## Version 0.77
 
