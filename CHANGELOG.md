@@ -13,6 +13,7 @@
   - https://activerecord-hackery.github.io/ransack/going-further/merging-searches/
   - this requires queries to specify the full table name 
 * Rewrite bounce rate query
+* Bug in visits chart 
 
 ### Changed
 
