@@ -41,6 +41,12 @@ AhoyCaptain::Engine.routes.draw do
     %w{country region city}.each do |type|
       get "locations/#{type.pluralize}" => "locations#index", defaults: { type: type }
     end
+
+    namespace :properties do
+      resources :names, only: [:index]
+      resources :values, only: [:index]
+    end
+
     resources :sources, only: [:index]
     resources :screens, only: [:index]
     scope :operating_systems, module: :operating_systems do

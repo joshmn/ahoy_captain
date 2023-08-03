@@ -1,7 +1,6 @@
 module AhoyCaptain
   module Filters
     module Pages
-      # TODO: ACCOMODATE ENTRY_PAGES
       class ExitPagesController < BaseController
         def index
           query = event_query.with_url.distinct_url

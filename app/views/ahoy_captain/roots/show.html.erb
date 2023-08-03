@@ -15,16 +15,16 @@
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
         <div data-controller='link' data-link-top_sources-class="text-primary underline">
-        <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>All</a>
-        <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
-          <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
-            <% dropdown.with_option do %>
-              <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>
-                <%= source.titleize.gsub("Utm", "UTM") %>
-              </a>
+          <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>All</a>
+          <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
+            <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
+              <% dropdown.with_option do %>
+                <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources" data-action='click->link#changeTopSources' data-link-target='top_sourcesLink'>
+                  <%= source.titleize.gsub("Utm", "UTM") %>
+                </a>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
         </div>
       <% end %>
       <% component.with_statistic_display do %>
@@ -37,11 +37,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
-      <div data-controller='link' data-link-top_pages-class="text-primary underline" >
-        <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Top Pages</a>
-        <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Entry Pages</a>
-        <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Exit Pages</a>
-      </div>
+        <div data-controller='link' data-link-top_pages-class="text-primary underline" >
+          <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Top Pages</a>
+          <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Entry Pages</a>
+          <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" data-action='click->link#changeTopPages' data-link-target='top_pagesLink'>Exit Pages</a>
+        </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :pages, src: top_pages_path(search_params), loading: :lazy %>
@@ -53,11 +53,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
-      <div data-controller='link' data-link-countries-class="text-primary underline">
-        <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Countries</a>
-        <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Regions</a>
-        <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Cities</a>
-      </div>
+        <div data-controller='link' data-link-countries-class="text-primary underline">
+          <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Countries</a>
+          <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Regions</a>
+          <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" data-action='click->link#changeCountries' data-link-target='countriesLink'>Cities</a>
+        </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :geography, src: countries_path(search_params), loading: :lazy %>
@@ -69,11 +69,11 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
-      <div data-controller='link' data-link-devices-class="text-primary underline">
-        <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Browser</a>
-        <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>OS</a>
-        <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Size</a>
-      </div>
+        <div data-controller='link' data-link-devices-class="text-primary underline">
+          <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Browser</a>
+          <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>OS</a>
+          <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices" data-action='click->link#changeDevices' data-link-target='devicesLink'>Size</a>
+        </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params), loading: :lazy %>
@@ -98,55 +98,89 @@
         <% end %>
 
       <% end %>
-        <% component.with_statistic_display do %>
+      <% component.with_statistic_display do %>
         <%= turbo_frame_tag :goals, src: goals_path(search_params), loading: :lazy %>
       <% end %>
     <% end %>
   </div>
 </main>
 
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Action", column: :route, url: filters_actions_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Entry page", column: :entry_page, url: filters_entry_pages_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Exit page", column: :exit_page, url: filters_exit_pages_path, predicates: [:in, :not_in]) %>
+<%= form_with url: url_for(params.permit!.except(:q)), method: :get, data: { turbo_frame: "_top" } do |form| %>
+  <%= form.hidden_field :period, value: params[:period] %>
+  <%= form.hidden_field :start_date, value: params[:start_date] %>
+  <%= form.hidden_field :end_date, value: params[:end_date] %>
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Action", column: :route, url: filters_actions_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Entry page", column: :entry_page, url: filters_entry_pages_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Exit page", column: :exit_page, url: filters_exit_pages_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
   <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Country", id: "countryModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Source", id: "sourceModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_type, url: filters_screens_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Browser", id: "osModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Campaign", id: "utmModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+
 <% end %>
 
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Country", id: "countryModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in]) %>
-  <% end %>
-<% end %>
 
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Source", id: "sourceModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in]) %>
-  <% end %>
-<% end %>
 
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
+<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Property", id: "propertyModal") do |modal| %>
   <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_type, url: filters_screens_path, predicates: [:in, :not_in]) %>
-  <% end %>
-<% end %>
-
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Browser", id: "osModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in]) %>
-  <% end %>
-<% end %>
-
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Campaign", id: "utmModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in]) %>
-    <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in]) %>
+    <div class="flex">
+      <select
+        class='w-[100%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
+        name="q[property_name_eq]"
+        multiple
+        data-filter-target="select"
+        data-filter-column-value="property_name"
+        data-filter-url-value="<%= filters_properties_names_path %>"
+        data-filter-selected="[]"
+      ></select>
+      <select
+        class='w-[100%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
+        name="property_value_eq"
+        multiple
+        data-filter-target="select propertySelect"
+        data-filter-column-value="property_eq"
+        data-filter-url-value="<%= filters_properties_values_path %>"
+        data-filter-selected="[]"
+      ></select>
+    </div>
   <% end %>
 <% end %>
 

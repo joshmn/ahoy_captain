@@ -10,7 +10,7 @@ module AhoyCaptain
     private
 
     def h
-      @h ||= @context.request.view_context
+      @h ||= @context.view_context
     end
 
     def params

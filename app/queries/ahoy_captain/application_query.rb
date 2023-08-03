@@ -53,6 +53,7 @@ module AhoyCaptain
       EventQuery.call(params)
     end
 
+    # this could be better
     def ransack_params_for(type)
       ransackable_params = {}
 
@@ -61,12 +62,13 @@ module AhoyCaptain
           visit: (AhoyCaptain.visit.ransackable_attributes + AhoyCaptain.visit.ransackable_scopes).map(&:to_s),
           event: (AhoyCaptain.event.ransackable_attributes + AhoyCaptain.event.ransackable_scopes).map(&:to_s),
         }
+
         pattern = /(?:_not_eq|_eq|_in|_not_in|_cont|_not_cont|_i_cont)$/
         params[:q].each do |key, value|
           attribute_name = key.gsub(pattern, '')
-          if type == :event && ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key)
+          if type == :event && (ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key))
             ransackable_params["visit_#{key}"] = value
-          elsif type == :visit && ransackable_attributes[:event].include?(attribute_name) || ransackable_attributes[:event].include?(key)
+          elsif type == :visit && (ransackable_attributes[:event].include?(attribute_name) || ransackable_attributes[:event].include?(key))
             ransackable_params["events_#{key}"] = value
           else
             ransackable_params[key] = value
@@ -101,7 +103,6 @@ module AhoyCaptain
           end
         end
       end
-
 
       ransackable_params
     end

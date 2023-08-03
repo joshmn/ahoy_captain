@@ -1,21 +1,23 @@
-<fieldset class="flex space-x-4 items-end">
+<fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
   <div class="flex flex-col w-[20%]">
     <label class="label"><%= label %></label>
-    <select class='select select-bordered' data-filter-target='predicate' name="<%= column %>">
-      <% predicates.each do |predicate| %>
-        <option value="<%= column %>_<%= predicate %>" <%= 'selected' if selected_predicate == "#{column}_#{predicate}" %>>
+    <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
+      <% predicate_options.each do |predicate| %>
+        <option value="q[<%= predicate %>]<% if multiple %>[]<% end %>" <%= 'selected' if selected_predicate == predicate %>>
           <%= predicate.to_s.humanize %>
         </option>
       <% end %>
     </select>
   </div>
+
   <select
+    data-predicate-select-target="select"
+    data-controller="search-select"
     class='w-[50%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-    name="<%= column %>"
-    multiple
-    data-filter-target="select"
-    data-filter-column-value="<%= column %>"
-    data-filter-url-value="<%= url %>"
-    data-filter-selected="<%= values %>"
-    ></select>
+    name="<%= column_name_with_predicate %>"
+    <% if multiple %>multiple<% end %>
+    data-search-select-query-value="q[<%= column %>_i_cont]"
+    data-search-select-url-value="<%= url %>"
+    data-search-select-selected-value="<%= values %>"
+  ></select>
 </fieldset>
