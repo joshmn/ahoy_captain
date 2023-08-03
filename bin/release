@@ -8,7 +8,7 @@ git add Gemfile.lock lib/ahoy_captain/version.rb
 git commit -m "Bump version for $VERSION"
 git push
 git tag v$VERSION
-git push --tags
+git push origin v$VERSION
 gem build ahoy_captain.gemspec
 gem push "ahoy_captain-$VERSION.gem" --host https://rubygems.org
 rm "ahoy_captain-$VERSION.gem"
