@@ -6,6 +6,7 @@
 
 * Goals now support queries instead of just event names
 * Stats graph/chart now supports changing intervals 
+* The migration as mentioned in the readme 
 
 ### Fixed
 

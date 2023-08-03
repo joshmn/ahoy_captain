@@ -1,0 +1,7 @@
+class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version %>
+  def change
+    add_index :<%= ::AhoyCaptain.visit.table_name %>, :started_at unless index_exists?(:<%= ::AhoyCaptain.visit.table_name %>, :started_at)
+    add_index :<%= ::AhoyCaptain.event.table_name %>, :visit_id unless index_exists?(:<%= ::AhoyCaptain.event.table_name %>, :visit_id)
+    add_index :<%= ::AhoyCaptain.event.table_name %>, :time unless index_exists?(:<%= ::AhoyCaptain.event.table_name %>, :time)
+  end
+end
