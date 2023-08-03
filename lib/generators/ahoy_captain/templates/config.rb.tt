@@ -1,4 +1,4 @@
-AhoyCaptain.configure do
+AhoyCaptain.configure do |config|
   # ==> Event tracking
   #
   # View name
