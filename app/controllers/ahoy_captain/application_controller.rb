@@ -1,5 +1,3 @@
-
-
 module AhoyCaptain
   module Limitable
     private
