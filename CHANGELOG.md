@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing.
+
+## Version 0.8
+
 ### Added
 
 * Goals now support queries instead of just event names
