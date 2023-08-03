@@ -18,7 +18,7 @@ module AhoyCaptain
           .limit(limit)
       end
 
-      @regions = paginate(results).map { |region| RegionDecorator.new(region) }
+      @regions = paginate(results).map { |region| RegionDecorator.new(region, self) }
     end
   end
 end

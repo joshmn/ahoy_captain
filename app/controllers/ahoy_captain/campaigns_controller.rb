@@ -20,7 +20,7 @@ module AhoyCaptain
                    .order(Arel.sql("count(COALESCE(#{params[:campaigns_type]}, 'Direct/None')) desc"))
                    .limit(limit)
       end
-      @campaigns = paginate(results).map { |campaign| CampaignDecorator.new(campaign) }
+      @campaigns = paginate(results).map { |campaign| CampaignDecorator.new(campaign, self) }
       @campaign_type = params[:campaigns_type]&.titleize&.gsub("Utm", "UTM")
     end
   end

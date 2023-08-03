@@ -17,7 +17,7 @@ module AhoyCaptain
                    .limit(limit)
       end
 
-      @sources = paginate(results).map { |source| AhoyCaptain::SourceDecorator.new(source) }
+      @sources = paginate(results).map { |source| AhoyCaptain::SourceDecorator.new(source, self) }
     end
   end
 

@@ -2,14 +2,15 @@ module AhoyCaptain
   class ApplicationDecorator
     attr_reader :object
 
-    def initialize(object)
+    def initialize(object, context)
       @object = object
+      @context = context
     end
 
     private
 
     def h
-      @h ||= Current.request.view_context
+      @h ||= @context.request.view_context
     end
 
     def params
@@ -28,7 +29,7 @@ module AhoyCaptain
     end
 
     def request
-      Current.request.request
+      @context.request
     end
   end
 end

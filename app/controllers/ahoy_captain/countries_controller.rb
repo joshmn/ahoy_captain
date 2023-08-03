@@ -1,7 +1,6 @@
 module AhoyCaptain
   class CountriesController < ApplicationController
     include Limitable
-    include Rangeable
 
     before_action do
       if Widget.disabled?(:locations, :countries)
@@ -18,7 +17,7 @@ module AhoyCaptain
           .limit(limit)
       end
 
-      @countries = paginate(results).map { |country| CountryDecorator.new(country) }
+      @countries = paginate(results).map { |country| CountryDecorator.new(country, self) }
     end
   end
 end

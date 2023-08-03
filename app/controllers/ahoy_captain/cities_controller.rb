@@ -18,7 +18,7 @@ module AhoyCaptain
           .limit(limit)
       end
 
-      @cities = paginate(results).map { |city| CityDecorator.new(city) }
+      @cities = paginate(results).map { |city| CityDecorator.new(city, self) }
     end
   end
 end

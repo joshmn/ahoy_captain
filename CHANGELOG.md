@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-Nothing.
+### Changed
+* Removed dependency on `CurrentAttributes`
+  * this was a lazy man's RequestStore for one attribute and instead we'll just send it with the decorator
 
 ## Version 0.8
 

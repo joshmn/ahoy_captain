@@ -1,8 +1,6 @@
 module AhoyCaptain
   module Stats
     class ViewsPerVisitsController < BaseController
-      include Rangeable
-
       # @todo: make me a window func
       def index
         @stats = AhoyCaptain::Stats::ViewsPerVisitQuery.call(params).group_by_period(selected_interval, 'views_per_visit_table.started_at').average(:views_per_visit)

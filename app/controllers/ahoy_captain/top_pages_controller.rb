@@ -20,7 +20,7 @@ module AhoyCaptain
                    .limit(limit)
       end
 
-      @pages = paginate(results).map { |page| TopPageDecorator.new(page) }
+      @pages = paginate(results).map { |page| TopPageDecorator.new(page, self) }
     end
   end
 end

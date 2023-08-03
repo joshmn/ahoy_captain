@@ -17,7 +17,7 @@ module AhoyCaptain
           .limit(limit)
       end
 
-      @devices = results.map { |device| DeviceDecorator.new(device) }
+      @devices = results.map { |device| DeviceDecorator.new(device, self) }
     end
   end
 end

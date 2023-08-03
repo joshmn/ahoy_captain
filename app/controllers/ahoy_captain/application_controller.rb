@@ -22,10 +22,6 @@ module AhoyCaptain
 
     layout 'ahoy_captain/layouts/application'
 
-    before_action do
-      Current.request = self
-    end
-
     # show the details frame
     before_action do
       if request.headers['Turbo-Frame'] == 'details'
