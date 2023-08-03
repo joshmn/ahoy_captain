@@ -23,14 +23,24 @@ module AhoyCaptain
     layout 'ahoy_captain/layouts/application'
 
     # show the details frame
-    before_action do
+    before_action :use_details_frame
+
+    # act like an spa without being an spa
+    before_action :act_like_an_spa
+
+    rescue_from Widget::WidgetDisabled do |e|
+      render template: 'ahoy_captain/shared/widget_disabled', locals: { frame: e.frame }
+    end
+
+    private
+
+    def use_details_frame
       if request.headers['Turbo-Frame'] == 'details'
         request.variant = :details
       end
     end
 
-    # act like an spa without being an spa
-    before_action do
+    def act_like_an_spa
       if request.format.html? && request.headers['Turbo-Frame'].blank?
         if request.path != root_path
           requested_params = Rails.application.routes.recognize_path(request.path).except(:controller, :action)
@@ -42,12 +52,6 @@ module AhoyCaptain
       end
     end
 
-    rescue_from Widget::WidgetDisabled do |e|
-      render template: 'ahoy_captain/shared/widget_disabled', locals: { frame: e.frame }
-    end
-
-    private
-
     def visit_query
       VisitQuery.call(params)
     end
@@ -56,6 +60,7 @@ module AhoyCaptain
       EventQuery.call(params)
     end
 
+    # Only paginate details requests requests
     def paginate(collection)
       if paginate?
         pagy, results = pagy(collection, page: params[:page])
