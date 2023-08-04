@@ -9,6 +9,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.loadedInitialData = false;
     this.search = this.search.bind(this)
     this.select = new SlimSelect({
       select: this.element,
@@ -22,6 +23,13 @@ export default class extends Controller {
         searchHighlight: true
       },
       events: {
+        beforeOpen: async () => {
+          if (!this.loadedInitialData) {
+            const data = await this.search("");
+            this.select.setData(data);
+            this.loadedInitialData = true
+          }
+        },
         search: this.search
       }
     });
