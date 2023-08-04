@@ -30,7 +30,12 @@ module AhoyCaptain
       cached(:views_per_visit) do
         begin
           result = Stats::AverageViewsPerVisitQuery.call(params).count(:id)
-          (result.values.sum.to_f / result.size).round(2)
+          count = (result.values.sum.to_f / result.size).round(2)
+          if count.nan?
+            return "0"
+          else
+            return count
+          end
         rescue ::ActiveRecord::StatementInvalid => e
           if e.message.include?("PG::DivisionByZero")
             return "0"

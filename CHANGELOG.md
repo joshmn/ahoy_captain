@@ -7,6 +7,9 @@
   * this was a lazy man's RequestStore for one attribute and instead we'll just send it with the decorator
 * Default period is now 30d, was MTD
 
+### Fixed 
+* Views/visit returning NaN 
+
 ## Version 0.8
 
 ### Added
