@@ -17,7 +17,7 @@ module AhoyCaptain
       }
 
       AhoyCaptain.event.joins(shared_context.join_sources)
-                 .where(shared_conditions.reduce(&:or))
+                 .where(shared_conditions.reduce(&:and))
     end
   end
 end
