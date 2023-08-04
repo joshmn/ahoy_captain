@@ -105,7 +105,7 @@
   </div>
 </main>
 
-<%= form_with url: url_for(params.permit!.except(:q)), method: :get, data: { turbo_frame: "_top" } do |form| %>
+<%= form_with url: url_for(params.permit!.except(:q)), method: :get, data: { turbo_frame: "_top", controller: "filter-form", action: "reset->filter-form#handleReset" } do |form| %>
   <%= form.hidden_field :period, value: params[:period] %>
   <%= form.hidden_field :start_date, value: params[:start_date] %>
   <%= form.hidden_field :end_date, value: params[:end_date] %>
@@ -155,52 +155,26 @@
   <% end %>
 
 
-<% end %>
-
-
-
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Property", id: "propertyModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <div class="flex">
-      <select
-        class='w-[100%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-        name="q[property_name_eq]"
-        multiple
-        data-filter-target="select"
-        data-filter-column-value="property_name"
-        data-filter-url-value="<%= filters_properties_names_path %>"
-        data-filter-selected="[]"
-      ></select>
-      <select
-        class='w-[100%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-        name="property_value_eq"
-        multiple
-        data-filter-target="select propertySelect"
-        data-filter-column-value="property_eq"
-        data-filter-url-value="<%= filters_properties_values_path %>"
-        data-filter-selected="[]"
-      ></select>
-    </div>
-  <% end %>
-<% end %>
-
-<%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Range", id: "customRangeModal") do |modal| %>
-  <% modal.with_modal_display do %>
-    <div class="flex gap-2 w-full">
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Start Date</span>
-        </label>
-        <input type="datetime-local" name="start_date" class="input input-bordered w-full" value="<%= params[:start_date] %>" />
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Range", id: "customRangeModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <div class="flex gap-2 w-full">
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="start_date">
+            <span class="label-text">Start Date</span>
+          </label>
+          <input type="datetime-local" id="start_date" name="start_date" class="input input-bordered w-full" value="<%= params[:start_date] %>" />
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="end_date">
+            <span class="label-text">End Date</span>
+          </label>
+          <input type="datetime-local" id="end_date" name="end_date" class="input input-bordered w-full" value="<%= params[:end_date] %>" />
+        </div>
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">End Date</span>
-        </label>
-        <input type="datetime-local" name="end_date" class="input input-bordered w-full" value="<%= params[:end_date] %>" />
-      </div>
-    </div>
+    <% end %>
   <% end %>
+
+
 <% end %>
 
 <dialog id="detailsModal" class="modal">
