@@ -4,9 +4,24 @@ module AhoyCaptain
       extend ActiveSupport::Concern
 
       included do
-        ransacker :route do |parent|
+        ransacker :route do |_parent|
           Arel.sql(AhoyCaptain.config.event[:url_column])
         end
+
+        ransacker :entry_page do |parent|
+          Arel.sql("entry_pages.url")
+        end
+
+        ransacker :exit_page do |parent|
+          Arel.sql("exit_pages.url")
+        end
+
+        scope :with_entry_pages, -> {
+          with(entry_pages: self.select("MIN(ahoy_events.id) as min_id, #{Arel.sql("#{AhoyCaptain.config.event.url_column} AS url")}").where(name: AhoyCaptain.config.event[:view_name]).group("ahoy_events.properties")).joins("INNER JOIN entry_pages ON entry_pages.min_id = ahoy_events.id")
+        }
+        scope :with_exit_pages, -> {
+          with(exit_pages: self.select("MAX(ahoy_events.id) as max_id, #{Arel.sql("#{AhoyCaptain.config.event.url_column} AS url")}").where(name: AhoyCaptain.config.event[:view_name]).group("ahoy_events.properties")).joins("INNER JOIN exit_pages ON exit_pages.max_id = ahoy_events.id")
+        }
 
         scope :with_routes, -> { where(AhoyCaptain.config.event[:url_exists]) }
 
@@ -18,90 +33,29 @@ module AhoyCaptain
           distinct(Arel.sql("#{AhoyCaptain.config.event.url_column}"))
         }
 
-        scope :url_in, ->(*args) {
-          where("#{AhoyCaptain.config.event.url_column} IN (?)", args)
+        scope :property_name_eq, ->(value) {
+          where("properties ? :key", key: value)
         }
 
-        scope :url_eq, ->(arg) {
-          if arg.is_a?(Array)
-            arg = arg[0]
-          end
-          where("#{AhoyCaptain.config.event.url_column} = ?", arg)
+        scope :properties_eq, ->(value) {
+          where("properties @> ?", value)
         }
 
-        scope :url_not_in, ->(*args) {
-          where("#{AhoyCaptain.config.event.url_column} NOT IN (?)", args)
-        }
-
-        scope :url_i_cont, ->(arg) {
-          where("#{AhoyCaptain.config.event.url_column} ILIKE ?", "%#{arg}%")
-        }
-
-        scope :route_eq, ->(arg) {
-          url_eq(arg)
-        }
-
-        scope :route_in, ->(*args) {
-          url_in(*args)
-        }
-
-        scope :route_not_in, ->(*args) {
-          url_not_in(*args)
-        }
-
-        scope :route_i_cont, ->(arg) {
-          url_i_cont(arg)
-        }
-
-        scope :entry_page_in, ->(*args) {
-          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
-
-          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_in(*args).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
-        }
-
-        scope :entry_page_not_in, ->(*args) {
-          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
-          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_not_in(*args).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
-        }
-
-        scope :entry_page_i_cont, ->(arg) {
-          table_alias = "first_events_#{SecureRandom.hex.first(6)}"
-          subquery = self.select("MIN(id) as min_id").where(name: AhoyCaptain.config.event[:view_name]).route_i_cont(arg).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.min_id")
-        }
-
-        scope :exit_page_in, ->(*args) {
-          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
-
-          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_in(*args).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
-        }
-
-        scope :exit_page_not_in, ->(*args) {
-          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
-
-          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_not_in(*args).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
-        }
-
-        scope :exit_page_i_cont, ->(arg) {
-          table_alias = "last_events_#{SecureRandom.hex.first(6)}"
-
-          subquery = self.select("MAX(id) as max_id").where(name: AhoyCaptain.config.event[:view_name]).route_i_cont(*arg).group(:visit_id)
-          joins("INNER JOIN (#{subquery.to_sql}) #{table_alias} ON #{::AhoyCaptain.event.table_name}.id = #{table_alias}.max_id")
-        }
-
+        scope :properties_not_eq, ->(value) do
+          where.not("properties::jsonb @> ?", value)
+        end
       end
 
       class_methods do
         def ransackable_attributes(auth_object = nil)
-          super + ["action", "controller", "id", "id_property", "name", "name_property", "page", "properties", "time", "url", "user_id", "visit_id"] + self._ransackers.keys
+          super + ["action", "controller", "id", "id_property", "name", "page", "properties", "time", "url", "user_id", "visit_id", "property_name"] + self._ransackers.keys
         end
 
         def ransackable_scopes(auth_object = nil)
-          super + [:entry_page_in, :entry_page_not_in, :exit_page_in, :entry_page_not_in, :route_in, :route_not_in, :route_i_cont, :entry_page_i_cont, :exit_page_i_cont]
+          super + [
+            :properties_eq,
+            :properties_not_eq
+          ]
         end
 
         def ransackable_associations(auth_object = nil)

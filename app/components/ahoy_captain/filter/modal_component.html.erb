@@ -1,13 +1,14 @@
 <dialog id="<%= id %>" class="modal">
-  <form method="dialog" class="modal-box w-11/12 max-w-5xl" data-controller='filter' data-action="submit->filter#applyFilters reset->filter#resetFilters">
+  <div class="modal-box w-11/12 max-w-5xl">
     <fieldset>
       <h5><%= title %></h5>
       <%= modal_display %>
       <button class="btn btn-primary mt-4" type="submit">Apply</button>
       <button class="btn btn-primary mt-4" type="reset">Reset</button>
     </fieldset>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
+  </div>
+  <label  class="modal-backdrop">
+    <button onclick="event.preventDefault(); <%=id %>.close();">Close</button>
+  </label>
 </dialog>
+

@@ -36,5 +36,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sassc"
   spec.add_development_dependency "puma"
   spec.add_development_dependency "pg"
-  spec.add_development_dependency "pp_sql"
 end

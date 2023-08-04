@@ -2,10 +2,14 @@
 
 ## Unreleased
 
+### Added
+* Began work on querying by properties 
+
 ### Changed
 * Removed dependency on `CurrentAttributes`
   * this was a lazy man's RequestStore for one attribute and instead we'll just send it with the decorator
 * Default period is now 30d, was MTD
+* Simplified the filters
 * All front-facing queries now live in a query object
   * makes exporting easier 
 * Add CSV export 
