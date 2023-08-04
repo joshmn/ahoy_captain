@@ -6,6 +6,7 @@ require 'view_component'
 require 'chartkick'
 require 'groupdate'
 require 'pagy'
+require 'zip'
 
 module AhoyCaptain
   class Engine < Rails::Engine

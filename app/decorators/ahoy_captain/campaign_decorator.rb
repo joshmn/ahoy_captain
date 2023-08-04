@@ -1,5 +1,13 @@
 module AhoyCaptain
   class CampaignDecorator < ApplicationDecorator
+
+    def self.csv_map(params = {})
+      {
+        params[:campaigns_type] => :label,
+        "Total" => :unit_amount
+      }
+    end
+
     def display_name
       if object.label == "Direct/None"
         value = ""

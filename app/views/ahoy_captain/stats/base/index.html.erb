@@ -4,10 +4,7 @@
       <%= select_tag :interval, options_for_select(available_intervals.collect { |interval| [interval.titleize, interval] }, selected: selected_interval), class: "select select-bordered select-sm w-full max-w-sm", 'data-action': "change->interval#handleChange" %>
     <% end %>
   </div>
-
   <div>
-
-
-    <%= line_chart @stats %>
+    <canvas data-controller="line-chart" data-line-chart-data-value="<%= @stats.to_json %>" data-line-chart-label-value="<%= @label %>"></canvas>
   </div>
 <% end %>

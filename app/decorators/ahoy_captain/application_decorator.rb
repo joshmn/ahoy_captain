@@ -1,7 +1,30 @@
+require 'csv'
+
 module AhoyCaptain
   class ApplicationDecorator
     attr_reader :object
 
+    def self.to_csv(collection, context)
+      rows = collection.map { |row| new(row, context) }
+      CSV.generate do |csv|
+        csv << csv_map(context.params).keys
+
+        rows.each do |row|
+          items = []
+          csv_map.values.each do |attr|
+            items << row.send(attr)
+          end
+
+          csv << items
+        end
+      end
+    end
+
+    def self.csv_map(params = {})
+      raise NotImplementedError
+    end
+
+    delegate_missing_to :object
     def initialize(object, context)
       @object = object
       @context = context
