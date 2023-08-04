@@ -13,7 +13,15 @@ module AhoyCaptain
     end
 
     def name(value)
-      @event_query = -> { AhoyCaptain.event.where(name: value) }
+      @event_query = -> { ::AhoyCaptain.event.where(name: value) }
+    end
+
+    def event(value)
+      ActiveSupport::Deprecation.warn(
+        "event is deprecated. " \
+    "Use name instead."
+      )
+      @event_query = -> { ::AhoyCaptain.event.where(name: value) }
     end
 
     def query(&block)
