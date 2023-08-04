@@ -3,7 +3,7 @@
     <label class="label"><%= label %></label>
     <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
       <% predicate_options.each do |predicate| %>
-        <option value="q[<%= predicate %>]<% if multiple %>[]<% end %>" <%= 'selected' if selected_predicate == predicate %>>
+        <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate == predicate %>>
           <%= predicate.to_s.humanize %>
         </option>
       <% end %>

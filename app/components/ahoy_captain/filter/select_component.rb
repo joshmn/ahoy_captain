@@ -10,22 +10,24 @@ class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
     @multiple = multiple
   end
 
+  private
+
   def selected_predicate
     predicate_options.detect { |option| params.dig(:q, option) }
   end
 
-  def column_name_with_predicate
-    name = if selected_predicate
-             "q[#{selected_predicate}]"
-           else
-             "q[#{predicate_options.first}]"
-           end
-
-    if multiple
-      name += "[]"
-    end
-
+  def option_value(predicate)
+    name = "q[#{predicate}]"
+    name += "[]" if multiple
     name
+  end
+
+  def column_name_with_predicate
+    if selected_predicate
+      option_value(selected_predicate)
+    else
+      option_value(predicate_options.first)
+    end
   end
 
   def values
@@ -43,5 +45,5 @@ class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
     @predicate_options ||= @predicates.map { |predicate| "#{@column}_#{predicate}" }
   end
 
-  private attr_reader :label, :column, :url, :predicates, :form, :multiple
+  attr_reader :label, :column, :url, :predicates, :form, :multiple
 end
