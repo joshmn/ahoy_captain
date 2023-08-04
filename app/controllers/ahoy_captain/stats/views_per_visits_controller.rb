@@ -11,6 +11,9 @@ module AhoyCaptain
             end
           end
         end
+
+        @label = "Views"
+
       end
     end
   end
