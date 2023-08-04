@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Version 
 
 ### Added
 * Began work on querying by properties 
