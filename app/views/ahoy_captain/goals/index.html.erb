@@ -1,39 +1,7 @@
 <%= turbo_frame_tag :goals do %>
-  <div class="flex flex-col min-h-[380px] w-full pt-4">
-    <div class="flex text-sm font-bold text-base-content mb-4">
-      <span class="grow">Goal</span>
-      <span >Uniques</span>
-      <span class="w-8 ml-8 text-right">Total</span>
-      <span class="w-8 ml-8 text-right">CR</span>
-    </div>
-    <div class='min-h-[420px]'>
-      <div class="grow">
-        <% if @presenter.goals.respond_to?(:each) && @presenter.goals.any? %>
-          <% @presenter.goals.each do |item| %>
-
-            <div class='leading-10 flex relative'>
-              <progress class='progress-primary bg-base-100 h-8 grow' value="<%= item.cr %>" max="100">
-              </progress>
-              <span class="grow text-elipsis overflow-hidden absolute left-4 bottom-3 h-8 text-base-content">
-              <%= item.name %>
-            </span>
-              <span class="w-8 ml-8 text-right">
-              <%= render AhoyCaptain::TooltipComponent.new(amount: item.unique_visits) %>
-            </span>
-              <span class="w-8 ml-8 text-right">
-              <%= render AhoyCaptain::TooltipComponent.new(amount: item.total_events) %>
-            </span>
-              <span class="w-8 ml-8 text-right">
-                <%= item.cr %>%
-              </span>
-            </div>
-          <% end %>
-        <% else %>
-          <p>No data found</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <%= render AhoyCaptain::TableComponent.new(items: @presenter.goals,
+                                             header: ::AhoyCaptain::Tables::Headers::GoalsHeaderComponent,
+                                             row: ::AhoyCaptain::Tables::Rows::GoalsRowComponent) %>
 
 
 <% end %>

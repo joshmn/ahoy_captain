@@ -1,0 +1,5 @@
+<%= render AhoyCaptain::TableComponent.new(items: @devices,
+                                           category_name: 'Devices',
+                                           unit_name: 'Visitors',
+                                           header: ::AhoyCaptain::Tables::Headers::DevicesHeaderComponent,
+                                           row: ::AhoyCaptain::Tables::Rows::DevicesRowComponent) %>

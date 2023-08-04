@@ -1,13 +1,24 @@
 # frozen_string_literal: true
 
 class AhoyCaptain::TableComponent < ViewComponent::Base
-  SUPPORTED_COLS = [:percent_total, :total, :conversion_rate]
+  DEFAULT_HEADER = AhoyCaptain::Tables::Headers::HeaderComponent
+  DEFAULT_ROW = AhoyCaptain::Tables::Rows::RowComponent
 
-  def initialize(items:, category_name:, unit_name:, additional_cols: [])
+  def initialize(items:, category_name: nil, unit_name: nil, header: nil, row: DEFAULT_ROW)
     @items = items
     @category_name = category_name
     @unit_name = unit_name
     @additional_cols = additional_cols
+    if header.nil?
+      @header = DEFAULT_HEADER.new(category_name: category_name, unit_name: unit_name)
+    else
+      @header = header.new
+    end
+    @row = row
+  end
+
+  def render_row(item)
+    @row.new(table: self, item: item).render_in(view_context)
   end
 
   private
@@ -22,7 +33,4 @@ class AhoyCaptain::TableComponent < ViewComponent::Base
     @total ||= items.first.total_count
   end
 
-  def percent_total(item)
-    '%.1f' % ((item.unit_amount.to_i * 1.0 / total)*100.0)
-  end
 end

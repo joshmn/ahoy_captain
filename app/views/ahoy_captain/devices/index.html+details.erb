@@ -1,4 +1,4 @@
 <%= turbo_frame_tag :details do %>
-  <%= render AhoyCaptain::TableComponent.new(items: @devices, category_name: 'Devices', unit_name: 'Visitors', additional_cols: [:percent_total]) %>
+  <%= render 'table' %>
   <span class="flex justify-center"><%= render_pagination %></span>
 <% end %>

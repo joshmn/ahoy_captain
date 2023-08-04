@@ -14,6 +14,7 @@
   * makes exporting easier 
 * Add CSV export 
 * Tweaked the active link controller
+* Reworked the table components
 
 ### Fixed 
 * Views/visit returning NaN 
