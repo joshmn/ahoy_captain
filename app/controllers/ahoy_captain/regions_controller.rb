@@ -10,12 +10,8 @@ module AhoyCaptain
 
     def index
       results = cached(:regions) do
-        visit_query
-          .reselect("region, country, count(concat(region, country)) as count, sum(count(region)) over() as total_count")
-          .where.not(region: nil)
-          .group("region, country")
-          .order(Arel.sql "count(concat(region, country)) desc")
-          .limit(limit)
+        RegionQuery.call(params)
+                   .limit(limit)
       end
 
       @regions = paginate(results).map { |region| RegionDecorator.new(region, self) }

@@ -1,5 +1,12 @@
 module AhoyCaptain
   class SourceDecorator < ApplicationDecorator
+    def self.csv_map(params = {})
+      {
+        "Domain" => :referring_domain,
+        "Total" => :unit_amount
+      }
+    end
+
     def display_name
       display = %Q(
         <div class='flex justify-start space-x-8 col-span-1 items-center'>

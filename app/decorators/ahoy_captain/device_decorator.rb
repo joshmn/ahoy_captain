@@ -1,8 +1,19 @@
 module AhoyCaptain
   class DeviceDecorator < ApplicationDecorator
+    def self.csv_map(params = {})
+      {
+        "#{params[:devices_type]}" => :label,
+        "Total" => :unit_amount
+      }
+    end
+
     def display_name
-      search = search_query("#{params[:devices_type]}_eq" => object.label)
-      frame_link(object.label, search)
+      search = search_query("#{params[:devices_type]}_eq" => label)
+      frame_link(label, search)
+    end
+
+    def label
+      object.label
     end
 
     def unit_amount
