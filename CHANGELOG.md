@@ -13,6 +13,7 @@
 * All front-facing queries now live in a query object
   * makes exporting easier 
 * Add CSV export 
+* Tweaked the active link controller
 
 ### Fixed 
 * Views/visit returning NaN 
