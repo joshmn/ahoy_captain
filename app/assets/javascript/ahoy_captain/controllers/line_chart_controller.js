@@ -6,6 +6,11 @@ export default class extends Controller {
     label: String
   }
   connect() {
+    const getCSS = (varname) => {
+      return `hsl(${getComputedStyle(document.documentElement).getPropertyValue(varname)})`
+    }
+    Chart.register(Chart.Colors)
+
     new Chart(this.element,
       {
         type: 'line',
@@ -14,11 +19,19 @@ export default class extends Controller {
           datasets: [
             {
               label: this.labelValue,
-              data: Object.values(this.dataValue)
+              data: Object.values(this.dataValue),
+              borderColor: getCSS('--p'),
+              backgroundColor: getCSS('--af'),
+              color: getCSS('--pc')
             }
           ]
+        },
+        plugins: {
+          colors: {
+            forceOverride: true
+          }
         }
-      }
-      )
+      },
+    )
   }
 }
