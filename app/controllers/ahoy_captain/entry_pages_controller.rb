@@ -10,9 +10,7 @@ module AhoyCaptain
 
     def index
       results = cached(:entry_pages) do
-        EntryPagesQuery.call(params, event_query)
-                      .order(Arel.sql "count(#{AhoyCaptain.config.event[:url_column]}) desc")
-                      .limit(limit)
+        EntryPagesQuery.call(params).limit(limit)
       end
 
       @pages = paginate(results).map { |page| EntryPageDecorator.new(page, self) }

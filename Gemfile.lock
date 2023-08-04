@@ -9,6 +9,7 @@ PATH
       pagy (>= 4)
       rails (>= 6)
       ransack (>= 2.3)
+      rubyzip
       stimulus-rails (>= 1.1)
       turbo-rails (>= 1.2)
       view_component (>= 2)
@@ -179,6 +180,7 @@ GEM
       activesupport (>= 6.1.5)
       i18n
     rouge (4.1.1)
+    rubyzip (2.3.2)
     safely_block (0.4.0)
     sassc (2.4.0)
       ffi (~> 1.9)

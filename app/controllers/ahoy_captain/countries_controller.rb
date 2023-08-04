@@ -10,10 +10,7 @@ module AhoyCaptain
 
     def index
       results = cached(:countries) do
-        visit_query
-          .reselect("country as label, count(country) as count, sum(count(country)) OVER() as total_count")
-          .group("country")
-          .order("count(country) desc")
+        CountryQuery.call(params)
           .limit(limit)
       end
 

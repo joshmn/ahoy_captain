@@ -10,11 +10,8 @@ module AhoyCaptain
 
     def index
       results = cached(:devices, params[:devices_type]) do
-          visit_query
-          .select("#{params[:devices_type]} as label", "count(#{params[:devices_type]}) as count", "sum(count(#{params[:devices_type]})) over() as total_count")
-          .group(params[:devices_type])
-          .order("count(#{params[:devices_type]}) desc")
-          .limit(limit)
+        DeviceQuery.call(params)
+                   .limit(limit)
       end
 
       @devices = results.map { |device| DeviceDecorator.new(device, self) }
