@@ -1,11 +1,10 @@
 <%= turbo_frame_tag :chart do %>
-  <div class="flex justify-end gap-3 items-center">
-    <a href="<%= export_path(request.query_parameters) %>" target="_blank" data-turbo-frame="false">Download</a>
+  <div class="flex justify-end ...">
     <%= form_with url: url_for(params.permit!), method: :get, data: { controller: "interval" } do %>
       <%= select_tag :interval, options_for_select(available_intervals.collect { |interval| [interval.titleize, interval] }, selected: selected_interval), class: "select select-bordered select-sm w-full max-w-sm", 'data-action': "change->interval#handleChange" %>
     <% end %>
   </div>
   <div>
-    <%= line_chart @stats %>
+    <canvas data-controller="line-chart" data-line-chart-data-value="<%= @stats.to_json %>" data-line-chart-label-value="<%= @label %>"></canvas>
   </div>
 <% end %>
