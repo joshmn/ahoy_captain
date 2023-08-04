@@ -7,6 +7,8 @@ export default class extends Controller {
     this.reload = this.reload.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.labelCount = 0;
+    this.reloadInterval = setInterval(this.reload, 1000 * 30);
+    this.labelInterval = setInterval(this.setLabel, 1000);
   }
 
   reload() {
