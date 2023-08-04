@@ -15,6 +15,7 @@
 * Add CSV export 
 * Tweaked the active link controller
 * Reworked the table components
+* Styling on line chart now reflects the DaisyUI theme
 
 ### Fixed 
 * Views/visit returning NaN 
