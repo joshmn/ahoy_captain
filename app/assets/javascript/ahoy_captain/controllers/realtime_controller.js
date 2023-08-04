@@ -1,13 +1,12 @@
-import {Controller} from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ["label"]
+  static targets = ['label'];
 
   connect() {
-    this.reload = this.reload.bind(this)
-    this.setLabel = this.setLabel.bind(this)
+    this.reload = this.reload.bind(this);
+    this.setLabel = this.setLabel.bind(this);
     this.labelCount = 0;
-
   }
 
   reload() {
@@ -17,11 +16,11 @@ export default class extends Controller {
 
   setLabel() {
     this.labelTarget.title = `Last updated ${this.labelCount} seconds ago`;
-    this.labelCount += 1
+    this.labelCount += 1;
   }
 
   disconnect() {
-    clearInterval(this.labelInterval)
-    clearInterval(this.reloadInterval)
+    clearInterval(this.labelInterval);
+    clearInterval(this.reloadInterval);
   }
 }
