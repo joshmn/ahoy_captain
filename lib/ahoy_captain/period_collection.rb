@@ -51,7 +51,7 @@ module AhoyCaptain
       }.each do |param, options|
         instance.add(param, options[:label], options[:range])
       end
-      instance.default = :mtd
+      instance.default = :'30d'
       instance
     end
 
