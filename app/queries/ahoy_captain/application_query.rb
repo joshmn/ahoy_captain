@@ -17,7 +17,7 @@ module AhoyCaptain
 
     attr_reader :params
     def initialize(params, query)
-      @params = params
+      @params = params.deep_dup
       @query = query
     end
 

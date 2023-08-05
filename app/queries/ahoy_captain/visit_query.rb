@@ -11,7 +11,6 @@ module AhoyCaptain
       search_children = AhoyCaptain.event.ransack(
         ransack_params_for(:event).reject { |k,v| k.start_with?("visit_") }.transform_keys { |key| "events_#{key}" }, context: shared_context
       )
-
       shared_conditions = [search_parents, search_children].map { |search|
         Ransack::Visitor.new.accept(search.base)
       }

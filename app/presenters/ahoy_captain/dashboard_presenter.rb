@@ -1,16 +1,50 @@
 module AhoyCaptain
   class DashboardPresenter
-    include RangeOptions
+    class StatsComparison
+      attr_reader :current, :previous
+      def initialize(current, previous)
+        @current = current
+        @previous = previous
+      end
+
+      def class_list
+        if positive?
+          "text-green-500"
+        else
+          "text-red-500"
+        end
+      end
+
+      def arrow
+        if positive?
+          "↑"
+        else
+          "↓️"
+        end
+      end
+
+      def percentage
+        diff = @current - @previous
+
+        ((diff / @current.to_d) * 100).round(2).abs
+      end
+
+      private
+
+      def positive?
+        @current > @previous
+      end
+    end
 
     attr_reader :params
-
     def initialize(params)
       @params = params
     end
 
     def unique_visitors
       cached(:unique_visitors) do
-        Stats::UniqueVisitorsQuery.call(params).count(:visitor_token)
+        result = Stats::UniqueVisitorsQuery.call(params)
+        StatsComparison.new(result[0].current, result[0].previous)
       end
     end
 

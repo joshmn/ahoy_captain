@@ -4,7 +4,16 @@
       <dt class="text-base font-normal text-base-content">Unique Visitors</dt>
       <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
         <div class="flex items-baseline text-2xl font-semibold text-accent-content">
-          <%= number_with_delimiter @presenter.unique_visitors %>
+          <div class="my-1 space-y-2">
+            <div>
+              <span class="flex items-center justify-between whitespace-nowrap">
+                <p class="font-bold text-xl dark:text-gray-100" id="visitors"><%= number_with_delimiter(@presenter.unique_visitors.current) %></p>
+                <span class="pl-2 text-xs dark:text-gray-100">
+                  <span class="<%= @presenter.unique_visitors.class_list %> font-bold"><%= @presenter.unique_visitors.arrow %></span> <%= @presenter.unique_visitors.percentage %>%</span>
+              </span>
+            </div>
+          </div>
+
         </div>
       </dd>
     </a>
