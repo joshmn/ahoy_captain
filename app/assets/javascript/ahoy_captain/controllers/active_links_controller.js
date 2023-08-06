@@ -11,5 +11,4 @@ export default class extends Controller {
       link.addEventListener('click', this.handleLinkClick)
     })
   }
-
 }

@@ -1,5 +1,5 @@
-<div class="bg-base-100 py-2 px-4 mx-2 flex items-center" data-controller="filter--tag-item" data-filter--tag-item-modal-value="<%= @tag_item.modal %>">
-  <span data-action='click->filter--tag-item#openModal'>
+<div class="bg-base-100 py-2 px-4 mx-2 flex items-center" data-controller="filter--item" data-filter--item-modal-value="<%= tag_item.modal %>">
+  <span data-action='click->filter--item#openModal'>
     <%= tag_item.column %> 
     <span class="font-bold">
       <%= tag_item.values.to_sentence(last_word_connector: " or ") %>

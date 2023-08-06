@@ -34,6 +34,7 @@ module AhoyCaptain
     end
 
     delegate_missing_to :@items
+
     def initialize(request)
       @request = request
       @params = @request.params

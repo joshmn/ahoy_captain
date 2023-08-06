@@ -1,0 +1,48 @@
+<div class="dropdown dropdown-end">
+  <label
+    tabindex="0"
+    class="btn btn-ghost dark:hover:bg-neutral flex"
+    >
+    <%= header_icon %>
+    <span><%= title %></span>
+  </label>
+  
+  <ul class="w-72 dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box" data-controller='toggle' data-toggle-enable-value="<%= advanced_filter_menu? %>">
+    <% if advanced_filter_menu? %>
+      <div id="advanced-filters" class="w-full text-sm leading-tight" >
+        <a href='javascript:;' class='block mx-auto pl-4 pt-1 hover:text-primary' data-action="click->toggle#trigger">+ Add filter</a>
+        <div class="divider my-1"></div>
+        <% filters.each do |filter| %>
+          <li class='flex flex-inline px-4 items-center' data-toggle-target='toggleable'>
+            <a title="Edit filter: <%= filter.title %>" href="javascript:;" 
+              class="flex w-full justify-between link no-underline items-center group" 
+              onclick="<%= filter.modal %>.showModal()">
+              <span class="truncate w-48">
+                <%= filter.description %>
+              </span>
+              <span class="group-hover:text-primary hover:text-primary">
+                <%= edit_icon %>
+              </span>
+            </a>
+            <a title="Remove filter: <%= filter.title %>" 
+              class="cursor-pointer hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
+              <%= remove_icon %>
+            </a>
+          <li>
+          <div class="divider my-1" data-toggle-target='toggleable'></div>
+        <% end %>
+        <li data-toggle-target='toggleable'>
+          <a class="block mx-auto pl-4 pb-1 " href="<%= AhoyCaptain::Engine.app.url_helpers.root_path %>">Clear all filters</a>
+        </li>
+      </div>
+    <% end %>
+
+    <div id="core-filters" class="menu <%= 'hidden' if advanced_filter_menu? %> pt-0" data-toggle-target='toggleable'>
+      <li><button onClick="pageModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Page</button></li>
+      <li><button onClick="countryModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Geography</button></li>
+      <li><button onClick="screenModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Screen</button></li>
+      <li><button onClick="osModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Operating System</button></li>
+      <li><button onClick="utmModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">UTM Tags</button></li>
+    </div>
+  </ul>
+</div>
