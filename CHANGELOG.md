@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed 
+* If the interval was about 30 days, the select would include the incorrect values
+
 ## Version 0.82
 
 ### Added
