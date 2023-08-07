@@ -10,22 +10,22 @@
   <ul class="w-72 dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box" data-controller='toggle' data-toggle-enable-value="<%= advanced_filter_menu? %>">
     <% if advanced_filter_menu? %>
       <div id="advanced-filters" class="w-full text-sm leading-tight" >
-        <a href='javascript:;' class='block mx-auto pl-4 pt-1 hover:text-primary' data-action="click->toggle#trigger">+ Add filter</a>
+        <button class='w-full cursor-pointer block pl-4 pt-1 text-left hover:text-primary' data-action="click->toggle#trigger">+ Add filter</button>
         <div class="divider my-1"></div>
         <% filters.each do |filter| %>
           <li class='flex flex-inline px-4 items-center' data-toggle-target='toggleable'>
-            <a title="Edit filter: <%= filter.title %>" href="javascript:;" 
-              class="flex w-full justify-between link no-underline items-center group" 
+            <button title="Edit filter: <%= filter.title %>" 
+              class="flex w-full justify-between link no-underline items-center group cursor-pointer text-left" 
               onclick="<%= filter.modal %>.showModal()">
-              <span class="truncate w-48">
+              <span class="truncate w-48  ">
                 <%= filter.description %>
               </span>
-              <span class="group-hover:text-primary hover:text-primary">
+              <span class="group-hover:text-primary hover:text-primary ">
                 <%= edit_icon %>
               </span>
-            </a>
+            </button>
             <a title="Remove filter: <%= filter.title %>" 
-              class="cursor-pointer hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
+              class="hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
               <%= remove_icon %>
             </a>
           <li>
