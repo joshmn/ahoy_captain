@@ -8,6 +8,23 @@ require 'groupdate'
 require 'pagy'
 require 'zip'
 
+module Ransack
+  module Nodes
+    class Condition
+
+      # allows for sql from a formatter
+      # see https://github.com/activerecord-hackery/ransack/issues/702
+      def casted_array?(predicate)
+        return unless predicate.is_a?(Arel::Nodes::Casted)
+
+        predicate.value.is_a?(Array)
+      end
+
+    end
+  end
+end
+
+
 module AhoyCaptain
   class Engine < Rails::Engine
     isolate_namespace ::AhoyCaptain

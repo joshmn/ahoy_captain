@@ -1,0 +1,69 @@
+<%= form_with url: url_for(params.permit!.except(:q)), method: :get, data: { turbo_frame: "_top", controller: "filter-form", action: "reset->filter-form#handleReset" } do |form| %>
+  <% non_filter_ransack_params.each do |k,v| %>
+    <%= form.hidden_field k, value: v %>
+  <% end %>
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Page", id: "pageModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Action", column: :route, url: filters_actions_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Entry page", column: :entry_page, url: filters_entry_pages_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Exit page", column: :exit_page, url: filters_exit_pages_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Country", id: "countryModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Source", id: "sourceModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_type, url: filters_screens_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Browser", id: "osModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Campaign", id: "utmModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in], form: form) %>
+      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in], form: form) %>
+    <% end %>
+  <% end %>
+
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Range", id: "customRangeModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <div class="flex gap-2 w-full">
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="start_date">
+            <span class="label-text">Start Date</span>
+          </label>
+          <input type="datetime-local" id="start_date" name="start_date" class="input input-bordered w-full" value="<%= params[:start_date] %>" />
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="end_date">
+            <span class="label-text">End Date</span>
+          </label>
+          <input type="datetime-local" id="end_date" name="end_date" class="input input-bordered w-full" value="<%= params[:end_date] %>" />
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

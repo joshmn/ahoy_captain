@@ -1,8 +1,8 @@
 <div class="bg-base-200 py-2 px-4 mx-2 flex items-center text-base-content" data-controller="filter--item" data-filter--item-modal-value="<%= tag_item.modal %>">
   <span data-action='click->filter--item#openModal'>
-    <%= tag_item.column %> 
+    <%= tag_item.column.titleize %> <%= tag_item.predicate %>
     <span class="font-bold">
-      <%= tag_item.values.to_sentence(last_word_connector: " or ") %>
+      <%= tag_item.label %>
     </span>
   </span>
   <a class="hover:text-primary" href="<%= tag_item.url %>">

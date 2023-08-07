@@ -1,7 +1,8 @@
 module AhoyCaptain
   class FilterParser
+    FILTER_MENU_MAX_SIZE = 2
     class Item
-      attr_accessor :name, :column, :description, :values, :predicate, :url, :modal
+      attr_accessor :name, :column, :description, :values, :predicate, :url, :modal, :label
 
       def title
         column.titleize
@@ -46,25 +47,22 @@ module AhoyCaptain
         item.values = Array(values)
         item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
         item.column = key.delete_suffix("_#{item.predicate}")
-        modal_name = COLUMN_TO_MODAL.detect { |_key, values| values.include?(item.column.to_sym) }[0]
-        item.modal = "#{modal_name}Modal"
-        item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{item.values.to_sentence(last_word_connector: " or ")}"
+        modal_name = COLUMN_TO_MODAL.detect { |_key, values| values.include?(item.column.to_sym) }
+        if modal_name
+          item.modal = "#{modal_name[0]}Modal"
+        end
+
+        label = if item.column == "goal"
+          label = AhoyCaptain.config.goals[values].title
+        else
+          label = item.values.to_sentence(last_word_connector: " or ")
+        end
+        item.label = label
+        item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{label}"
         item.url = build_url(key, values)
         @items[key] = item
       end
 
-      if goal_id = @params[:goal_id]
-        @items[:goal_id] = Item.new.tap do |item|
-          item.values = [goal_id]
-          item.predicate = "?"
-          item.column = "Goal"
-          item.modal = nil
-          goal = AhoyCaptain.config.goals[goal_id.to_sym]
-
-          item.description = "Goal is #{goal.title}"
-          item.url = @request.path + "?" + @request.query_parameters.deep_dup.except(:goal_id).to_query
-        end
-      end
       @items
     end
 

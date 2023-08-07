@@ -31,13 +31,7 @@ module AhoyCaptain
         joined = joined.with_exit_pages
       end
 
-      joined = joined.where(shared_conditions.reduce(&:and))
-
-      if params[:goal_id]
-        joined = joined.merge(AhoyCaptain.config.goals[params[:goal_id].to_sym].event_query.call)
-      end
-
-      joined
+      joined.where(shared_conditions.reduce(&:and))
     end
   end
 end

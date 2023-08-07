@@ -18,7 +18,7 @@ class AhoyCaptain::Filter::DropdownComponent < ViewComponent::Base
   end
 
   def advanced_filter_menu?
-    filter_categories.count > 3
+    filter_categories.count >= ::AhoyCaptain::FilterParser::FILTER_MENU_MAX_SIZE
   end
 
   def filter_categories

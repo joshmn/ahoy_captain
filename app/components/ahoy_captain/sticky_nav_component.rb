@@ -7,7 +7,7 @@ class AhoyCaptain::StickyNavComponent < ViewComponent::Base
     @filters ||= ::AhoyCaptain::FilterParser.parse(request)
   end
 
-  def tag_list_visible?
-    filters.values.map(&:values).flatten.size < 3
+  def tag_list_hidden?
+    filters.values.map(&:values).flatten.size < ::AhoyCaptain::FilterParser::FILTER_MENU_MAX_SIZE
   end
 end
