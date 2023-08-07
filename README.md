@@ -1,6 +1,5 @@
-# AhoyCaptain
+# <img src="logo.png" style="max-height:100px" /> AhoyCaptain
 
-<img src="logo.png" style="max-height:100px" />
 
 A full-featured, mountable analytics dashboard for your Rails app, shamelessly inspired by Plausible Analytics, powered by the Ahoy gem.
 
