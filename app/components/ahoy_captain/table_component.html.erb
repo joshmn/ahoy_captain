@@ -1,6 +1,6 @@
-<div class="flex flex-col min-h-[380px] w-full pt-4">
+<div class="flex flex-col <%= 'min-h-[380px]' if fixed_height? %> w-full pt-4">
   <%= render @header %>
-  <div class='min-h-[420px]'>
+  <div class='<%= 'min-h-[420px]' if fixed_height? %>'>
     <div class="grow">
       <% if items.respond_to?(:each) && items.any? %>
         <% items.each do |item| %>

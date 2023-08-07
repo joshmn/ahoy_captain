@@ -33,4 +33,7 @@ class AhoyCaptain::TableComponent < ViewComponent::Base
     @total ||= items.first.total_count
   end
 
+  def fixed_height?
+    !@header.is_a?(::AhoyCaptain::Tables::Headers::GoalsHeaderComponent)
+  end
 end

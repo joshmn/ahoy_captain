@@ -1,17 +1,13 @@
 # AhoyCaptain
 
-<img src="logo.png" style="max-width:100px" />
+<img src="logo.png" style="max-height:100px" />
 
 A full-featured, mountable analytics dashboard for your Rails app, shamelessly inspired by Plausible Analytics, powered by the Ahoy gem.
 
-<a href="https://github.com/joshmn/ahoy_captain/blob/main/ss.jpg"><img src="ss.jpg" style="max-width:300px" /></a>
+<a href="https://github.com/joshmn/ahoy_captain/blob/main/ss.png"><img src="ss.png" style="max-width:300px" /></a>
 ## Notice
 
-While this is fine to use in production, it was only built against a PostgreSQL instance. Some of the queries are certainly broken.
-
-## Some assumptions
-
-Some hardcoded stuff as of writing; this will be more fully-featured in due time.
+Currently requires using PG and a JSONB column for your data.
 
 ## Installation
 
@@ -52,12 +48,12 @@ If you have a large dataset (> 1GB) you probably want some indexes. `rails g aho
     * Device type
     * OS
     * UTM tags
+    * Goal
+* CSV exports
 
 ## Coming soon ™️
 
 * Date comparison
-* More filters
-* CSV exports
 
 ## Contributors
 
@@ -65,7 +61,7 @@ This was built during the Rails Hackathon in July 2023 with [afogel](https://git
 
 ## Contributions
 
-Please and thank you in advance!
+Do your worst; please and thank you in advance! :) 
 
 ## License
 
