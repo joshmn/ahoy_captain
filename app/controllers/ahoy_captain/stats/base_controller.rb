@@ -32,10 +32,10 @@ module AhoyCaptain
           # assume we're in a realtime
           return INTERVAL_PERIOD["realtime"][0]
         end
-        diff = (range[1] - range[0]).seconds
-        if diff.in_months > 1
+        diff = (range[1] - range[0]).seconds.in_days.to_i
+        if diff > 30
           "month"
-        elsif diff.in_days > 0
+        elsif diff > 0
           "day"
         else
           "hour"

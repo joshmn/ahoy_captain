@@ -1,4 +1,4 @@
-<main class='bg-base-300 min-h-screen pb-4 max-w-6xl mx-auto' data-controller="application">
+<main class='min-h-screen pb-4 max-w-6xl mx-auto' data-controller="application">
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
       <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" }, loading: :lazy %>
@@ -15,11 +15,11 @@
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
         <div data-controller="active-links">
-          <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources"  data-active-links-target="link">All</a>
+          <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class="" data-active-links-target="link">All</a>
           <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
             <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
               <% dropdown.with_option do %>
-                <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" data-turbo-frame="sources"   data-active-links-target="link">
+                <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" class="" data-turbo-frame="sources"   data-active-links-target="link">
                   <%= source.titleize.gsub("Utm", "UTM") %>
                 </a>
               <% end %>
@@ -31,66 +31,66 @@
         <%= turbo_frame_tag :sources, src: sources_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
-        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#sources" class="link no-underline">Details</button>
+        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#sources" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Pages') do |component| %>
       <% component.with_display_links do %>
         <div data-controller='active-links'>
-          <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages"   data-active-links-target="link">Top Pages</a>
-          <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages"   data-active-links-target="link">Entry Pages</a>
-          <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages"   data-active-links-target="link">Exit Pages</a>
+          <a href="<%= top_pages_path(search_params) %>" data-turbo-frame="pages" class=" text-sm" data-active-links-target="link">Top Pages</a>
+          <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" class=" text-sm"  data-active-links-target="link">Entry Pages</a>
+          <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" class=" text-sm"  data-active-links-target="link">Exit Pages</a>
         </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :pages, src: top_pages_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
-        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#pages" class="link no-underline">Details</button>
+        <button data-action="click->details-modal#openModal" data-controller="details-modal"  data-details-modal-target-value="#pages" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
       <% component.with_display_links do %>
         <div data-controller="active-links">
-          <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography"  data-active-links-target="link">Countries</a>
-          <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography"   data-active-links-target="link">Regions</a>
-          <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography"   data-active-links-target="link">Cities</a>
+          <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" class=" text-sm"  data-active-links-target="link">Countries</a>
+          <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" class=" text-sm"   data-active-links-target="link">Regions</a>
+          <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" class=" text-sm"   data-active-links-target="link">Cities</a>
         </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :geography, src: countries_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
-        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#geography" class="link no-underline">Details</button>
+        <button data-action="click->details-modal#openModal" data-controller="details-modal"  data-details-modal-target-value="#geography" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Devices') do |component| %>
       <% component.with_display_links do %>
         <div data-controller="active-links">
-          <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices"  data-active-links-target="link">Browser</a>
-          <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices"   data-active-links-target="link">OS</a>
-          <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices"   data-active-links-target="link">Size</a>
+          <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" class=" text-sm"   data-active-links-target="link">Browser</a>
+          <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" class=" text-sm"   data-active-links-target="link">OS</a>
+          <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices"  class=" text-sm"  data-active-links-target="link">Size</a>
         </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
-        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline">Details</button>
+        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
     <%= render AhoyCaptain::TileComponent.new(wide: true) do |component| %>
       <% component.with_display_links do %>
-        <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link link-primary">
+        <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link ">
           Goals
         </a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
           <% AhoyCaptain.config.funnels.each do |id, funnel| %>
             <% dropdown.with_option do %>
-              <a href="<%= funnel_path(id, search_params) %>" data-turbo-frame="goals" class="link link-primary">
+              <a href="<%= funnel_path(id, search_params) %>" data-turbo-frame="goals" class="link ">
                 <%= funnel.title %>
               </a>
             <% end %>
