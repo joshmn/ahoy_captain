@@ -16,7 +16,7 @@ module AhoyCaptain
       queries = {
         totals: @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '_internal_total_visits_' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, 0 as sort_order")
       }
-      selects = ["SELECT unique_visits, name, total_events, sort_order, 0 as cr from totals"]
+      selects = ["SELECT unique_visits, name, total_events, sort_order, 0 as cr, '' as goal_id from totals"]
       last_goal = nil
       map = {}.with_indifferent_access
 
@@ -27,9 +27,10 @@ module AhoyCaptain
             "'#{goal.id}' as name",
             "count(distinct #{AhoyCaptain.event.table_name}.id) as total_events",
             "#{index + 1} as sort_order",
+            "'#{goal.id}' as goal_id"
           ]
         ).merge(goal.event_query.call).group("#{AhoyCaptain.event.table_name}.name")
-        selects << ["SELECT unique_visits, name, total_events, sort_order, 0::decimal as cr from #{goal.id}"]
+        selects << ["SELECT unique_visits, name, total_events, sort_order, 0::decimal as cr, '#{goal.id}' as goal_id from #{goal.id}"]
         map[goal.id] = goal
         last_goal = goal
       end

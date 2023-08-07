@@ -33,7 +33,7 @@ module AhoyCaptain
     include Enumerable
 
     def initialize
-      @goals = {}
+      @goals = {}.with_indifferent_access
     end
 
     def register(goal)

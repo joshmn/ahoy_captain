@@ -1,4 +1,4 @@
-<%= progress_bar(@item.cr, 100, @item.name) %>
+<%= progress_bar(@item.cr, 100, link_to(@item.name, url, target: :_top)) %>
 <%= item do %>
   <%= tooltip(@item.unique_visits) %>
 <% end %>

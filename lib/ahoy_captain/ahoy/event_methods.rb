@@ -44,11 +44,20 @@ module AhoyCaptain
         scope :properties_not_eq, ->(value) do
           where.not("properties::jsonb @> ?", value)
         end
+
+        ransacker :goal,
+                  formatter: ->(value) {
+                    ::Arel::Nodes::SqlLiteral.new(
+                      ::AhoyCaptain.config.goals[value].event_query.call.select(:id).to_sql
+                    )
+                  } do |parent|
+          parent.table[:id]
+        end
       end
 
       class_methods do
         def ransackable_attributes(auth_object = nil)
-          super + ["action", "controller", "id", "id_property", "name", "page", "properties", "time", "url", "user_id", "visit_id", "property_name"] + self._ransackers.keys
+          super + ["action", "controller", "id", "id_property", "name", "page", "properties", "time", "url", "user_id", "visit_id", "property_name", "goal"] + self._ransackers.keys
         end
 
         def ransackable_scopes(auth_object = nil)
