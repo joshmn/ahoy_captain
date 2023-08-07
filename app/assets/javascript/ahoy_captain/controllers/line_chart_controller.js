@@ -9,7 +9,6 @@ export default class extends Controller {
     const getCSS = (varname) => {
       return `hsl(${getComputedStyle(document.documentElement).getPropertyValue(varname)})`
     }
-    Chart.register(Chart.Colors)
 
     new Chart(this.element,
       {
@@ -20,9 +19,9 @@ export default class extends Controller {
             {
               label: this.labelValue,
               data: Object.values(this.dataValue),
-              borderColor: getCSS('--p'),
-              backgroundColor: getCSS('--af'),
-              color: getCSS('--pc')
+              borderColor: getCSS('--s'),
+              backgroundColor: getCSS('--sc'),
+              color: getCSS('--sf')
             }
           ]
         },
@@ -33,5 +32,6 @@ export default class extends Controller {
         }
       },
     )
+
   }
 }
