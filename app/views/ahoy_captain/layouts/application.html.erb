@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme='<%= AhoyCaptain.config.theme %>'>
 <head>
   <title>Ahoy Captain</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -116,9 +116,9 @@
   </style>
 </head>
 
-<body data-theme='<%= AhoyCaptain.config.theme %>' class='bg-base-300' data-controller='application'>
+<body data-controller='application'>
   <%= yield %>
-  <div class="flex justify-center bg-base-300 border-t-4 border-base-100 py-4">
+  <div class="flex justify-center border-t-4 border-base-100 py-4">
     <div class="flex justify-around space-x-4 my-4">
       <h5>Powered by <a href='https://github.com/joshmn/ahoy_captain' target=”_blank”>Ahoy Captain v<%= AhoyCaptain::VERSION %></a></h5>
     </div>
