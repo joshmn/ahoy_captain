@@ -22,7 +22,7 @@ class AhoyCaptain::Filter::DropdownComponent < ViewComponent::Base
   end
 
   def filter_categories
-    filters.map(&:values).flatten
+    filters.values.map(&:values).flatten
   end
 
   def magnifier_icon

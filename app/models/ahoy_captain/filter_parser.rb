@@ -8,15 +8,13 @@ module AhoyCaptain
       end
     end
 
-    PREDICATES = {
-      _eq: 'equals',
-      _not_eq: 'not equals',
-      _cont: 'contains',
-      _in: 'in',
-      _not_in: 'not in',
+    PREDICATES_LABELS = {
+      eq: 'equals',
+      not_eq: 'not equals',
+      cont: 'contains',
+      in: 'in',
+      not_in: 'not in',
     }
-
-    PREDICATE_REGEX = %r{(#{Regexp.union(PREDICATES.keys.map(&:to_s))})$}
 
     COLUMN_TO_MODAL = {
       page: [:entry_page, :exit_page, :route],
@@ -29,7 +27,6 @@ module AhoyCaptain
     def self.parse(request)
       new(request).tap do |instance|
         instance.parse
-        instance
       end
     end
 
@@ -45,16 +42,33 @@ module AhoyCaptain
     def parse
       @filter_params.each do |key, values|
         item = Item.new
+
         item.values = Array(values)
-        item.predicate = key.scan(PREDICATE_REGEX).flatten.first
-        item.column = key.delete_suffix(item.predicate)
+        item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
+        item.column = key.delete_suffix("_#{item.predicate}")
         modal_name = COLUMN_TO_MODAL.detect { |_key, values| values.include?(item.column.to_sym) }[0]
         item.modal = "#{modal_name}Modal"
-        item.description = "#{item.column.titleize} #{PREDICATES[item.predicate.to_sym]} #{item.values.to_sentence(last_word_connector: " or ")}"
+        item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{item.values.to_sentence(last_word_connector: " or ")}"
         item.url = build_url(key, values)
         @items[key] = item
       end
+
+      if goal_id = @params[:goal_id]
+        @items[:goal_id] = Item.new.tap do |item|
+          item.values = [goal_id]
+          item.predicate = "?"
+          item.column = "Goal"
+          item.modal = nil
+          goal = AhoyCaptain.config.goals[goal_id.to_sym]
+
+          item.description = "Goal is #{goal.title}"
+          item.url = @request.path + "?" + @request.query_parameters.deep_dup.except(:goal_id).to_query
+        end
+      end
+      @items
     end
+
+    private
 
     def build_url(name, values)
       search_params = @request.query_parameters.deep_dup

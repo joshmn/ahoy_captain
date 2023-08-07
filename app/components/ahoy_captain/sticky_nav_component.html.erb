@@ -3,7 +3,7 @@
     <a href="/">
       <img src="<%= image_path "ahoy_captain/logo.png" %>" alt="AhoyCaptainLogo" class='w-16 h-16 rounded-full'>
     </a>
-    <% if params[:q] && size < 4 %>
+    <% if tag_list_visible? %>
       <%= render AhoyCaptain::Filter::TagContainerComponent.new %>
     <% else %>
       <%= realtime_update %>

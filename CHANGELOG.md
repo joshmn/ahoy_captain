@@ -5,6 +5,11 @@
 ### Fixed 
 * If the interval was about 30 days, the select would include the incorrect values
 
+## Added
+* Filtering by goals
+* More consistent styling
+* Better filtering experience
+
 ## Version 0.82
 
 ### Added

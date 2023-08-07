@@ -1,6 +1,9 @@
 <%= turbo_frame_tag :goals do %>
   <div >
-    <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>" ></canvas>
-
+    <% if params[:goal_id] %>
+      <p>Funnels are unavailable if filtering by a goal.</p>
+    <% else %>
+      <canvas data-controller="funnel-chart" data-data="<%= @funnel.to_json %>" ></canvas>
+    <% end %>
   </div>
 <% end %>
