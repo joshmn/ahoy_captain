@@ -10,15 +10,6 @@ class AhoyCaptain::TileComponent < ViewComponent::Base
     @wide = wide
   end
 
-  def tile_class
-    themes = ["dark", "synthwave", "forest", "halloween", "black", "luxury", "dracula", "business", "night", "coffee"]
-    if AhoyCaptain.config.theme.in?(themes)
-      "bg-gray-800"
-    else
-      "bg-base-200"
-    end
-  end
-
   private
 
   attr_reader :title, :wide
