@@ -45,13 +45,13 @@ module AhoyCaptain
     def parse
       @filter_params.each do |key, values|
         item = Item.new
+        item.values = Array(values)
         item.predicate = key.scan(PREDICATE_REGEX).flatten.first
         item.column = key.delete_suffix(item.predicate)
         modal_name = COLUMN_TO_MODAL.detect { |_key, values| values.include?(item.column.to_sym) }[0]
         item.modal = "#{modal_name}Modal"
-        item.description = "#{item.column.titleize} #{PREDICATES[item.predicate.to_sym]} #{values.to_sentence(last_word_connector: " or ")}"
+        item.description = "#{item.column.titleize} #{PREDICATES[item.predicate.to_sym]} #{item.values.to_sentence(last_word_connector: " or ")}"
         item.url = build_url(key, values)
-        item.values = values
         @items[key] = item
       end
     end
