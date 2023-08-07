@@ -4,6 +4,7 @@
 
 ### Fixed 
 * If the interval was about 30 days, the select would include the incorrect values
+* When searching by referring domain, the query would error out because the column was ambiguous 
 
 ## Added
 * Filtering by goals

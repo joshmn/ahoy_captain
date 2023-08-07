@@ -16,8 +16,8 @@ module AhoyCaptain
       end
       @event = ActiveSupport::OrderedOptions.new.tap do |option|
         option.view_name = "$view"
-        option.url_column = "CONCAT(ahoy_events.properties->>'controller', '#', ahoy_events.properties->>'action')"
-        option.url_exists = "JSONB_EXISTS(ahoy_events.properties, 'controller') AND JSONB_EXISTS(ahoy_events.properties, 'action')"
+        option.url_column = "COALESCE(ahoy_events.properties->>'url', CONCAT(ahoy_events.properties->>'controller', '#', ahoy_events.properties->>'action'))"
+        option.url_exists = "(JSONB_EXISTS(ahoy_events.properties, 'controller') AND JSONB_EXISTS(ahoy_events.properties, 'action')) OR (JSONB_EXISTS(ahoy_events.properties, 'url'))"
       end
       @models = ActiveSupport::OrderedOptions.new.tap do |option|
         option.event = "::Ahoy::Event"
