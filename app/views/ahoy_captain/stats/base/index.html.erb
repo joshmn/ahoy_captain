@@ -6,6 +6,6 @@
     <% end %>
   </div>
   <div>
-    <canvas data-controller="line-chart" data-line-chart-label-value="<%= @label %>" data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
+    <canvas  style="height:300px;width:100%;" data-controller="line-chart" data-line-chart-label-value="<%= @label %>" data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
   </div>
 <% end %>
