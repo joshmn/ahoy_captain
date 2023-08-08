@@ -1,9 +1,10 @@
 require 'ahoy_captain/period_collection'
+require 'ahoy_captain/filters_configuration'
 
 module AhoyCaptain
   class Configuration
     attr_accessor :view_name, :theme
-    attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models
+    attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models, :filter_collection
     def initialize
       @goals = GoalCollection.new
       @funnels = FunnelCollection.new
@@ -23,6 +24,7 @@ module AhoyCaptain
         option.event = "::Ahoy::Event"
         option.visit = "::Ahoy::Visit"
       end
+      @filter_collection = FiltersConfiguration.load_default
       @disabled_widgets = []
     end
 
@@ -38,6 +40,10 @@ module AhoyCaptain
       instance.id = id
       instance.instance_exec(&block)
       @funnels.register(instance)
+    end
+
+    def filter_group(label, &block)
+      @filter_collection.register(label, &block)
     end
   end
 end
