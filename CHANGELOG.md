@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version 0.91 (Aug 08, 2023)
+
 ### Fixed
 * Route-based queries were checking for `url` or (`action` and `controller`) in the Event properties; this should be `action` or `controller` by default 
 * Show an active class for the selected chart 
