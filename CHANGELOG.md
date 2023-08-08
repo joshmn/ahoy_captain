@@ -2,9 +2,12 @@
 
 ## Unreleased
 
-Nothing, yet.
+### Fixed
+* Route-based queries were checking for `url` or (`action` and `controller`) in the Event properties; this should be `action` or `controller` by default 
+* Show an active class for the selected chart 
+* Fix some queries with hard-coded table names 
 
-## Version 0.9 (Aug 08, 2023)
+## Version 0.90 (Aug 08, 2023)
 
 ### Fixed 
 * If the interval was about 30 days, the select would include the incorrect values

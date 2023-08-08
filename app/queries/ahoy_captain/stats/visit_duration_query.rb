@@ -9,7 +9,7 @@ module AhoyCaptain
         ::Ahoy::Visit
           .select("duration as duration, started_at")
           .from(events, :views_per_visit_table)
-          .joins("inner join #{AhoyCaptain.visit.table_name} on ahoy_visits.id = views_per_visit_table.visit_id")
+          .joins("inner join #{AhoyCaptain.visit.table_name} on #{AhoyCaptain.visit.table_name}.id = views_per_visit_table.visit_id")
       end
     end
   end

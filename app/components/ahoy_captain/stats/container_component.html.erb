@@ -1,5 +1,5 @@
-<a href="<%= @url %>" class="hover:text-primary text-base-content" data-turbo-frame="chart">
-  <dt class="font-normal"><%= @label %></dt>
+<a href="<%= @url %>" class="hover:text-primary text-base-content link no-underline" data-turbo-frame="chart">
+  <dt class="font-normal <%= 'text-primary' if @selected %>" data-active-links-target="link"><%= @label %></dt>
   <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
     <div class="flex items-baseline text-2xl font-semibold">
       <%= @value %>

@@ -5,7 +5,7 @@ module AhoyCaptain
       def build
         event_query.joins(:visit)
                               .where(name: "$view")
-                              .group("ahoy_visits.id")
+                              .group("#{AhoyCaptain.visit.table_name}.id")
 
       end
     end

@@ -15,14 +15,14 @@ module AhoyCaptain
         option.store = Rails.cache
         option.ttl = 1.minute
       end
-      @event = ActiveSupport::OrderedOptions.new.tap do |option|
-        option.view_name = "$view"
-        option.url_column = "COALESCE(ahoy_events.properties->>'url', CONCAT(ahoy_events.properties->>'controller', '#', ahoy_events.properties->>'action'))"
-        option.url_exists = "(JSONB_EXISTS(ahoy_events.properties, 'controller') AND JSONB_EXISTS(ahoy_events.properties, 'action')) OR (JSONB_EXISTS(ahoy_events.properties, 'url'))"
-      end
       @models = ActiveSupport::OrderedOptions.new.tap do |option|
         option.event = "::Ahoy::Event"
         option.visit = "::Ahoy::Visit"
+      end
+      @event = ActiveSupport::OrderedOptions.new.tap do |option|
+        option.view_name = "$view"
+        option.url_column = "CONCAT(#{@models.event.parameterize.tableize}.properties->>'controller', '#', #{@models.event.parameterize.tableize}.properties->>'action')"
+        option.url_exists = "JSONB_EXISTS(#{@models.event.parameterize.tableize}.properties, 'controller') AND JSONB_EXISTS(#{@models.event.parameterize.tableize}.properties, 'action')"
       end
       @filters = FiltersConfiguration.load_default
       @predicate_labels = {
