@@ -1,6 +1,10 @@
-# Changelog
+# Changelog 
 
 ## Unreleased
+
+Nothing, yet.
+
+## Version 0.83 (Aug 08, 2023)
 
 ### Fixed 
 * If the interval was about 30 days, the select would include the incorrect values
