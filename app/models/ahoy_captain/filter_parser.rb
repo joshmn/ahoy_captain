@@ -9,14 +9,6 @@ module AhoyCaptain
       end
     end
 
-    PREDICATES_LABELS = {
-      eq: 'equals',
-      not_eq: 'not equals',
-      cont: 'contains',
-      in: 'in',
-      not_in: 'not in',
-    }
-
     def self.parse(request)
       new(request).tap do |instance|
         instance.parse
@@ -50,7 +42,7 @@ module AhoyCaptain
           item.values.to_sentence(last_word_connector: " or ")
         end
         item.label = label
-        item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{label}"
+        item.description = "#{item.column.titleize} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
         item.url = build_url(key, values)
         @items[key] = item
       end

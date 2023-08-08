@@ -4,7 +4,7 @@
     <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
       <% @predicates.each do |predicate| %>
         <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
-          <%= predicate.to_s.humanize %>
+          <%= predicate_label(predicate) %>
         </option>
       <% end %>
     </select>

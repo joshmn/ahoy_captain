@@ -4,6 +4,7 @@ require "ahoy_captain/engine"
 require "ahoy_captain/goals"
 require "ahoy_captain/funnels"
 require "ahoy_captain/configuration"
+require "ahoy_captain/predicate_label"
 require 'ahoy_captain/ahoy/visit_methods'
 require 'ahoy_captain/ahoy/event_methods'
 

@@ -4,7 +4,7 @@ require 'ahoy_captain/filters_configuration'
 module AhoyCaptain
   class Configuration
     attr_accessor :view_name, :theme
-    attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models, :filters
+    attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models, :filters, :predicate_labels
     def initialize
       @goals = GoalCollection.new
       @funnels = FunnelCollection.new
@@ -25,6 +25,14 @@ module AhoyCaptain
         option.visit = "::Ahoy::Visit"
       end
       @filters = FiltersConfiguration.load_default
+      @predicate_labels = {
+        eq: 'equals',
+        not_eq: 'not equals',
+        cont: 'contains',
+        in: 'in',
+        not_in: 'not in',
+      }
+
       @disabled_widgets = []
     end
 

@@ -55,5 +55,9 @@ class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
     []
   end
 
+  def predicate_label(predicate)
+    AhoyCaptain::PredicateLabel[predicate]
+  end
+
   attr_reader :label, :column, :url, :predicates, :form, :multiple
 end
