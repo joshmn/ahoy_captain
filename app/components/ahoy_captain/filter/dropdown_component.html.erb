@@ -2,7 +2,7 @@
   <label
     tabindex="0"
     class="btn btn-ghost dark:hover:bg-neutral flex"
-    >
+  >
     <%= header_icon %>
     <span><%= title %></span>
   </label>
@@ -15,8 +15,8 @@
         <% filters.each do |_, filter| %>
           <li class='flex flex-inline px-4 items-center' data-toggle-target='toggleable'>
             <button title="Edit filter: <%= filter.title %>"
-              class="flex w-full justify-between link no-underline items-center group <% if filter.modal %>cursor-pointer<% else %>cursor-text<% end %> text-left"
-              onclick="<% if filter.modal %><%= filter.modal %>.showModal() <% end %>">
+                    class="flex w-full justify-between link no-underline items-center group <% if filter.modal %>cursor-pointer<% else %>cursor-text<% end %> text-left"
+                    onclick="<% if filter.modal %><%= filter.modal %>.showModal() <% end %>">
               <span class="truncate w-48  ">
                 <%= filter.description %>
               </span>
@@ -24,14 +24,14 @@
               <span class="group-hover:text-primary hover:text-primary ">
                 <%= edit_icon %>
               </span>
-                <% end %>
+              <% end %>
             </button>
             <a title="Remove filter: <%= filter.title %>"
-              class="hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
+               class="hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
               <%= remove_icon %>
             </a>
           <li>
-          <div class="divider my-1" data-toggle-target='toggleable'></div>
+            <div class="divider my-1" data-toggle-target='toggleable'></div>
         <% end %>
         <li data-toggle-target='toggleable'>
           <a class="block mx-auto pl-4 pb-1 " href="<%= AhoyCaptain::Engine.app.url_helpers.root_path %>">Clear all filters</a>
@@ -40,11 +40,9 @@
     <% end %>
 
     <div id="core-filters" class="menu <%= 'hidden' if advanced_filter_menu? %> pt-0" data-toggle-target='toggleable'>
-      <li><button onClick="pageModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Page</button></li>
-      <li><button onClick="countryModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Geography</button></li>
-      <li><button onClick="screenModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Screen</button></li>
-      <li><button onClick="osModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Operating System</button></li>
-      <li><button onClick="utmModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">UTM Tags</button></li>
+      <% AhoyCaptain.config.filters.each do |label, filter_group| %>
+        <li><button onClick="<%= filter_group.modal_name %>.showModal()" class='link no-underline' data-action="click->toggle#trigger"><%= label %></button></li>
+      <% end %>
     </div>
   </ul>
 </div>

@@ -12,37 +12,47 @@ class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
 
   private
 
-  def selected_predicate
-    predicate_options.detect { |option| params.dig(:q, option) }
+  def selected_predicate?(predicate)
+    params.dig(:q, predicate_name(predicate)).present?
   end
 
   def option_value(predicate)
-    name = "q[#{predicate}]"
+    name = "q[#{predicate_name(predicate)}]"
     name += "[]" if multiple
     name
+  end
+
+  def predicate_name(predicate)
+    "#{@column}_#{predicate}"
+  end
+
+  def selected_predicate
+    @predicates.each do |predicate|
+      if params.dig(:q, predicate_name(predicate))
+        return predicate
+      end
+    end
+
+    nil
   end
 
   def column_name_with_predicate
     if selected_predicate
       option_value(selected_predicate)
     else
-      option_value(predicate_options.first)
+      option_value(@predicates.first)
     end
   end
 
   def values
-    predicate_options.each do |predicate|
-      option = params.dig(:q, predicate)
+    @predicates.each do |predicate|
+      option = params.dig(:q, predicate_name(predicate))
       if option
         return option
       end
     end
 
     []
-  end
-
-  def predicate_options
-    @predicate_options ||= @predicates.map { |predicate| "#{@column}_#{predicate}" }
   end
 
   attr_reader :label, :column, :url, :predicates, :form, :multiple

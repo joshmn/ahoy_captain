@@ -17,14 +17,6 @@ module AhoyCaptain
       not_in: 'not in',
     }
 
-    COLUMN_TO_MODAL = {
-      page: [:entry_page, :exit_page, :route],
-      country: [:country, :region, :city],
-      screen: [:device_type],
-      os: [:os, :os_version],
-      utm: [:utm_source, :utm_medium, :utm_term, :utm_content, :utm_campaign]
-    }
-
     def self.parse(request)
       new(request).tap do |instance|
         instance.parse
@@ -47,15 +39,15 @@ module AhoyCaptain
         item.values = Array(values)
         item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
         item.column = key.delete_suffix("_#{item.predicate}")
-        modal_name = COLUMN_TO_MODAL.detect { |_key, values| values.include?(item.column.to_sym) }
+        modal_name = AhoyCaptain.config.filters.detect { |_, filters| filters.include?(item.column) }[1].modal_name
         if modal_name
-          item.modal = "#{modal_name[0]}Modal"
+          item.modal = modal_name
         end
 
         label = if item.column == "goal"
-          label = AhoyCaptain.config.goals[values].title
+          AhoyCaptain.config.goals[values].title
         else
-          label = item.values.to_sentence(last_word_connector: " or ")
+          item.values.to_sentence(last_word_connector: " or ")
         end
         item.label = label
         item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{label}"
