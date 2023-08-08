@@ -45,9 +45,9 @@ module AhoyCaptain
         end
 
         label = if item.column == "goal"
-          label = AhoyCaptain.config.goals[values].title
+          AhoyCaptain.config.goals[values].title
         else
-          label = item.values.to_sentence(last_word_connector: " or ")
+          item.values.to_sentence(last_word_connector: " or ")
         end
         item.label = label
         item.description = "#{item.column.titleize} #{PREDICATES_LABELS[item.predicate.to_sym]} #{label}"
