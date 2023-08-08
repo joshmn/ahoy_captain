@@ -24,11 +24,24 @@ $ bundle add ahoy_captain
 $ rails g ahoy_captain:install
 ```
 
-### 3. Star this repo
+### 3. Make sure your events are setup correctly
+
+By default, AhoyCaptain assumes you're tracking `controller` and `action` in your `Ahoy::Event` properties, and a page view event is named `$view`. 
+
+For a quick sanity check:
+
+```ruby
+AhoyCaptain.event.where(name: AhoyCaptain.config.event[:view_name]).count
+AhoyCaptain.event.with_routes.count
+```
+
+See the initializer `config/initializers/ahoy_captain.rb` for further customization.
+
+### 4. Star this repo
 
 No, seriously, I need all the internet clout I can get.
 
-### 4. Analyze your nightmares
+### 5. Analyze your nightmares
 
 If you have a large dataset (> 1GB) you probably want some indexes. `rails g ahoy_captain:migration`
 
