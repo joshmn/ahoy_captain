@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 VERSION=$1
-
+now=$(date +'%b %d, %Y')
+sed -i '' -e "s/## Unreleased/## Version $VERSION ($now)/" CHANGELOG.md
+sed -i '' -e "s/# Changelog/# Changelog \n\n## Unreleased\n\nNothing, yet./" CHANGELOG.md
 printf "module AhoyCaptain\n  VERSION = \"$VERSION\"\nend\n" > ./lib/ahoy_captain/version.rb
 bundle
 git add Gemfile.lock lib/ahoy_captain/version.rb
