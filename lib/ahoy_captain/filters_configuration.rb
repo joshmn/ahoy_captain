@@ -65,5 +65,9 @@ module AhoyCaptain
     def each(&block)
       @registry.each(&block)
     end
+
+    def detect(&block)
+      @registry.detect(&block)
+    end
   end
 end

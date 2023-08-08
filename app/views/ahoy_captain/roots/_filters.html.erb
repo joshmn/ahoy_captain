@@ -2,7 +2,7 @@
   <% non_filter_ransack_params.each do |k,v| %>
     <%= form.hidden_field k, value: v %>
   <% end %>
-  <% AhoyCaptain.config.filter_collection.each do |name, filters| %>
+  <% AhoyCaptain.config.filters.each do |name, filters| %>
     <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by #{name}", id: "#{filters.modal_name}") do |modal| %>
       <% modal.with_modal_display do %>
         <% filters.each do |filter| %>

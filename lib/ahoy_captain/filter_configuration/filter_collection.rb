@@ -25,7 +25,7 @@ module AhoyCaptain
       end
 
       def find(column)
-        @registry.find { |filter| filter.column == column }
+        @registry.find { |filter| filter.column == column.to_sym }
       end
 
       def delete(name)
@@ -38,6 +38,10 @@ module AhoyCaptain
 
       def [](name)
         find(name)
+      end
+
+      def include?(name)
+        find(name).present?
       end
     end
   end
