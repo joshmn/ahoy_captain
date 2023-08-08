@@ -3,50 +3,12 @@
     <%= form.hidden_field k, value: v %>
   <% end %>
   <% AhoyCaptain.config.filter_collection.each do |name, filters| %>
-    <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by #{name}", id: "#{name.parameterize}Modal") do |modal| %>
+    <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by #{name}", id: "#{filters.modal_name}") do |modal| %>
       <% modal.with_modal_display do %>
-        <% filters.each do |_column, filter| %>
-        <%= render AhoyCaptain::Filter::SelectComponent.new(label: filter.label, column: filter.column, url: filter.url, predicates: filter.predicates, form: form) %>
+        <% filters.each do |filter| %>
+        <%= render AhoyCaptain::Filter::SelectComponent.new(label: filter.label, column: filter.column, url: public_send(filter.url), predicates: filter.predicates, multiple: filter.multiple, form: form) %>
         <% end %>
       <% end %>
-    <% end %>
-
-  <% end %>
-
-  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Country", id: "countryModal") do |modal| %>
-    <% modal.with_modal_display do %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Country", column: :country, url: filters_locations_countries_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Region", column: :region, url: filters_locations_regions_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "City", column: :city, url: filters_locations_cities_path, predicates: [:in, :not_in], form: form) %>
-    <% end %>
-  <% end %>
-
-  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Source", id: "sourceModal") do |modal| %>
-    <% modal.with_modal_display do %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Source", column: :referring_domain, url: filters_sources_path, predicates: [:in, :not_in], form: form) %>
-    <% end %>
-  <% end %>
-
-  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Screen size", id: "screenModal") do |modal| %>
-    <% modal.with_modal_display do %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Screen size", column: :device_type, url: filters_screens_path, predicates: [:in, :not_in], form: form) %>
-    <% end %>
-  <% end %>
-
-  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Browser", id: "osModal") do |modal| %>
-    <% modal.with_modal_display do %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System", column: :os, url: filters_names_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "Operating System Version", column: :os_version, url: filters_versions_path, predicates: [:in, :not_in], form: form) %>
-    <% end %>
-  <% end %>
-
-  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Campaign", id: "utmModal") do |modal| %>
-    <% modal.with_modal_display do %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Medium", column: :utm_medium, url: filters_utm_mediums_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Source", column: :utm_source, url: filters_utm_sources_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Campaign", column: :utm_campaign, url: filters_utm_campaigns_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Term", column: :utm_term, url: filters_utm_terms_path, predicates: [:in, :not_in], form: form) %>
-      <%= render AhoyCaptain::Filter::SelectComponent.new(label: "UTM Content", column: :utm_content, url: filters_utm_contents_path, predicates: [:in, :not_in], form: form) %>
     <% end %>
   <% end %>
 

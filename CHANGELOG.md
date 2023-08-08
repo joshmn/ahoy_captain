@@ -10,6 +10,8 @@
 * Filtering by goals
 * More consistent styling
 * Better filtering experience
+* Filters are now created at runtime and you can setup your own 
+  * To officially setup your own, you're going to need to bring your own controller, but this is a first step.
 
 ## Version 0.82
 

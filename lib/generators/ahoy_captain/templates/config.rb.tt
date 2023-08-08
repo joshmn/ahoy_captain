@@ -81,6 +81,31 @@ AhoyCaptain.configure do |config|
   # Set to false to disable custom ranges
   # config.ranges.custom = true
 
+  # ==> Filters
+  #
+  # Defaults come from lib/ahoy_captain/filter_configuration.rb
+  #
+  # If you want your own entirely, first call reset.
+  # config.filters.reset
+  #
+  # Then you can add your own.
+  #
+  # config.filters.register "Group label" do
+  #   filter label: "Some label", column: :column_name, url: :url_for_options, predicates: [:in, :not_in], multiple: true
+  # end
+  #
+  # You can also remove an existing group:
+  #
+  # config.filters.delete("Group label")
+  #
+  # Remove a specific filter from a group:
+  #
+  # config.filters["Group label"].delete(:column_name)
+  #
+  # You can add to an existing group:
+  #
+  # config.filters["Group label"].filter label: "Some label", column: :column_name, url: :url_for_options, predicates: [:in, :not_in], multiple: true
+
   # ==> Caching
   # config.cache.enabled = false
   #
