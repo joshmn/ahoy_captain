@@ -26,7 +26,9 @@ $ rails g ahoy_captain:install
 
 ### 3. Make sure your events are setup correctly
 
-By default, AhoyCaptain assumes you're tracking `controller` and `action` in your `Ahoy::Event` properties, and a page view event is named `$view`. 
+AhoyCaptain doesn't do any tracking for you; it merely provides a dashboard for your data from the Ahoy gem. 
+
+By default, AhoyCaptain assumes you're tracking `controller` and `action` in your `Ahoy::Event` properties, and a page view event is named `$view`. See this section for more information: https://github.com/ankane/ahoy#events
 
 For a quick sanity check:
 
@@ -35,7 +37,7 @@ AhoyCaptain.event.where(name: AhoyCaptain.config.event[:view_name]).count
 AhoyCaptain.event.with_routes.count
 ```
 
-See the initializer `config/initializers/ahoy_captain.rb` for further customization.
+This can be fully-customized. See the initializer `config/initializers/ahoy_captain.rb` for more.
 
 ### 4. Star this repo
 
