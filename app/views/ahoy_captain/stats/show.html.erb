@@ -1,4 +1,4 @@
-<%= turbo_frame_tag :stats do %>
+<%= turbo_frame_tag :stats, data: { controller: "active-frame-link" } do %>
   <dl class="grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg grid-cols-2 md:grid-cols-6 md:divide-y-0 -mt-4 mb-4" data-controller="active-links" data-active-links-classes-value='["text-primary"]'>
     <%= render ::AhoyCaptain::Stats::ContainerComponent.new(stats_unique_visitors_url(search_params), "Unique Visits", number_with_delimiter(@presenter.unique_visitors), true) %>
     <%= render ::AhoyCaptain::Stats::ContainerComponent.new(stats_total_visits_path(search_params), "Total Visits", number_with_delimiter(@presenter.total_visits)) %>

@@ -12,6 +12,7 @@ module AhoyCaptain
       }
 
       INTERVALS = ["minute", "hour", "day", "week", "month"]
+
       private
 
       helper_method :selected_interval
@@ -61,6 +62,65 @@ module AhoyCaptain
         else
           INTERVAL_PERIOD["month"]
         end
+      end
+
+      def lazy_window(result, value = 0)
+        window = window_for(selected_interval, result.keys[0].class)
+
+        window.each do |item|
+          next if result.key?(item)
+
+          result[item] = value
+        end
+
+        transform = interval_label_transformation(selected_interval)
+
+        if transform
+          result.transform_keys! { |key| key.strftime(transform) }
+        end
+
+        result
+      end
+
+      def interval_label_transformation(interval)
+        if interval == 'hour'
+          return '%H:%M %p'
+        end
+
+        nil
+      end
+
+      def window_for(interval, type)
+        function = case type.to_s
+                    when 'Date', 'ActiveSupport::TimeWithZone'
+                      ->(value) {
+                        date = Time.at(value).utc
+                        if interval == 'month'
+                          date.change(day: 1)
+                        elsif interval == 'week'
+                          date.beginning_of_week
+                        elsif interval == 'day'
+                          date.beginning_of_day
+                        elsif interval == 'hour'
+                          date.beginning_of_hour
+                        elsif interval == 'minute'
+                          date.beginning_of_minute
+                        else
+                          abort
+                        end.to_date
+                      }
+                    when 'DateTime'
+                      ->(value) { Time.at(value).utc.change(sec: 0) }
+                    when 'NilClass'
+                      ->(_) { Time.current.utc.change(sec: 0) }
+                    else
+                      raise ArgumentError
+                    end
+
+        Range.new(range[0].to_datetime.to_i, (range[1] || Time.current).to_datetime.to_i)
+             .step(1.send(interval))
+             .to_a
+             .map { |value| function.call(value) }
       end
     end
   end

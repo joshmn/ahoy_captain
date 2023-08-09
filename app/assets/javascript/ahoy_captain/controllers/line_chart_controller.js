@@ -10,7 +10,7 @@ export default class extends Controller {
       return `hsl(${getComputedStyle(document.documentElement).getPropertyValue(varname)})`
     }
 
-    new Chart(this.element,
+    this.chart = new Chart(this.element,
       {
         type: 'line',
         data: {
@@ -31,7 +31,15 @@ export default class extends Controller {
           }
         }
       },
-    )
+    );
+
+    this.element.addEventListener('click', evt => {
+      const activePoint = this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+      if(activePoint[0]) {
+        const date = Object.keys(this.dataValue)[activePoints[0].index];
+        // do something
+      }
+    })
 
   }
 }

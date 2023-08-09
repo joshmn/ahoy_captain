@@ -2,7 +2,13 @@
 
 ## Unreleased
 
-Nothing, yet. 
+### Fixed 
+* Active link clicks become active if you click a child element
+* Persist the interval of the graph when changing graphs
+
+### Added
+* Naive window function for graphs
+  - ideally this would be done in the database
 
 ## Version 0.91 (Aug 08, 2023)
 
