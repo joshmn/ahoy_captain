@@ -29,7 +29,7 @@ module AhoyCaptain
     def views_per_visit
       cached(:views_per_visit) do
         begin
-          result = Stats::AverageViewsPerVisitQuery.call(params).count(:id)
+          result = Stats::ViewsPerVisitQuery.call(params).count(:id)
           count = (result.values.sum.to_f / result.size).round(2)
           if count.nan?
             return "0"
