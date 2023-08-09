@@ -33,5 +33,11 @@ module AhoyCaptain
 
       joined.where(shared_conditions.reduce(&:and))
     end
+
+    def page_view
+      @query = @query.page_view
+
+      self
+    end
   end
 end

@@ -9,21 +9,15 @@ module AhoyCaptain
     end
 
     def unique_visitors
-      cached(:unique_visitors) do
-        Stats::UniqueVisitorsQuery.call(params).count(:visitor_token)
-      end
+      Stats::UniqueVisitorsQuery.call(params).with_comparison.count
     end
 
     def total_visits
-      cached(:total_visits) do
-        Stats::TotalVisitorsQuery.call(params).count(:id)
-      end
+      Stats::TotalVisitorsQuery.call(params).with_comparison.count
     end
 
     def total_pageviews
-      cached(:total_pageviews) do
-        Stats::TotalPageviewsQuery.call(params).count(:id)
-      end
+      Stats::TotalPageviewsQuery.call(params).with_comparison.count
     end
 
     def views_per_visit
@@ -47,35 +41,11 @@ module AhoyCaptain
     end
 
     def bounce_rate
-      cached(:bounce_rate) do
-        begin
-          result = Stats::BounceRatesQuery.call(params)
-          average = result.average("bounce_rate")
-          if average
-            average.round(2)
-          else
-            "0"
-          end
-        rescue ::ActiveRecord::StatementInvalid => e
-          if e.message.include?("PG::DivisionByZero")
-            return "0"
-          else
-            raise e
-          end
-        end
-      end
+      Stats::BounceRatesQuery.call(params).with_comparison.average("bounce_rate")
     end
 
     def visit_duration
-      cached(:visit_duration) do
-        result = Stats::AverageVisitDurationQuery.call(params)
-        duration = result[0].average_visit_duration
-        if duration
-          "#{duration.in_minutes.to_i}M #{duration.parts[:seconds].to_i}S"
-        else
-          "0M 0S"
-        end
-      end
+      Stats::AverageVisitDurationQuery.call(params).with_comparison
     end
 
     private

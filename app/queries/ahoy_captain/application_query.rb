@@ -1,3 +1,5 @@
+require_relative '../concerns/comparable_query'
+
 module AhoyCaptain
   class ApplicationQuery
     # if you want to enforce returning a relation
