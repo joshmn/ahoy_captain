@@ -2,7 +2,7 @@ module AhoyCaptain
   module Stats
     class UniqueVisitorsController < BaseController
       def index
-        @stats = AhoyCaptain::Stats::UniqueVisitorsQuery.call(params).group_by_period(selected_interval, :started_at).count
+        @stats = AhoyCaptain::Stats::UniqueVisitorsQuery.call(params).with_window.count("distinct ahoy_visits.visitor_token")
         @label = "Visitors"
       end
     end

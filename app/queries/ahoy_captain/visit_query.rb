@@ -18,7 +18,6 @@ module AhoyCaptain
 
       AhoyCaptain.visit.joins(shared_context.join_sources)
             .where(shared_conditions.reduce(&:and))
-
     end
 
     def is_a?(other)

@@ -24,6 +24,29 @@ module AhoyCaptain
     def inspect
       "<#{self.class.name}>"
     end
+
+
+    # Order.with(
+    #   intervals: "SELECT date::date FROM generate_series((current_date - interval '1034 day')::date, current_date::date, '1 day'::interval) date",
+    #   orders: Order.where(created_at: 34.months.ago..33.months.ago),
+    # ).select("intervals.date, COALESCE(sum(orders.id), 0) AS sum")
+    # .from("intervals")
+    # .joins("left join orders on DATE_TRUNC('day', orders.created_at::timestamptz AT TIME ZONE 'Etc/UTC')::date < intervals.date AND DATE_TRUNC('day', orders.created_at::timestamptz AT TIME ZONE 'Etc/UTC')::date >= (intervals.date - '1 day'::interval)")
+    # .group("intervals.date")
+    # .order('intervals.date desc')
+    # .count("orders.id")
+    def with_window
+      @query = AhoyCaptain.visit.with(
+        visits: @query,
+        intervals: "SELECT date::date FROM generate_series(('#{range[0].to_s(:db)}')::date, '#{range[1].to_s(:db)}'::date, '1 day'::interval) date"
+      ).select("intervals.date, count(distinct ahoy_visits.visitor_token)")
+                          .from("intervals")
+                 .joins("left join ahoy_visits on DATE_TRUNC('day', ahoy_visits.started_at::timestamptz AT TIME ZONE 'Etc/UTC')::date < intervals.date AND DATE_TRUNC('day', ahoy_visits.started_at::timestamptz AT TIME ZONE 'Etc/UTC')::date >= (intervals.date - '1 day'::interval)")
+                 .group("intervals.date")
+                 .order('intervals.date asc')
+      self
+    end
+
     protected
 
     def build
