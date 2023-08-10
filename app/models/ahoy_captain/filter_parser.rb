@@ -31,9 +31,9 @@ module AhoyCaptain
         item.values = Array(values)
         item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
         item.column = key.delete_suffix("_#{item.predicate}")
-        modal_name = AhoyCaptain.config.filters.detect { |_, filters| filters.include?(item.column) }[1].modal_name
+        modal_name = AhoyCaptain.config.filters.detect { |_, filters| filters.include?(item.column) }
         if modal_name
-          item.modal = modal_name
+          item.modal = modal_name[1].modal_name
         end
 
         label = if item.column == "goal"

@@ -70,11 +70,15 @@ module AhoyCaptain
           current: @query.to_sql,
           compare: @compare.to_sql
         ).select("current, compare").from("current, compare")[0]
-
         type = @query_class.cast_type(@column)
 
-        current = @query_class.cast_value(type, result.current[1...-1])
-        compare = @query_class.cast_value(type, result.compare[1...-1])
+        if result
+          current = @query_class.cast_value(type, result.current[1...-1])
+          compare = @query_class.cast_value(type, result.compare[1...-1])
+        else
+          current = @query_class.cast_value(type, '0')
+          compare = @query_class.cast_value(type, '0')
+        end
 
         @result = ComparisonResult.new((current), (compare))
       end
