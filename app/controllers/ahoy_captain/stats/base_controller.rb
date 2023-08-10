@@ -1,8 +1,6 @@
 module AhoyCaptain
   module Stats
     class BaseController < ApplicationController
-      include Rangeable
-
       INTERVAL_PERIOD = {
         "realtime" => ["minute"],
         "day" => ["minute", "hour"],

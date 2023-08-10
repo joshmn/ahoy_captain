@@ -30,8 +30,8 @@ module AhoyCaptain
 
   class ApplicationController < ActionController::Base
     include Pagy::Backend
-
     include CompareMode
+    include Rangeable
 
     layout 'ahoy_captain/layouts/application'
 

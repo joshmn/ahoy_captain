@@ -1,6 +1,5 @@
 module AhoyCaptain
   class EventQuery < ApplicationQuery
-    include Rangeable
 
     def build
       entry_pages = ransack_params_for(:event).select { |k,v| k.start_with?("entry_page") }

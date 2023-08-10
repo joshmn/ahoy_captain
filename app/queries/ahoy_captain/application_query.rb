@@ -4,7 +4,6 @@ module AhoyCaptain
   class ApplicationQuery
     # if you want to enforce returning a relation
     class_attribute :strict, default: true
-    include Rangeable
 
     delegate_missing_to :@query
 

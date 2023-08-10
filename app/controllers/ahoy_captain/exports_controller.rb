@@ -1,7 +1,6 @@
 module AhoyCaptain
   class ExportsController < ApplicationController
     skip_before_action :act_like_an_spa
-    include Rangeable
 
     def show
       export = Export.new(params, self).build
