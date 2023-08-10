@@ -20,6 +20,7 @@ module AhoyCaptain
         "0M 0S"
       end
     end
+
     def ahoy_captain_importmap_tags(entry_point = "application", shim: true)
       safe_join [
         (javascript_importmap_shim_tag if shim),

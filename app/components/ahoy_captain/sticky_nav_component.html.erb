@@ -10,24 +10,19 @@
     <% end %>
   </div>
   <div class="flex flex-row-reverse col-span-2 items-center gap-3">
-    <% if helpers.compare_mode? %>
+    <%= render AhoyCaptain::ComparisonLinkComponent.new %>
 
-      <a class="btn btn-base-100 no-underline hover:bg-base-100 btn-sm" href="<%= AhoyCaptain::Engine.routes.url_helpers.root_path(**helpers.search_params.except('comparison')) %>">Disable Comparison</a>
-    <% end %>
-      <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period]).try(:label) || "Period"), classes: 'btn btn-sm btn-base-100 no-underline hover:bg-base-100') do |dropdown| %>
-        <% dropdown.with_option do %>
-          <% AhoyCaptain.config.ranges.each do |param, range| %>
-            <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.except("start_date", "end_date").merge("period" => param).to_query %>"><%= range.label %></a>
-          <% end %>
-
-          <a class='link no-underline ' href='#' onclick="event.preventDefault(); customRangeModal.showModal()">Custom range</a>
-          <a class='link no-underline ' href='<%= AhoyCaptain::Engine.routes.url_helpers.root_path(**helpers.search_params.merge(comparison: !helpers.compare_mode?)) %>'><%= helpers.compare_mode? ? "Disable Compare" : "Compare" %></a>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period] || AhoyCaptain.config.ranges.default).try(:label) || "Period"), classes: 'btn btn-sm btn-base-100 no-underline hover:bg-base-100') do |dropdown| %>
+      <% dropdown.with_option do %>
+        <% AhoyCaptain.config.ranges.each do |param, range| %>
+          <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.except("start_date", "end_date").merge("period" => param).to_query %>"><%= range.label %></a>
         <% end %>
+
+        <a class='link no-underline ' href='#' onclick="event.preventDefault(); customRangeModal.showModal()">Custom range</a>
+        <a class='link no-underline ' href='<%= AhoyCaptain::Engine.routes.url_helpers.root_path(**helpers.search_params.merge(comparison: !compare_mode?)) %>'><%= compare_mode? ? "Disable Comparison" : "Compare" %></a>
       <% end %>
-
-
+    <% end %>
 
     <%= render AhoyCaptain::Filter::DropdownComponent.new(filters: filters) %>
-
   </div>
 </div>

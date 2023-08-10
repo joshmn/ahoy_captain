@@ -1,17 +1,25 @@
-<a href="<%= @url %>" class="relative px-4 md:px-6 w-1/2 my-4 lg:w-auto group select-none cursor-pointer lg:border-l border-gray-300"  data-turbo-frame="chart">
+<a href="<%= @url %>" class="relative px-4 md:px-6 w-1/2 my-4 lg:w-auto group cursor-pointer"  data-turbo-frame="chart">
   <div>
-    <div class="text-xs font-bold tracking-wide text-gray-500 uppercase dark:text-gray-400 whitespace-nowrap flex w-content border-b group-hover:text-indigo-700 dark:group-hover:text-indigo-500 border-transparent tooltip"  data-active-links-target="link" data-tip="<%= tooltip %>"><%= @label %></div>
+    <h5 class="text-sm font-bold uppercase whitespace-nowrap flex w-content border-transparent tooltip"
+        data-active-links-target="link" data-tip="<%= tooltip %>">
+      <%= @label %>
+      <div class="<%= klass %> ms-2"><%= arrow %></div>
+    </h5>
     <div class="my-1 space-y-2">
       <div>
         <span class="flex items-center justify-between whitespace-nowrap">
-          <p class="font-bold text-xl dark:text-gray-100" id="visits"><%= formatted(value.current) %></p>
+          <p class="font-bold text-xl"><%= formatted(value.current) %></p>
         </span>
-        <p class="text-xs dark:text-gray-100"><%= range_string %></p>
+        <% if compare_mode? %>
+        <p class="text-xs"><%= range_string %></p>
+        <% end %>
       </div>
+      <% if compare_mode? %>
       <div>
-        <p class="font-bold text-xl text-gray-500 dark:text-gray-400"><%= formatted(value.compared_to) %></p>
-        <p class="text-xs text-gray-500 dark:text-gray-400"><%= compare_range_string %></p>
+        <p class="font-bold text-xl text-gray-500"><%= formatted(value.compared_to) %></p>
+        <p class="text-xs text-gray-500"><%= compare_range_string %></p>
       </div>
+      <% end %>
     </div>
   </div>
 </a>

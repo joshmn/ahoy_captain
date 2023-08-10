@@ -8,7 +8,7 @@ module AhoyCaptain
       send_data file.read,
                 type: 'application/zip',
                 disposition: 'attachment',
-                filename: "AhoyCaptain export #{request.host} #{range[0].to_date} to #{range[1].to_date}.zip"
+                filename: "AhoyCaptain export #{request.host} #{range[0].to_date} to #{(range[1] || Time.current).to_date}.zip"
     end
   end
 end

@@ -42,6 +42,8 @@ export default class extends Controller {
       },
     );
 
+    window.addEventListener('resize', () => { this.chart.resize() })
+
     this.element.addEventListener('click', evt => {
       const activePoint = this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
       if(activePoint[0]) {

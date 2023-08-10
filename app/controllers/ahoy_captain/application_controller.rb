@@ -17,14 +17,25 @@ module AhoyCaptain
 
   module CompareMode
     def self.included(klass)
-      if klass.is_a?(ActionController::Base)
+      if klass < ActionController::Base
         klass.helper_method :compare_mode?
+        klass.helper_method :comparison_label
       end
     end
 
     # doesn't work for realtime and realtime doesn't need a secondary range
     def compare_mode?
       params[:comparison] == 'true' && range[1]
+    end
+
+    def comparison_label
+      if compare_mode?
+        return "Previous period"
+        other = ::AhoyCaptain::ComparisonRange.build(range)
+        [other[0].strftime('%m %d %Y'), other[1].strftime('%m %d %Y')].join("-")
+      else
+        nil
+      end
     end
   end
 

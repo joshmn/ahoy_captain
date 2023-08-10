@@ -1,6 +1,9 @@
 module AhoyCaptain
   module Stats
     class ComparableContainerComponent < ViewComponent::Base
+      include CompareMode
+      include Rangeable
+
       def initialize(url, label, comparable, formatter = nil, selected = false, compare = false)
         @url = url
         @label = label

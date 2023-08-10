@@ -44,5 +44,10 @@ module AhoyCaptain
       end
     end
 
+    private
+
+    def compare_mode?
+      params[:comparison] != 'false'
+    end
   end
 end
