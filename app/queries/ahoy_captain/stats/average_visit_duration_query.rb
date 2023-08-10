@@ -12,7 +12,11 @@ module AhoyCaptain
       end
 
       def self.cast_value(_type, value)
-        ActiveSupport::Duration.parse(value)
+        if value.present?
+          ActiveSupport::Duration.parse(value)
+        else
+          ActiveSupport::Duration.parse("P0MT0S")
+        end
       end
     end
   end
