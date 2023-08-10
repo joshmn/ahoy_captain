@@ -1,4 +1,4 @@
-require_relative '../concerns/comparable_query'
+require_relative '../concerns/comparable_queries'
 
 module AhoyCaptain
   class ApplicationQuery

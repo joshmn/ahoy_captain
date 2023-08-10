@@ -15,8 +15,22 @@ module AhoyCaptain
     end
   end
 
+  module CompareMode
+    def self.included(klass)
+      if klass.is_a?(ActionController::Base)
+        klass.helper_method :compare_mode?
+      end
+    end
+
+    def compare_mode?
+      params[:comparison] == 'true'
+    end
+  end
+
   class ApplicationController < ActionController::Base
     include Pagy::Backend
+
+    include CompareMode
 
     layout 'ahoy_captain/layouts/application'
 
@@ -81,5 +95,7 @@ module AhoyCaptain
         yield
       end
     end
+
+
   end
 end

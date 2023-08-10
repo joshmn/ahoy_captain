@@ -64,13 +64,26 @@ module AhoyCaptain
         end
       end
 
-      def lazy_window(result, value = 0)
-        window = window_for(selected_interval, result.keys[0].class)
+      def lazy_window(result, value = 0, base = nil)
+        if result.is_a?(AhoyCaptain::LazyComparableQuery::LazyComparison)
+          result.result.current = lazy_window(result.result.current, value, Range.new(result.range[0].to_datetime.to_i, result.range[1].to_datetime.to_i))
+          result.result.compared_to = lazy_window(result.result.compared_to, value, Range.new(result.compare_range[0].to_datetime.to_i, result.compare_range[1].to_datetime.to_i))
+
+          return result.result
+        end
+
+
+        base ||= Range.new(range[0].to_datetime.to_i, range[1].to_datetime.to_i)
+        window = window_for(selected_interval, result.keys[0].class, base)
 
         window.each do |item|
-          next if result.key?(item)
+          if result.key?(item)
+            puts "result has key #{item}"
+            next
+          end
 
-          result[item] = value
+          puts item
+          result[item] ||= value
         end
 
         transform = interval_label_transformation(selected_interval)
@@ -78,6 +91,7 @@ module AhoyCaptain
         if transform
           result.transform_keys! { |key| key.strftime(transform) }
         end
+
 
         result
       end
@@ -90,9 +104,10 @@ module AhoyCaptain
         nil
       end
 
-      def window_for(interval, type)
+      # base should be a range
+      def window_for(interval, type, base = nil)
         function = case type.to_s
-                    when 'Date', 'ActiveSupport::TimeWithZone'
+                    when 'Date', 'ActiveSupport::TimeWithZone', 'NilClass'
                       ->(value) {
                         date = Time.at(value).utc
                         if interval == 'month'
@@ -111,13 +126,11 @@ module AhoyCaptain
                       }
                     when 'DateTime'
                       ->(value) { Time.at(value).utc.change(sec: 0) }
-                    when 'NilClass'
-                      ->(_) { Time.current.utc.change(sec: 0) }
                     else
                       raise ArgumentError
                     end
 
-        Range.new(range[0].to_datetime.to_i, (range[1] || Time.current).to_datetime.to_i)
+        base
              .step(1.send(interval))
              .to_a
              .map { |value| function.call(value) }

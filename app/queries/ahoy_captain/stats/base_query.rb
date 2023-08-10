@@ -2,6 +2,7 @@ module AhoyCaptain
   module Stats
     class BaseQuery < ApplicationQuery
       include ComparableQuery
+      include LazyComparableQuery
 
       protected
 

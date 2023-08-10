@@ -19,6 +19,10 @@ module AhoyCaptain
       end
 
       def self.cast_value(type, value)
+        if value.blank?
+          return 0.to_d
+        end
+
         super.round(2)
       end
 

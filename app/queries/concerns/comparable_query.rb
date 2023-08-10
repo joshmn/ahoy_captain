@@ -11,6 +11,7 @@ module AhoyCaptain
 
       def initialize(query)
         @query = query
+        @params = @query.params.deep_dup
         @compare = @query.class.call(comparison_params)
         @model = @query.all.klass
         @query_class = @query.class
@@ -58,7 +59,7 @@ module AhoyCaptain
         end
 
         if q.group_values.any?
-          q.send(:execute_grouped_calculation, operation, column_name, distinct)
+          raise "use a subquery"
         else
           execute_simple_calculation(q, operation, column_name, distinct)
         end
@@ -75,9 +76,20 @@ module AhoyCaptain
         current = @query_class.cast_value(type, result.current[1...-1])
         compare = @query_class.cast_value(type, result.compare[1...-1])
 
-        ComparisonResult.new((current), (compare))
+        @result = ComparisonResult.new((current), (compare))
       end
 
+      def compare_range
+        @compare_range ||= begin
+                             og_range = range
+                             [og_range[0] - (og_range[1] - og_range[0]), og_range[0]]
+                           end
+
+      end
+
+      def range
+        @range ||= @query.send(:range)
+      end
 
       private
 
@@ -86,7 +98,7 @@ module AhoyCaptain
           # Shortcut when limit is zero.
           return 0 if q.limit_value == 0
 
-          query_builder = q.send(:build_count_subquery, q.spawn, column_name, distinct)
+          q.send(:build_count_subquery, q.spawn, column_name, distinct)
         else
           # PostgreSQL doesn't like ORDER BY when there are no GROUP BY
           relation = q.all.unscope(:order).distinct!(false)
@@ -97,24 +109,26 @@ module AhoyCaptain
 
           relation.select_values = [select_value]
 
-          query_builder = relation.arel
+          relation.arel
         end
-
       end
 
       def comparison_params
-        params = @query.send(:params).deep_dup
-        og_range = @query.send(:range)
+        params = @params.deep_dup
         params.delete("period")
 
-        params[:start_date] = og_range[0] - (og_range[1] - og_range[0])
-        params[:end_date] = og_range[0]
+        params[:start_date] = compare_range[0]
+        params[:end_date] = compare_range[1]
         params
       end
     end
 
-    def with_comparison
-      Comparison.new(self)
+    def with_comparison(enabled = false)
+      if enabled
+        Comparison.new(self)
+      else
+        self
+      end
     end
   end
 end

@@ -1,12 +1,17 @@
-<a href="<%= @url %>" class="hover:text-primary text-base-content link no-underline" data-turbo-frame="chart">
-  <dt class="font-normal <%= 'text-primary' if @selected %>" data-active-links-target="link" id="<%= @label.tableize.parameterize.underscore %>"><%= @label %></dt>
-  <dd class="mt-1 flex items-baseline justify-between md:block lg:flex" data-active-links-target="alt" data-active-links-value="#<%= @label.tableize.parameterize.underscore %>">
-    <div class="flex items-baseline text-2xl font-semibold">
-      <%= view_context.public_send(@formatter, @value.current) %>
-      <span class="pl-2 text-xs dark:text-gray-100">
-        <span class="<%= klass %> font-bold"><%= arrow %></span>
-        <%= number_to_percentage percentage, precision: 1 %>
-      </span>
+<a href="<%= @url %>" class="relative px-4 md:px-6 w-1/2 my-4 lg:w-auto group select-none cursor-pointer lg:border-l border-gray-300"  data-turbo-frame="chart">
+  <div>
+    <div class="text-xs font-bold tracking-wide text-gray-500 uppercase dark:text-gray-400 whitespace-nowrap flex w-content border-b group-hover:text-indigo-700 dark:group-hover:text-indigo-500 border-transparent tooltip"  data-active-links-target="link" data-tip="<%= tooltip %>"><%= @label %></div>
+    <div class="my-1 space-y-2">
+      <div>
+        <span class="flex items-center justify-between whitespace-nowrap">
+          <p class="font-bold text-xl dark:text-gray-100" id="visits"><%= formatted(value.current) %></p>
+        </span>
+        <p class="text-xs dark:text-gray-100"><%= range_string %></p>
+      </div>
+      <div>
+        <p class="font-bold text-xl text-gray-500 dark:text-gray-400"><%= formatted(value.compared_to) %></p>
+        <p class="text-xs text-gray-500 dark:text-gray-400"><%= compare_range_string %></p>
+      </div>
     </div>
-  </dd>
+  </div>
 </a>

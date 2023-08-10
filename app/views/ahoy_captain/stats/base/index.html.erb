@@ -6,6 +6,13 @@
     <% end %>
   </div>
   <div>
-    <canvas  style="height:300px;width:100%;" data-controller="line-chart" data-line-chart-label-value="<%= @label %>" data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
+    <% if compare_mode? %>
+      <canvas  style="height:300px;width:100%;" data-controller="comparison-line-chart" data-line-chart-label-value="<%= @label %>"
+               data-comparison-line-chart-current-value="<%= @stats.current.to_json %>"
+               data-comparison-line-chart-compared-to-value="<%= @stats.compared_to.to_json %>"
+      ></canvas>
+    <% else %>
+      <canvas  style="height:300px;width:100%;" data-controller="line-chart" data-line-chart-label-value="<%= @label %>" data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
+    <% end %>
   </div>
 <% end %>

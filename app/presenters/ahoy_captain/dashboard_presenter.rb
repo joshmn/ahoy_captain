@@ -1,6 +1,7 @@
 module AhoyCaptain
   class DashboardPresenter
     include RangeOptions
+    include CompareMode
 
     attr_reader :params
 
@@ -9,51 +10,38 @@ module AhoyCaptain
     end
 
     def unique_visitors
-      Stats::UniqueVisitorsQuery.call(params).with_comparison.count
+      Stats::UniqueVisitorsQuery.call(params).with_comparison(compare_mode?).count
     end
 
     def total_visits
-      Stats::TotalVisitorsQuery.call(params).with_comparison.count
+      Stats::TotalVisitorsQuery.call(params).with_comparison(compare_mode?).count
     end
 
     def total_pageviews
-      Stats::TotalPageviewsQuery.call(params).with_comparison.count
+      Stats::TotalPageviewsQuery.call(params).with_comparison(compare_mode?).count
     end
 
     def views_per_visit
-      cached(:views_per_visit) do
-        begin
-          result = Stats::AverageViewsPerVisitQuery.call(params).count(:id)
-          count = (result.values.sum.to_f / result.size).round(2)
-          if count.nan?
-            return "0"
-          else
-            return count
-          end
-        rescue ::ActiveRecord::StatementInvalid => e
-          if e.message.include?("PG::DivisionByZero")
-            return "0"
-          else
-            raise e
-          end
-        end
-      end
+      Stats::AverageViewsPerVisitQuery.call(params).with_comparison(compare_mode?).count("count")
     end
 
     def bounce_rate
-      Stats::BounceRatesQuery.call(params).with_comparison.average("bounce_rate")
+      query = Stats::BounceRatesQuery.call(params)
+      if compare_mode?
+        query.with_comparison(true)
+      else
+        query.average("bounce_rate").try(:round, 2) || 0
+      end
     end
 
     def visit_duration
-      Stats::AverageVisitDurationQuery.call(params).with_comparison
-    end
-
-    private
-
-    def cached(*names)
-      AhoyCaptain.cache.fetch("ahoy_captain:#{names.join(":")}:#{params.permit!.except("controller", "action").to_unsafe_h.map { |k,v| "#{k}-#{v}" }.join(":")}", expire_in: AhoyCaptain.config.cache[:ttl]) do
-        yield
+      query = Stats::AverageVisitDurationQuery.call(params)
+      if compare_mode?
+        query.with_comparison(true)
+      else
+        query[0].average_visit_duration
       end
     end
+
   end
 end

@@ -2,7 +2,7 @@
   <dt class="font-normal <%= 'text-primary' if @selected %>" data-active-links-target="link" id="<%= @label.tableize.parameterize.underscore %>"><%= @label %></dt>
   <dd class="mt-1 flex items-baseline justify-between md:block lg:flex" data-active-links-target="alt" data-active-links-value="#<%= @label.tableize.parameterize.underscore %>">
     <div class="flex items-baseline text-2xl font-semibold">
-      <%= @value %>
+      <%= formatted(@value) %>
     </div>
   </dd>
 </a>

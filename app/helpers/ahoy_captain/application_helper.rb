@@ -7,9 +7,9 @@ module AhoyCaptain
 
     def stats_container(value, url, label, formatter, selected = false)
       if value.is_a?(AhoyCaptain::ComparableQuery::Comparison)
-        ::AhoyCaptain::Stats::ComparableContainerComponent.new(url, label, value.result, formatter, selected)
+        ::AhoyCaptain::Stats::ComparableContainerComponent.new(url, label, value, formatter, selected, compare_mode?)
       else
-        ::AhoyCaptain::Stats::ContainerComponent.new(url, label, send(formatter, value), selected)
+        ::AhoyCaptain::Stats::ContainerComponent.new(url, label, value, formatter, selected)
       end
     end
 
@@ -46,7 +46,8 @@ module AhoyCaptain
         :start_date,
         :end_date,
         :period,
-        :interval
+        :interval,
+        :comparison
       ]
 
       ransack = [:goal]
