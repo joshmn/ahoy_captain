@@ -1,5 +1,6 @@
 module AhoyCaptain
   class DashboardPresenter
+    include Rangeable
     include RangeOptions
     include CompareMode
 

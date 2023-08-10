@@ -1,10 +1,6 @@
 module AhoyCaptain
   module RangeOptions
 
-    def period
-      raise NotImplementedError
-    end
-
     private def range
       if params[:start_date].present? && params[:end_date].present?
         custom = [params[:start_date].to_datetime, params[:end_date].to_datetime].sort
