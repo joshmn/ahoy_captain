@@ -2,8 +2,7 @@ module AhoyCaptain
   module ComparableQueries
     def compare_range
       @compare_range ||= begin
-                           og_range = range
-                           [og_range[0] - (og_range[1] - og_range[0]), og_range[0]]
+                           ComparisonRange.build(range)
                          end
     end
 

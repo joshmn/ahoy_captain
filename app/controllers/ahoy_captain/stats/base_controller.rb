@@ -72,17 +72,14 @@ module AhoyCaptain
           return result.result
         end
 
-
         base ||= Range.new(range[0].to_datetime.to_i, range[1].to_datetime.to_i)
         window = window_for(selected_interval, result.keys[0].class, base)
 
         window.each do |item|
           if result.key?(item)
-            puts "result has key #{item}"
             next
           end
 
-          puts item
           result[item] ||= value
         end
 
@@ -91,7 +88,6 @@ module AhoyCaptain
         if transform
           result.transform_keys! { |key| key.strftime(transform) }
         end
-
 
         result
       end

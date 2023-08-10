@@ -22,8 +22,9 @@ module AhoyCaptain
       end
     end
 
+    # doesn't work for realtime and realtime doesn't need a secondary range
     def compare_mode?
-      params[:comparison] == 'true'
+      params[:comparison] == 'true' && range[1]
     end
   end
 
