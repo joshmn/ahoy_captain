@@ -10,7 +10,9 @@
 * Naive window function for graphs
   - ideally this would be done in the database
 * Naive date comparison
-  - as of release, this only looks at the previous period; more granularity is on the way
+  - still has some quirks, but nothing showstopping:
+    - sometimes the window function doesn't cover the entire span
+    - no "lining up" dates (yet)
 
 ## Version 0.91 (Aug 08, 2023)
 
