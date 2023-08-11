@@ -7,20 +7,26 @@
   </div>
   <div>
     <% if compare_mode? %>
-      <canvas class="h-[300px] w-full" 
-              data-controller="comparison-line-chart" 
+      <canvas class="h-[300px] w-full"
+              data-controller="line-chart"
               data-line-chart-label-value="<%= @label %>"
-              data-comparison-line-chart-current-value="<%= @stats.current.to_json %>"
-              data-comparison-line-chart-compared-to-value="<%= @stats.compared_to.to_json %>"
-              data-action="resize@window->comparison-line-chart#resize"
-              data-action="mouseenter->comparison-line-chart#hover"
-              data-action="mouseleave->comparison-line-chart#hover"
+              data-line-chart-interval-value="<%= selected_interval %>"
+              data-line-chart-current-value="<%= @stats.current.to_json %>"
+              data-line-chart-compared-to-value="<%= @stats.compared_to.to_json %>"
+              data-action="resize@window->line-chart#resize"
+              data-action="mouseenter->line-chart#hover"
+              data-action="mouseleave->line-chart#hover"
       ></canvas>
     <% else %>
-      <canvas class="h-[300px] w-full" 
-              data-controller="line-chart" 
-              data-line-chart-label-value="<%= @label %>" 
-              data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
+      <canvas class="h-[300px] w-full"
+              data-controller="line-chart"
+              data-line-chart-label-value="<%= @label %>"
+              data-line-chart-interval-value="<%= selected_interval %>"
+              data-line-chart-current-value="<%= @stats.to_json %>"
+              data-action="resize@window->line-chart#resize"
+              data-action="mouseenter->line-chart#hover"
+              data-action="mouseleave->line-chart#hover"
+      ></canvas>
     <% end %>
   </div>
 <% end %>

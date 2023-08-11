@@ -1,108 +1,123 @@
 export const getCSS = (varname, alpha = 1) => {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(varname);
+  if(value.includes("em") || value.includes("px")) {
+    return value
+  }
   return `hsl(${getComputedStyle(document.documentElement).getPropertyValue(varname)} / ${alpha})`
 }
+const calculatePercentageDifference = function(oldValue, newValue) {
+  if(!oldValue) { return false }
+  if (oldValue == 0 && newValue > 0) {
+    return 100
+  } else if (oldValue == 0 && newValue == 0) {
+    return 0
+  } else {
+    return Math.round((newValue - oldValue) / oldValue * 100)
+  }
+}
 
-const getOrCreateTooltip = (chart) => {
-  let tooltipEl = chart.canvas.parentNode.querySelector('div');
+const buildTooltipData = (controller, tooltip) => {
+  const data = controller.chart.config.data.datasets.find((set) => set.yAxisID == "y")
+  const comparisonData = controller.chart.config.data.datasets.find((set) => set.yAxisID == "yComparison");
+  const dataIndex = controller.chart.config.data.datasets.indexOf(data)
+  const comparisonDataIndex = controller.chart.config.data.datasets.indexOf(comparisonData);
 
-  if (!tooltipEl) {
-    tooltipEl = document.createElement('div');
-    tooltipEl.style.background = getCSS('--in');
-    tooltipEl.style.borderRadius = '3px';
-    tooltipEl.style.color = getCSS('--inc',.8);
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.pointerEvents = 'none';
-    tooltipEl.style.position = 'absolute';
-    tooltipEl.style.transform = 'translate(-50%, 50%)';
-    tooltipEl.style.transition = 'all .1s ease';
-
-    const table = document.createElement('table');
-    table.style.margin = '0px';
-
-    tooltipEl.appendChild(table);
-    chart.canvas.parentNode.appendChild(tooltipEl);
+  const tooltipData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)
+  const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
+  const label = data.label[tooltipData.dataIndex];
+  let comparisonLabel = false
+  let comparisonValue = false
+  if(comparisonData) {
+    comparisonLabel = comparisonData.label[tooltipComparisonData.dataIndex];
+    comparisonValue = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex)?.raw || 0
   }
 
-  return tooltipEl;
-};
+  const value = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)?.raw || 0
 
-export const externalTooltipHandler = ({chart, tooltip}) => {
-  // Tooltip Element
-  debugger;
-  const tooltipEl = getOrCreateTooltip(chart);
-
-  // Hide if no tooltip
-  if (tooltip.opacity === 0) {
-    tooltipEl.style.opacity = 0;
-    return;
+  return {
+    comparisonDifference: calculatePercentageDifference(comparisonValue, value),
+    metric: controller.labelValue,
+    label: label,
+    formattedValue: value,
+    comparisonLabel: comparisonLabel,
+    formattedComparisonValue: comparisonValue
   }
+}
+export const externalTooltipHandler = (controller) => {
 
-  // Set Text
-  if (tooltip.body) {
-    const titleLines = tooltip.title || [];
-    const bodyLines = tooltip.datapoints || [];
+  return ({chart, tooltip}) => {
+    const offset = controller.chart.canvas.getBoundingClientRect()
+    let tooltipEl = document.getElementById('chartjs-tooltip')
 
-    const tableHead = document.createElement('thead');
+    if (!tooltipEl) {
+      tooltipEl = document.createElement('div')
+      tooltipEl.id = 'chartjs-tooltip'
+      tooltipEl.style.background = getCSS('--n', );
+      tooltipEl.style.borderRadius = getCSS('--rounded-btn');
+      tooltipEl.style.opacity = 1;
+      tooltipEl.style.pointerEvents = 'none';
+      tooltipEl.style.position = 'absolute';
+      tooltipEl.style.transform = 'translate(-50%, 50%)';
+      tooltipEl.style.transition = 'all .1s ease';
 
-    titleLines.forEach(title => {
-      const tr = document.createElement('tr');
-      tr.style.borderWidth = 0;
-
-      const th = document.createElement('th');
-      th.style.borderWidth = 0;
-      const text = document.createTextNode(title);
-
-      th.appendChild(text);
-      tr.appendChild(th);
-      tableHead.appendChild(tr);
-    });
-
-    const tableBody = document.createElement('tbody');
-    bodyLines.forEach((body, i) => {
-      const colors = tooltip.labelColors[i];
-
-      const span = document.createElement('span');
-      span.style.background = colors.backgroundColor;
-      span.style.borderColor = colors.borderColor;
-      span.style.borderWidth = '2px';
-      span.style.marginRight = '10px';
-      span.style.height = '10px';
-      span.style.width = '10px';
-      span.style.display = 'inline-block';
-
-      const tr = document.createElement('tr');
-      tr.style.backgroundColor = 'inherit';
-      tr.style.borderWidth = 0;
-
-      const td = document.createElement('td');
-      td.style.borderWidth = 0;
-
-      const text = document.createTextNode(body.label);
-
-      td.appendChild(span);
-      td.appendChild(text);
-      tr.appendChild(td);
-      tableBody.appendChild(tr);
-    });
-
-    const tableRoot = tooltipEl.querySelector('table');
-
-    // Remove old children
-    while (tableRoot.firstChild) {
-      tableRoot.firstChild.remove();
+      chart.canvas.parentNode.appendChild(tooltipEl);
     }
 
-    // Add new children
-    tableRoot.appendChild(tableHead);
-    tableRoot.appendChild(tableBody);
+    if (tooltipEl && offset && window.innerWidth < 768) {
+      tooltipEl.style.top = offset.y + offset.height + window.scrollY + 15 + 'px'
+      tooltipEl.style.left = offset.x + 'px'
+      tooltipEl.style.right = null
+      tooltipEl.style.opacity = 1
+    }
+
+    if (tooltip.opacity === 0) {
+      tooltipEl.style.display = 'none'
+      return
+    }
+
+    if (tooltip.body) {
+      const tooltipData = buildTooltipData(controller, tooltip)
+
+      tooltipEl.innerHTML = `
+        <aside class="flex flex-col text-neutral-content">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-bold uppercase whitespace-nowrap flex mr-4">${tooltipData.metric}</span>
+            ${tooltipData.comparisonDifference ?
+        `<div class="inline-flex items-center space-x-1">
+              ${tooltipData.comparisonDifference > 0 ? `<span class="font-semibold text-sm text-green-500">&uarr;</span><span>${tooltipData.comparisonDifference}%</span>` : ""}
+              ${tooltipData.comparisonDifference < 0 ? `<span class="font-semibold text-sm text-red-400">&darr;</span><span>${tooltipData.comparisonDifference * -1}%</span>` : ""}
+              ${tooltipData.comparisonDifference == 0 ? `<span class="font-semibold text-sm">〰 0%</span>` : ""}
+            </div>` : ''}
+          </div>
+
+          ${tooltipData.label ?
+        `<div class="flex flex-col">
+            <div class="flex flex-row justify-between items-center">
+              <span class="flex items-center mr-4">
+                <span>${tooltipData.label}</span>
+              </span>
+              <span class="font-bold">${tooltipData.formattedValue}</span>
+            </div>` : ''}
+
+            ${tooltipData.comparisonLabel ?
+        `<div class="flex flex-row justify-between items-center">
+              <span class="flex items-center mr-4">
+                <span>${tooltipData.comparisonLabel}</span>
+              </span>
+              <span class="font-bold">${tooltipData.formattedComparisonValue}</span>
+            </div>` : ""}
+          </div>
+        </aside>
+      `
+    }
+    const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+
+    // Display, position, and set styles for font
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.display = null;
+    tooltipEl.style.left = positionX + tooltip._eventPosition.x + 'px';
+    tooltipEl.style.top = positionY + tooltip._eventPosition.y + 'px';
+    tooltipEl.style.font = tooltip.options.bodyFont.string;
+    tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
   }
-
-  const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
-
-  // Display, position, and set styles for font
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip._eventPosition.x + 'px';
-  tooltipEl.style.top = positionY + tooltip._eventPosition.y + 'px';
-  tooltipEl.style.font = tooltip.options.bodyFont.string;
-  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
 };
