@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { getCSS, externalTooltipHandler, dateFormatter } from './charts/chart_utils';
+import { getCSS, externalTooltipHandler, dateFormatter, metricFormatter } from './charts/chart_utils';
 
 const footer = (tooltipItems) => {
   let sum = 0;
@@ -15,7 +15,8 @@ export default class extends Controller {
     current: Object,
     comparedTo: Object,
     interval: String,
-    label: String
+    label: String,
+    metric: String
   }
 
   connect() {

@@ -1,3 +1,5 @@
+import { numberFormatter, durationFormatter, percentageFormatter } from "./number_formatters";
+
 export const getCSS = (varname, alpha = 1) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(varname);
   if(value.includes("em") || value.includes("px")) {
@@ -39,10 +41,17 @@ const buildTooltipData = (controller, tooltip) => {
     comparisonDifference: calculatePercentageDifference(comparisonValue, value),
     metric: controller.labelValue,
     label: dateFormatter[controller.intervalValue](label, 'long'),
-    formattedValue: value,
+    formattedValue: metricFormatter[controller.metricValue](value),
     comparisonLabel: dateFormatter[controller.intervalValue](comparisonLabel, 'long'),
-    formattedComparisonValue: comparisonValue
+    formattedComparisonValue: metricFormatter[controller.metricValue](comparisonValue)
   }
+}
+
+export const metricFormatter = {
+  "ActiveSupport::Duration": durationFormatter,
+  "BigDecimal": numberFormatter,
+  "Float": percentageFormatter,
+  "Integer": numberFormatter
 }
 
 export const dateFormatter = {

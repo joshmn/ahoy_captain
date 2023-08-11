@@ -14,6 +14,15 @@ module AhoyCaptain
 
       private
 
+      helper_method :metric_type
+      def metric_type(stats)
+        if compare_mode?
+          stats.current.values.first.try(:class) || stats.compared_to.values.first.try(:class)
+        else
+          stats.values.first.class
+        end
+      end
+
       helper_method :selected_interval
       def selected_interval
         if params[:interval].in?(INTERVALS)
