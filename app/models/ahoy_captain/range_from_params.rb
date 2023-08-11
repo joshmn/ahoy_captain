@@ -33,7 +33,7 @@ module AhoyCaptain
         #   end
       end
 
-      @range = Range.new(*selected_period)
+      @range = Range.new(selected_period[0], selected_period[1])
       self
     end
 
