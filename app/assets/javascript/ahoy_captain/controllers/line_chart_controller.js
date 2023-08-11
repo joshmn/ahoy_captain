@@ -72,7 +72,6 @@ export default class extends Controller {
         options: {
           onClick: onClick,
           scale: {
-            ticks: { precision: 0, maxTicksLimit: 8 }
           },
           responsive: true,
           maintainAspectRatio: false,
@@ -90,9 +89,13 @@ export default class extends Controller {
           },
           scales: {
             y: {
-              stacked: true,
+              min: 0,
+              suggestedMax: calculateMaximumY(this.currentValue),
               ticks: {
-                color: getCSS('--bc')
+              },
+              grid: {
+                zeroLineColor: 'transparent',
+                drawBorder: false,
               }
             },
             yComparison: {
@@ -103,6 +106,8 @@ export default class extends Controller {
             },
             x: {
               ticks: {
+                grid: { display: false },
+
                 color: getCSS('--bc'),
                 callback: (val, idx) => {
                   if(idx % 2 == 0) {

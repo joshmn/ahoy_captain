@@ -33,7 +33,7 @@ module AhoyCaptain
           return INTERVAL_PERIOD["realtime"][0]
         end
         diff = (range[1] - range[0]).seconds.in_days
-        if diff > 30
+        if diff >= 31
           "month"
         elsif diff > 1
           "day"
