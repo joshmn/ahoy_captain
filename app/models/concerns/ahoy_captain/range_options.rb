@@ -2,7 +2,7 @@ module AhoyCaptain
   module RangeOptions
 
     private def range
-      RangeFromParams.build(params)
+      RangeFromParams.from_params(params)
     end
   end
 end

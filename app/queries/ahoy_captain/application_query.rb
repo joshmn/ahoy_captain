@@ -121,7 +121,7 @@ module AhoyCaptain
     end
 
     def range
-      RangeFromParams.build(params)
+      RangeFromParams.from_params(params)
     end
   end
 end

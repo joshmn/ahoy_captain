@@ -1,38 +1,4 @@
 module AhoyCaptain
-  module Limitable
-    private
-
-    def limit
-      if request.variant.include?(:details)
-        nil
-      else
-        if params[:limit]
-          params[:limit].to_i
-        else
-          10
-        end
-      end
-    end
-  end
-
-  module CompareMode
-    def self.included(klass)
-      if klass < ActionController::Base
-        klass.helper_method :compare_mode?
-        klass.helper_method :comparison_label
-      end
-    end
-
-    # doesn't work for realtime and realtime doesn't need a secondary range
-    def compare_mode?
-      comparison_mode.enabled?
-    end
-
-    def comparison_mode
-      @comparison_mode ||= ComparisonMode.new(params)
-    end
-  end
-
   class ApplicationController < ActionController::Base
     include Pagy::Backend
     include CompareMode
@@ -106,7 +72,5 @@ module AhoyCaptain
         yield
       end
     end
-
-
   end
 end
