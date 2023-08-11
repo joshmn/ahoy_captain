@@ -1,7 +1,7 @@
 <main class='min-h-screen pb-4 max-w-6xl mx-auto' data-controller="application">
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
-      <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime" }, loading: :lazy %>
+      <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime", "realtime-interval-value" => AhoyCaptain.config.realtime_interval.to_i }, loading: :lazy %>
     <% end %>
   <% end %>
 

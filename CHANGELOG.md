@@ -13,6 +13,8 @@
   - still has some quirks, but nothing showstopping:
     - sometimes the window function doesn't cover the entire span
     - no "lining up" dates (yet)
+* Configurable interval for realtime
+  - was 30 seconds by default
 
 ## Version 0.91 (Aug 08, 2023)
 
