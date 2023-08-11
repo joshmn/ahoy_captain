@@ -1,11 +1,39 @@
 <%= turbo_frame_tag :chart do %>
-  <div class="flex justify-end gap-3 items-center">
-    <a href="<%= export_path(request.query_parameters) %>" class="link text-sm" target="_blank" data-turbo-frame="false">Download</a>
-    <%= form_with url: url_for(params.permit!), method: :get, data: { controller: "interval" } do %>
-      <%= select_tag :interval, options_for_select(available_intervals.collect { |interval| [interval.titleize, interval] }, selected: selected_interval), class: "select text-primary select-sm w-full max-w-sm", 'data-action': "change->interval#handleChange" %>
-    <% end %>
+  <div class="p-4">
+    <div class="flex justify-end gap-3 items-center ">
+      <a href="<%= export_path(request.query_parameters) %>" class="link text-sm" target="_blank" data-turbo-frame="false">Download</a>
+      <%= form_with url: url_for(params.permit!), method: :get, data: { controller: "interval" } do %>
+        <%= select_tag :interval, options_for_select(available_intervals.collect { |interval| [interval.titleize, interval] }, selected: selected_interval), class: "select text-accent select-sm w-full max-w-sm", 'data-action': "change->interval#handleChange" %>
+      <% end %>
+    </div>
+    <div>
+
+      <% if compare_mode? %>
+        <canvas class="h-[300px] w-full"
+                data-controller="line-chart"
+                data-line-chart-label-value="<%= @label %>"
+                data-line-chart-interval-value="<%= selected_interval %>"
+                data-line-chart-current-value="<%= @stats.current.to_json %>"
+                data-line-chart-comparison-value="<%= params[:comparison] %>"
+                data-line-chart-compared-to-value="<%= @stats.compared_to.to_json %>"
+                data-line-chart-metric-value="<%= metric_type(@stats) %>"
+                data-action="resize@window->line-chart#resize"
+                data-action="mouseenter->line-chart#hover"
+                data-action="mouseleave->line-chart#hover"
+        ></canvas>
+      <% else %>
+        <canvas class="h-[300px] w-full"
+                data-controller="line-chart"
+                data-line-chart-label-value="<%= @label %>"
+                data-line-chart-interval-value="<%= selected_interval %>"
+                data-line-chart-current-value="<%= @stats.to_json %>"
+                data-line-chart-metric-value="<%= metric_type(@stats) %>"
+                data-action="resize@window->line-chart#resize"
+                data-action="mouseenter->line-chart#hover"
+                data-action="mouseleave->line-chart#hover"
+        ></canvas>
+      <% end %>
+    </div>
   </div>
-  <div>
-    <canvas  style="height:300px;width:100%;" data-controller="line-chart" data-line-chart-label-value="<%= @label %>" data-line-chart-data-value="<%= @stats.to_json %>"></canvas>
-  </div>
+
 <% end %>

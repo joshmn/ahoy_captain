@@ -1,8 +1,6 @@
 module AhoyCaptain
   module Filters
     class BaseController < ApplicationController
-      include Rangeable
-
       private
 
       def serialize(value)

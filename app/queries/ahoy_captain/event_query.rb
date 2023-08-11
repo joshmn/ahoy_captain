@@ -1,6 +1,5 @@
 module AhoyCaptain
   class EventQuery < ApplicationQuery
-    include Rangeable
 
     def build
       entry_pages = ransack_params_for(:event).select { |k,v| k.start_with?("entry_page") }
@@ -32,6 +31,12 @@ module AhoyCaptain
       end
 
       joined.where(shared_conditions.reduce(&:and))
+    end
+
+    def page_view
+      @query = @query.page_view
+
+      self
     end
   end
 end

@@ -2,6 +2,9 @@
 
 class AhoyCaptain::StickyNavComponent < ViewComponent::Base
   renders_one :realtime_update
+  include ::AhoyCaptain::CompareMode
+  include ::AhoyCaptain::RangeOptions
+  include ::AhoyCaptain::Rangeable
 
   def filters
     @filters ||= ::AhoyCaptain::FilterParser.parse(request)

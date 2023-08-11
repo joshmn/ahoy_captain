@@ -31,4 +31,23 @@
       </div>
     <% end %>
   <% end %>
+
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Comparison", id: "customComparisonModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <div class="flex gap-2 w-full">
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="start_date">
+            <span class="label-text">Start Date</span>
+          </label>
+          <input type="datetime-local" id="start_date" name="compare_to_start_date" class="input input-bordered w-full" value="<%= params[:compare_to_start_date] %>" />
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label" for="end_date">
+            <span class="label-text">End Date</span>
+          </label>
+          <input type="datetime-local" id="end_date" name="compare_to_end_date" class="input input-bordered w-full" value="<%= params[:compare_to_end_date] %>" />
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>

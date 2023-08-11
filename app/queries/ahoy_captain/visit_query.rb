@@ -1,6 +1,5 @@
 module AhoyCaptain
   class VisitQuery < ApplicationQuery
-    include Rangeable
 
     def build
       shared_context = Ransack::Context.for(AhoyCaptain.visit)

@@ -1,24 +1,15 @@
 module AhoyCaptain
-  module Limitable
-    private
-
-    def limit
-      if request.variant.include?(:details)
-        nil
-      else
-        if params[:limit]
-          params[:limit].to_i
-        else
-          10
-        end
-      end
-    end
-  end
-
   class ApplicationController < ActionController::Base
     include Pagy::Backend
+    include CompareMode
+    include RangeOptions
+    include Rangeable
 
     layout 'ahoy_captain/layouts/application'
+
+    def period
+      params[:period] || AhoyCaptain.config.ranges.default
+    end
 
     # show the details frame
     before_action :use_details_frame

@@ -1,8 +1,15 @@
-<a href="<%= @url %>" class="hover:text-primary text-base-content link no-underline" data-turbo-frame="chart">
-  <dt class="font-normal <%= 'text-primary' if @selected %>" data-active-links-target="link" id="<%= @label.tableize.parameterize.underscore %>"><%= @label %></dt>
-  <dd class="mt-1 flex items-baseline justify-between md:block lg:flex" data-active-links-target="alt" data-active-links-value="#<%= @label.tableize.parameterize.underscore %>">
-    <div class="flex items-baseline text-2xl font-semibold">
-      <%= @value %>
+<a href="<%= @url %>" class="relative px-4 md:px-6 w-1/2 my-4 lg:w-auto group cursor-pointer"  data-turbo-frame="chart">
+  <div>
+    <h5 class="text-sm font-bold uppercase whitespace-nowrap flex w-content border-transparent tooltip tooltip-bottom	"
+        data-active-links-target="link">
+      <%= @label %>
+    </h5>
+    <div class="my-1 space-y-2">
+      <div>
+        <span class="flex items-center justify-between whitespace-nowrap">
+          <p class="font-bold text-xl"><%= formatted(@value) %></p>
+        </span>
+      </div>
     </div>
-  </dd>
+  </div>
 </a>

@@ -1,6 +1,6 @@
 module AhoyCaptain
   module Stats
-    class TotalVisitorsQuery < ApplicationQuery
+    class TotalVisitorsQuery < BaseQuery
       def build
         visit_query.distinct.select(:id)
       end

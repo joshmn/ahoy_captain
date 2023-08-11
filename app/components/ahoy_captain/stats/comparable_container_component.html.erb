@@ -1,0 +1,25 @@
+<a href="<%= @url %>" class="relative px-4 md:px-6 w-1/2 my-4 w-auto group cursor-pointer"  data-turbo-frame="chart">
+  <div>
+    <h5 class="text-sm font-bold uppercase whitespace-nowrap flex w-content border-transparent tooltip tooltip-bottom	"
+        data-active-links-target="link" data-tip="<%= tooltip %>">
+      <%= @label %>
+      <div class="<%= klass %> ms-2"><%= arrow %></div>
+    </h5>
+    <div class="md:block flex gap-4">
+      <div>
+        <span class="flex items-center justify-between whitespace-nowrap">
+          <p class="font-bold text-xl"><%= formatted(value.current) %></p>
+        </span>
+        <% if compare_mode? %>
+        <p class="text-xs"><%= range_string %></p>
+        <% end %>
+      </div>
+      <% if compare_mode? %>
+      <div>
+        <p class="font-bold text-xl text-gray-500"><%= formatted(value.compared_to) %></p>
+        <p class="text-xs text-gray-500"><%= compare_range_string %></p>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</a>

@@ -1,8 +1,9 @@
+require_relative '../concerns/comparable_queries'
+
 module AhoyCaptain
   class ApplicationQuery
     # if you want to enforce returning a relation
     class_attribute :strict, default: true
-    include Rangeable
 
     delegate_missing_to :@query
 
@@ -82,24 +83,24 @@ module AhoyCaptain
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now.to_i).result.to_sql
       if range
         if type == :event
-          if range.size == 2
+          if range.realtime?
+            ransackable_params['time_gt'] = range[0]
+            ransackable_params["visit_started_at_gt"] = range[0]
+          else
             ransackable_params['time_gt'] = range[0]
             ransackable_params['time_lt'] = range[1]
             ransackable_params["visit_started_at_gt"] = range[0]
             ransackable_params["visit_started_at_lt"] = range[1]
-          else
-            ransackable_params['time_gt'] = range[0]
-            ransackable_params["visit_started_at_gt"] = range[0]
           end
         elsif type == :visit
-          if range.size == 2
+          if range.realtime?
+            ransackable_params["started_at_gt"] = range[0]
+            ransackable_params["events_time_gt"] = range[0]
+          else
             ransackable_params["started_at_gt"] = range[0]
             ransackable_params["started_at_lt"] = range[1]
             ransackable_params["events_time_gteq"] = range[0]
             ransackable_params["events_time_lteq"] = range[1]
-          else
-            ransackable_params["started_at_gt"] = range[0]
-            ransackable_params["events_time_gt"] = range[0]
           end
         end
       end
@@ -117,6 +118,10 @@ module AhoyCaptain
       else
         raise ArgumentError, "use ransack_params_for(type)"
       end
+    end
+
+    def range
+      RangeFromParams.from_params(params)
     end
   end
 end

@@ -1,6 +1,6 @@
 module AhoyCaptain
   module Stats
-    class ViewsPerVisitQuery < ApplicationQuery
+    class ViewsPerVisitQuery < BaseQuery
       def build
         events = event_query
                    .joins(:visit)

@@ -1,8 +1,8 @@
 module AhoyCaptain
   module Stats
-    class TotalPageviewsQuery < ApplicationQuery
+    class TotalPageviewsQuery < BaseQuery
       def build
-        event_query.where(name: AhoyCaptain.config.event[:view_name])
+        event_query.page_view
       end
     end
   end

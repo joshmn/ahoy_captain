@@ -5,6 +5,22 @@ module AhoyCaptain
     # params that are coerced from the ApplicationController#act_like_an_spa
     SPECIAL_PARAMS = [:campaigns_type, :devices_type]
 
+    def stats_container(value, url, label, formatter, selected = false)
+      if value.is_a?(AhoyCaptain::ComparableQuery::Comparison)
+        ::AhoyCaptain::Stats::ComparableContainerComponent.new(url, label, value, formatter, selected, compare_mode?)
+      else
+        ::AhoyCaptain::Stats::ContainerComponent.new(url, label, value, formatter, selected)
+      end
+    end
+
+    def number_to_duration(duration)
+      if duration
+        "#{duration.in_minutes.to_i}M #{duration.parts[:seconds].to_i}S"
+      else
+        "0M 0S"
+      end
+    end
+
     def ahoy_captain_importmap_tags(entry_point = "application", shim: true)
       safe_join [
         (javascript_importmap_shim_tag if shim),
@@ -31,7 +47,10 @@ module AhoyCaptain
         :start_date,
         :end_date,
         :period,
-        :interval
+        :interval,
+        :comparison,
+        :compare_to_start_date,
+        :compare_to_end_date
       ]
 
       ransack = [:goal]

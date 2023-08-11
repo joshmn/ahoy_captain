@@ -9,6 +9,10 @@
 ### Added
 * Naive window function for graphs
   - ideally this would be done in the database
+* Naive date comparison
+  - still has some quirks, but nothing showstopping:
+    - sometimes the window function doesn't cover the entire span
+    - no "lining up" dates (yet)
 * Configurable interval for realtime
   - was 30 seconds by default
 

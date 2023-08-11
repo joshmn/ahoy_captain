@@ -4,6 +4,8 @@ module AhoyCaptain
       extend ActiveSupport::Concern
 
       included do
+        scope :page_view, -> { where("name = '#{AhoyCaptain.config.event[:view_name]}'") }
+
         ransacker :route do |_parent|
           Arel.sql(AhoyCaptain.config.event[:url_column])
         end
