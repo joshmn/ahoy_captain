@@ -33,6 +33,7 @@ module AhoyCaptain
         pin "Chart.bundle", to: "Chart.bundle.js"
         pin "chartjs-plugin-datalabels", to: "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2", preload: true
         pin_all_from AhoyCaptain::Engine.root.join("app/assets/javascript/ahoy_captain/controllers"), under: "controllers", to: "ahoy_captain/controllers"
+        pin_all_from AhoyCaptain::Engine.root.join("app/assets/javascript/ahoy_captain/helpers"), under: "helpers", to: "ahoy_captain/helpers"
       end
     end
 

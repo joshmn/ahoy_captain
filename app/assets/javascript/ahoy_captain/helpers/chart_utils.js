@@ -1,4 +1,4 @@
-import { numberFormatter, durationFormatter, percentageFormatter } from "./number_formatters";
+import { numberFormatter, durationFormatter, percentageFormatter } from "helpers/number_formatters";
 
 export const getCSS = (varname, alpha = 1) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(varname);
