@@ -21,5 +21,5 @@ module AhoyCaptain
   end
 end
 
-require_relative '../concerns/lazy_comparable_query'
-require_relative '../concerns/comparable_query'
+require_relative './lazy_comparable_query'
+require_relative './comparable_query'
