@@ -48,7 +48,9 @@ module AhoyCaptain
         :end_date,
         :period,
         :interval,
-        :comparison
+        :comparison,
+        :compare_to_start_date,
+        :compare_to_end_date
       ]
 
       ransack = [:goal]
