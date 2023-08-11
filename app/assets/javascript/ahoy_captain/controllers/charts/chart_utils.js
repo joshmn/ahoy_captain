@@ -28,10 +28,12 @@ const buildTooltipData = (controller, tooltip) => {
   const label = data.label[tooltipData.dataIndex];
   let comparisonLabel = false
   let comparisonValue = false
+  let comparisonLabelBackgroundColor = false
   if(controller.hasComparedToValue) {
     const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
     comparisonLabel = comparisonData.label[tooltipComparisonData.dataIndex];
     comparisonValue = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex)?.raw || 0
+    comparisonLabelBackgroundColor = comparisonData.backgroundColor
   }
 
   const value = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)?.raw || 0
@@ -41,8 +43,10 @@ const buildTooltipData = (controller, tooltip) => {
     comparisonDifference: calculatePercentageDifference(comparisonValue, value),
     metric: controller.labelValue,
     label: dateFormatter[controller.intervalValue](label, 'long'),
+    labelBackgroundColor: data.backgroundColor,
     formattedValue: metricFormatter[controller.metricValue](value),
     comparisonLabel: dateFormatter[controller.intervalValue](comparisonLabel, 'long'),
+    comparisonLabelBackgroundColor: comparisonLabelBackgroundColor,
     formattedComparisonValue: metricFormatter[controller.metricValue](comparisonValue)
   }
 }
@@ -56,10 +60,17 @@ export const metricFormatter = {
 
 export const dateFormatter = {
   month: (value, type = 'short') => {
-    return new Date(value).toLocaleString(
-      'en-US',
-      { month: 'short', day: 'numeric', hour: 'numeric' }
-    )
+    if(type === 'short') {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { month: 'short', day: 'numeric', hour: 'numeric' }
+      )
+    } else {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { year: "numeric", month: 'short', day: 'numeric', hour: 'numeric' }
+      )
+    }
   },
   week: (value, type = 'short') => {
     return new Date(value).toLocaleString(
@@ -117,6 +128,7 @@ export const externalTooltipHandler = (controller) => {
       tooltipEl.style.position = 'absolute';
       tooltipEl.style.transform = 'translate(-50%, 50%)';
       tooltipEl.style.transition = 'all .1s ease';
+      tooltipEl.style.minWidth = '250px'
 
       chart.canvas.parentNode.appendChild(tooltipEl);
     }
@@ -151,7 +163,8 @@ export const externalTooltipHandler = (controller) => {
           ${tooltipData.label ?
         `<div class="flex flex-col">
             <div class="flex flex-row justify-between items-center">
-              <span class="flex items-center mr-4">
+              <span class="badge relative badge-xs" style="background-color: ${tooltipData.labelBackgroundColor}"></span>
+              <span class="flex items-center grow ml-4 mr-4">
                 <span>${tooltipData.label}</span>
               </span>
               <span class="font-bold">${tooltipData.formattedValue}</span>
@@ -159,7 +172,8 @@ export const externalTooltipHandler = (controller) => {
 
             ${tooltipData.comparison ?
         `<div class="flex flex-row justify-between items-center">
-              <span class="flex items-center mr-4">
+              <span class="badge relative badge-xs" style="background-color: ${tooltipData.comparisonLabelBackgroundColor}"></span>
+              <span class="flex items-center grow ml-4 mr-4">
                 <span>${tooltipData.comparisonLabel}</span>
               </span>
               <span class="font-bold">${tooltipData.formattedComparisonValue}</span>

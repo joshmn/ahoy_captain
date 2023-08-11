@@ -16,7 +16,8 @@ export default class extends Controller {
     comparedTo: Object,
     interval: String,
     label: String,
-    metric: String
+    metric: String,
+    comparison: String
   }
 
   connect() {
@@ -48,8 +49,8 @@ export default class extends Controller {
       datasets.push({
         label: Object.keys(this.comparedToValue),
         data: Object.values(this.comparedToValue),
-        borderColor: getCSS('--a', 0.3),
-        backgroundColor: getCSS('--a', 0.3),
+        borderColor: getCSS('--s', 0.8),
+        backgroundColor: getCSS('--s', 0.8),
         color: getCSS('--bc'),
         yAxisID: 'yComparison',
       })
@@ -63,6 +64,7 @@ export default class extends Controller {
       }
     }
 
+    const typeForDate = this.comparisonValue === 'year' ? 'long' : "short"
     this.chart = new Chart(this.element,
       {
         type: 'line',
@@ -72,8 +74,6 @@ export default class extends Controller {
         },
         options: {
           onClick: onClick,
-          scale: {
-          },
           responsive: true,
           maintainAspectRatio: false,
           interaction: {
@@ -113,7 +113,7 @@ export default class extends Controller {
                 callback: (val, idx) => {
                   if(idx % 2 == 0) {
                     const date = Object.keys(this.currentValue)[val];
-                    return dateFormatter[this.intervalValue](date)
+                    return dateFormatter[this.intervalValue](date, typeForDate)
                   } else {
                     return ""
                   }
