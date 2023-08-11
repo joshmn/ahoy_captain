@@ -1,4 +1,15 @@
 import { Controller } from '@hotwired/stimulus';
+import { getCSS, externalTooltipHandler } from './charts/chart_utils';
+
+const footer = (tooltipItems) => {
+  debugger;
+  let sum = 0;
+
+  tooltipItems.forEach(function(tooltipItem) {
+    sum += tooltipItem.parsed.y;
+  });
+  return 'Sum: ' + sum;
+};
 
 export default class extends Controller {
   static values = {
@@ -8,10 +19,6 @@ export default class extends Controller {
   }
 
   connect() {
-    const getCSS = (varname) => {
-      return `hsl(${getComputedStyle(document.documentElement).getPropertyValue(varname)})`
-    }
-
     this.chart = new Chart(this.element,
       {
         type: 'line',
@@ -19,38 +26,75 @@ export default class extends Controller {
           labels: Object.keys(this.currentValue),
           datasets: [
             {
-              label: "Current",
+              label: Object.keys(this.currentValue),
               data: Object.values(this.currentValue),
-              borderColor: getCSS('--s'),
-              backgroundColor: getCSS('--sc'),
-              color: getCSS('--sf')
+              borderColor: getCSS('--a'),
+              backgroundColor: getCSS('--a'),
+              color: getCSS('--bc')
             },
             {
-              label: "Compared",
+              label: Object.keys(this.comparedToValue),
               data: Object.values(this.comparedToValue),
-              borderColor: getCSS('--a'),
-              backgroundColor: getCSS('--ac'),
-              color: getCSS('--af')
+              borderColor: getCSS('--a', 0.3),
+              backgroundColor: getCSS('--a', 0.3),
+              color: getCSS('--bc')
             }
           ]
         },
-        plugins: {
-          colors: {
-            forceOverride: true
+        // plugins: {
+        //   colors: {
+        //     forceOverride: true
+        //   },
+        //   legend: {
+        //     display: false
+        //   },
+        //   tooltip: {
+        //     callbacks: {
+        //       footer: footer,
+        //     }
+        //   }
+        // },
+        options: {
+          interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+          plugins: {
+            tooltip: {
+              enabled: false,
+              position: 'nearest',
+              external: externalTooltipHandler
+            }
+          },
+          scales: {
+            y: {
+              stacked: true,
+              ticks: {
+                color: getCSS('--bc')
+              }
+            },
+            x: {
+              ticks: {
+                color: getCSS('--bc'),
+                callback: (val, idx) => {
+                  const date = Object.keys(this.currentValue)[val]
+                  return idx % 2 == 0 ? new Date(date).toLocaleString(
+                    'en-US', 
+                    { month: 'short', day: 'numeric' }
+                  ) : "";
+                }
+              }
+            }
+          },
+          elements: {
+            point: {
+              radius: 0
+            }
           }
         }
       },
     );
-
-    window.addEventListener('resize', () => { this.chart.resize() })
-
-    this.element.addEventListener('click', evt => {
-      const activePoint = this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-      if(activePoint[0]) {
-        const date = Object.keys(this.dataValue)[activePoints[0].index];
-        // do something
-      }
-    })
-
   }
+
+  resize() { this.chart.resize() };
 }
