@@ -2,12 +2,14 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
   static targets = ['label'];
-
+  static values = {
+    interval: Number
+  }
   connect() {
     this.reload = this.reload.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.labelCount = 0;
-    this.reloadInterval = setInterval(this.reload, 1000 * 30);
+    this.reloadInterval = setInterval(this.reload, 1000 * this.intervalValue);
     this.labelInterval = setInterval(this.setLabel, 1000);
   }
 

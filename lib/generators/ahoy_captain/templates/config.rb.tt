@@ -80,6 +80,8 @@ AhoyCaptain.configure do |config|
   #
   # Set to false to disable custom ranges
   # config.ranges.custom = true
+  #
+  # For an interval to be considered "realtime" it must not have a secondary item in the range
 
   # ==> Filters
   #
@@ -160,4 +162,9 @@ AhoyCaptain.configure do |config|
   #     goal :appointment_created
   #     goal :appointment_paid
   #   end
+  #
+  # => Realtime interval
+  # config.realtime_interval = 30.seconds
+  #
+  # How frequently the page should refresh if the interval is realtime
 end

@@ -3,7 +3,7 @@ require 'ahoy_captain/filters_configuration'
 
 module AhoyCaptain
   class Configuration
-    attr_accessor :view_name, :theme
+    attr_accessor :view_name, :theme, :realtime_interval
     attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models, :filters, :predicate_labels
     def initialize
       @goals = GoalCollection.new
@@ -33,6 +33,7 @@ module AhoyCaptain
         not_in: 'not in',
       }
 
+      @realtime_interval = 30.seconds
       @disabled_widgets = []
     end
 

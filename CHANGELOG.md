@@ -9,6 +9,8 @@
 ### Added
 * Naive window function for graphs
   - ideally this would be done in the database
+* Configurable interval for realtime
+  - was 30 seconds by default
 
 ## Version 0.91 (Aug 08, 2023)
 
