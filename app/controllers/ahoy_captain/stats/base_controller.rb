@@ -65,7 +65,8 @@ module AhoyCaptain
 
       def lazy_window(result, value = 0, base = nil)
         if result.is_a?(AhoyCaptain::LazyComparableQuery::LazyComparison)
-          result.result.current = lazy_window(result.result.current, value, Range.new(result.range[0].to_datetime.to_i, (result.range[1] || Time.current).to_datetime.to_i))
+
+          result.result.current = lazy_window(result.result.current, value, Range.new(range[0].to_datetime.to_i, (range[1] || Time.current).to_datetime.to_i))
           result.result.compared_to = lazy_window(result.result.compared_to, value, Range.new(result.compare_range[0].to_datetime.to_i, result.compare_range[1].to_datetime.to_i))
 
           return result.result

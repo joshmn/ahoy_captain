@@ -13,11 +13,11 @@ class AhoyCaptain::ComparisonLinkComponent < AhoyCaptain::DropdownLinkComponent
   def title
     self.with_option_content(options_for_option)
 
-    comparison_label
+    comparison_mode.label
   end
 
   def render?
-    comparison_label.present?
+    comparison_mode.enabled?
   end
 
   def options_for_option

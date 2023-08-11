@@ -2,7 +2,7 @@ module AhoyCaptain
   module ComparableQueries
     def compare_range
       @compare_range ||= begin
-                           ComparisonRange.build(range)
+                           ComparisonMode.new(@params).compared_to_range
                          end
     end
 

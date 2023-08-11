@@ -25,17 +25,11 @@ module AhoyCaptain
 
     # doesn't work for realtime and realtime doesn't need a secondary range
     def compare_mode?
-      params[:comparison] == 'true' && range[1]
+      comparison_mode.enabled?
     end
 
-    def comparison_label
-      if compare_mode?
-        return "Previous period"
-        other = ::AhoyCaptain::ComparisonRange.build(range)
-        [other[0].strftime('%m %d %Y'), other[1].strftime('%m %d %Y')].join("-")
-      else
-        nil
-      end
+    def comparison_mode
+      @comparison_mode ||= ComparisonMode.new(params)
     end
   end
 
