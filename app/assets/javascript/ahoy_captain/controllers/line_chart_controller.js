@@ -1,6 +1,17 @@
 import { Controller } from '@hotwired/stimulus';
 import { getCSS, externalTooltipHandler, dateFormatter, metricFormatter } from 'helpers/chart_utils';
 
+const calculatePercentageDifference = function(oldValue, newValue) {
+  if(!oldValue) { return false }
+  if (oldValue == 0 && newValue > 0) {
+    return 100
+  } else if (oldValue == 0 && newValue == 0) {
+    return 0
+  } else {
+    return Math.round((newValue - oldValue) / oldValue * 100)
+  }
+}
+
 const footer = (tooltipItems) => {
   let sum = 0;
 
@@ -132,5 +143,46 @@ export default class extends Controller {
     );
   }
 
+  formatLabel(label) {
+    return dateFormatter[this.intervalValue](label, 'long')
+  }
+
+  formatMetric(value) {
+    return metricFormatter[this.metricValue](value)
+  }
+
   resize() { this.chart.resize() };
+
+  extractTooltipData(tooltip) {
+    const data = this.chart.config.data.datasets.find((set) => set.yAxisID == "y")
+    const comparisonData = this.chart.config.data.datasets.find((set) => set.yAxisID == "yComparison");
+    const dataIndex = this.chart.config.data.datasets.indexOf(data)
+    const comparisonDataIndex = this.chart.config.data.datasets.indexOf(comparisonData);
+
+    const tooltipData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)
+    const label = data.label[tooltipData.dataIndex];
+    let comparisonLabel = false
+    let comparisonValue = false
+    let comparisonLabelBackgroundColor = false
+    if(this.hasComparedToValue) {
+      const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
+      comparisonLabel = comparisonData.label[tooltipComparisonData.dataIndex];
+      comparisonValue = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex)?.raw || 0
+      comparisonLabelBackgroundColor = comparisonData.backgroundColor
+    }
+
+    const value = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)?.raw || 0
+
+    return {
+      comparison: this.hasComparedToValue,
+      comparisonDifference: calculatePercentageDifference(comparisonValue, value),
+      metric: this.labelValue,
+      label: this.formatLabel(label),
+      labelBackgroundColor: data.backgroundColor,
+      formattedValue: this.formatMetric(value),
+      comparisonLabel: this.formatLabel(comparisonLabel),
+      comparisonLabelBackgroundColor: comparisonLabelBackgroundColor,
+      formattedComparisonValue: this.formatMetric(comparisonValue)
+    }
+  }
 }

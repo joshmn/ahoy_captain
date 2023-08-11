@@ -86,7 +86,7 @@
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
-    <%= render AhoyCaptain::TileComponent.new(wide: true, classes: "p-4 m-2") do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: "Goals and Funnels", wide: true, classes: "p-4 m-2") do |component| %>
       <% component.with_display_links do %>
         <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link ">
           Goals
@@ -100,12 +100,10 @@
             <% end %>
           <% end %>
         <% end %>
-
       <% end %>
       <% component.with_statistic_display do %>
         <div class="p-4">
           <%= turbo_frame_tag :goals, src: goals_path(search_params), loading: :lazy %>
-
         </div>
       <% end %>
     <% end %>

@@ -1,14 +1,26 @@
 import { Controller } from '@hotwired/stimulus';
 import 'chartjs-plugin-datalabels';
+import { getCSS, externalTooltipHandler } from "helpers/chart_utils";
+
+const calculatePercentageDifference = function(oldValue, newValue) {
+  if(!oldValue) { return false }
+  if (oldValue == 0 && newValue > 0) {
+    return 100
+  } else if (oldValue == 0 && newValue == 0) {
+    return 0
+  } else {
+    return Math.round((newValue - oldValue) / oldValue * 100)
+  }
+}
 
 export default class extends Controller {
   connect() {
-    const funnel = JSON.parse(this.element.dataset.data);
+    this.funnel = JSON.parse(this.element.dataset.data);
 
     const fontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-    const labels = funnel.steps.map((step) => step.name);
-    const stepData = funnel.steps.map((step) => step.total_events);
-    const dropOffData = funnel.steps.map((step) => step.drop_off * 100);
+    const labels = this.funnel.steps.map((step) => step.name);
+    const stepData = this.funnel.steps.map((step) => step.total_events);
+    const dropOffData = this.funnel.steps.map((step) => step.drop_off * 100);
 
     const data = {
       labels,
@@ -17,13 +29,19 @@ export default class extends Controller {
           label: 'Visitors',
           data: stepData,
           borderRadius: 4,
+          color: getCSS('--ac'),
+          backgroundColor: getCSS('--p'),
           stack: 'Stack 0',
+          yAxisID: 'y',
         },
         {
           label: 'Dropoff',
           data: dropOffData,
           borderRadius: 4,
           stack: 'Stack 0',
+          color: getCSS('--ac'),
+          backgroundColor: getCSS('--a'),
+          yAxisID: 'yComparison',
         },
       ],
     };
@@ -39,13 +57,11 @@ export default class extends Controller {
           padding: 100,
         },
         plugins: {
-          legend: {
-            display: false,
-          },
+          legend: false,
           tooltip: {
-            mode: 'index',
-            intersect: true,
-            position: 'average',
+            enabled: false,
+            position: 'nearest',
+            external: externalTooltipHandler(this)
           },
           datalabels: {
             anchor: 'end',
@@ -54,9 +70,7 @@ export default class extends Controller {
             padding: {
               top: 8, bottom: 8, right: 8, left: 8,
             },
-            font: {
-              size: 12, weight: 'normal', lineHeight: 1.6, family: fontFamily,
-            },
+            color: getCSS('--pc'),
             textAlign: 'center',
           },
         },
@@ -69,8 +83,6 @@ export default class extends Controller {
             grid: { drawBorder: false, display: false },
             ticks: {
               padding: 8,
-              font: { weight: 'bold', family: fontFamily, size: 14 },
-              color: 'rgb(228, 228, 231)',
             },
           },
         },
@@ -79,9 +91,39 @@ export default class extends Controller {
 
     const visitorsData = [];
 
-    new Chart(
+    this.chart = new Chart(
       this.element,
       config,
     );
+  }
+
+  formatLabel(label) {
+    return label
+  }
+
+  formatMetric(metric) {
+    return metric
+  }
+
+
+  extractTooltipData(tooltip) {
+    const data = this.funnel.steps.find(step => step.name === tooltip.title[0]);
+
+    const value = data.total_events;
+    const label = "Visitors"
+    let comparisonLabel = "Dropoff"
+    let comparisonValue =  data.unique_visits;
+
+    return {
+      comparison: true,
+      comparisonDifference: false,
+      metric: tooltip.title[0],
+      label: this.formatLabel(label),
+      labelBackgroundColor: getCSS('--bc'),
+      formattedValue: value,
+      comparisonLabel: comparisonLabel,
+      comparisonLabelBackgroundColor: "",
+      formattedComparisonValue: comparisonValue,
+    }
   }
 }
