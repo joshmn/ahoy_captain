@@ -23,7 +23,7 @@ module AhoyCaptain
     end
 
     def views_per_visit
-      Stats::AverageViewsPerVisitQuery.call(params).with_comparison(compare_mode?).count("count")
+      Stats::AverageViewsPerVisitQuery.call(params).with_comparison(compare_mode?).average("count")
     end
 
     def bounce_rate

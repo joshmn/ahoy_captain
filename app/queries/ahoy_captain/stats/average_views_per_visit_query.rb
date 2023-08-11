@@ -3,7 +3,7 @@ module AhoyCaptain
     # pls fix
     class AverageViewsPerVisitQuery < BaseQuery
       def build
-        subquery = event_query.select("count(ahoy_events.visit_id) as count").where(name: "$view")
+        subquery = event_query.select("count(ahoy_events.visit_id) as count").where(name: "$view").group(:visit_id)
 
         AhoyCaptain.event.select("count").from("(#{subquery.to_sql}) as events")
       end
