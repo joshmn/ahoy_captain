@@ -23,11 +23,11 @@ const buildTooltipData = (controller, tooltip) => {
   const comparisonDataIndex = controller.chart.config.data.datasets.indexOf(comparisonData);
 
   const tooltipData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)
-  const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
   const label = data.label[tooltipData.dataIndex];
   let comparisonLabel = false
   let comparisonValue = false
   if(comparisonData) {
+    const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
     comparisonLabel = comparisonData.label[tooltipComparisonData.dataIndex];
     comparisonValue = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex)?.raw || 0
   }
@@ -37,12 +37,60 @@ const buildTooltipData = (controller, tooltip) => {
   return {
     comparisonDifference: calculatePercentageDifference(comparisonValue, value),
     metric: controller.labelValue,
-    label: label,
+    label: dateFormatter[controller.intervalValue](label, 'long'),
     formattedValue: value,
-    comparisonLabel: comparisonLabel,
+    comparisonLabel: dateFormatter[controller.intervalValue](comparisonLabel, 'long'),
     formattedComparisonValue: comparisonValue
   }
 }
+
+export const dateFormatter = {
+  month: (value, type = 'short') => {
+    return new Date(value).toLocaleString(
+      'en-US',
+      { month: 'short', day: 'numeric', hour: 'numeric' }
+    )
+  },
+  week: (value, type = 'short') => {
+    return new Date(value).toLocaleString(
+      'en-US',
+      { month: 'short', day: 'numeric', hour: 'numeric' }
+    )
+  },
+  day: (value, type = 'short') => {
+    return new Date(value).toLocaleString(
+      'en-US',
+      { month: 'short', day: 'numeric', hour: 'numeric' }
+    )
+  },
+  hour: (value, type = 'short') => {
+    if(type == 'long') {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { year: 'numeric', hour: 'numeric' }
+      )
+    } else {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { hour: 'numeric' }
+      )
+    }
+  },
+  minute: (value, type = 'short') => {
+    if(type == 'short') {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { minute: 'numeric', hour: 'numeric' }
+      )
+    } else {
+      return new Date(value).toLocaleString(
+        'en-US',
+        { year: 'numeric', minute: 'numeric', hour: 'numeric' }
+      )
+    }
+  },
+}
+
 export const externalTooltipHandler = (controller) => {
 
   return ({chart, tooltip}) => {

@@ -11,8 +11,13 @@ module AhoyCaptain
     end
 
     # can't compare realtime
-    def enabled?
-      (params[:comparison].in?(VALID_COMPARISONS) || custom_compare?) && !range.realtime?
+    def enabled?(strict = true)
+      comparing = (params[:comparison].in?(VALID_COMPARISONS) || custom_compare?)
+      if strict
+        comparing && !range.realtime?
+      else
+        comparing
+      end
     end
 
     def label
@@ -33,9 +38,11 @@ module AhoyCaptain
       return custom_compare if custom_compare?
 
       if type == :true || type == :previous
-        [range[0] - (range[1] - range[0]), range[0]]
+        RangeFromParams.new(period: nil, start_date: (range[0] - (range[1] - range[0])).utc.to_s, end_date: range[0].utc.to_s).build
       elsif type == :year
-        [range[0].change(year: range[0].year - 1), range[1].change(year: range[1].year - 1)]
+        RangeFromParams.new(period: nil, start_date: range[0].change(year: range[0].year - 1).utc.to_s, end_date: range[1].change(year: range[1].year - 1).utc.to_s).build
+      else
+        raise ArgumentError
       end
     end
 

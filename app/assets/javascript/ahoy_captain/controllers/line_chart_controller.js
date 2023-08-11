@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { getCSS, externalTooltipHandler } from './charts/chart_utils';
+import { getCSS, externalTooltipHandler, dateFormatter } from './charts/chart_utils';
 
 const footer = (tooltipItems) => {
   let sum = 0;
@@ -19,6 +19,19 @@ export default class extends Controller {
   }
 
   connect() {
+    const onClick = (e) => {
+      const element = this.chart.getElementsAtEventForMode(e, 'index', { intersect: false })[0];
+      const searchParams = new URLSearchParams(window.location.search);
+
+      searchParams.delete('period')
+      searchParams.delete('start_date')
+      searchParams.delete('end_date')
+      searchParams.delete('compare_to_start_date')
+      searchParams.delete('compare_to_end_date')
+      searchParams.set('date', Object.keys(this.currentValue)[element.index])
+
+      Turbo.visit(window.location.pathname + "?" + searchParams.toString())
+    }
     const datasets = [
       {
         label: Object.keys(this.currentValue),
@@ -40,6 +53,15 @@ export default class extends Controller {
         yAxisID: 'yComparison',
       })
     }
+
+    const calculateMaximumY = function(dataset) {
+      if (dataset) {
+        return Math.max(Object.values(dataset))
+      } else {
+        return 1
+      }
+    }
+
     this.chart = new Chart(this.element,
       {
         type: 'line',
@@ -47,25 +69,19 @@ export default class extends Controller {
           labels: Object.keys(this.currentValue),
           datasets: datasets
         },
-        // plugins: {
-        //   colors: {
-        //     forceOverride: true
-        //   },
-        //   legend: {
-        //     display: false
-        //   },
-        //   tooltip: {
-        //     callbacks: {
-        //       footer: footer,
-        //     }
-        //   }
-        // },
         options: {
+          onClick: onClick,
+          scale: {
+            ticks: { precision: 0, maxTicksLimit: 8 }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
           interaction: {
             intersect: false,
             mode: 'index',
           },
           plugins: {
+            legend: false,
             tooltip: {
               enabled: false,
               position: 'nearest',
@@ -79,15 +95,23 @@ export default class extends Controller {
                 color: getCSS('--bc')
               }
             },
+            yComparison: {
+              min: 0,
+              suggestedMax: calculateMaximumY(this.currentValue),
+              display: false,
+              grid: { display: false },
+            },
             x: {
               ticks: {
                 color: getCSS('--bc'),
                 callback: (val, idx) => {
-                  const date = Object.keys(this.currentValue)[val]
-                  return idx % 2 == 0 ? new Date(date).toLocaleString(
-                    'en-US',
-                    { month: 'short', day: 'numeric' }
-                  ) : "";
+                  if(idx % 2 == 0) {
+                    const date = Object.keys(this.currentValue)[val];
+                    return dateFormatter[this.intervalValue](date)
+                  } else {
+                    return ""
+                  }
+
                 }
               }
             }

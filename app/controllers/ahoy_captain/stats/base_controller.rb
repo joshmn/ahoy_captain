@@ -32,11 +32,13 @@ module AhoyCaptain
           # assume we're in a realtime
           return INTERVAL_PERIOD["realtime"][0]
         end
-        diff = (range[1] - range[0]).seconds.in_days.to_i
+        diff = (range[1] - range[0]).seconds.in_days
         if diff > 30
           "month"
-        elsif diff > 0
+        elsif diff > 1
           "day"
+        elsif diff == 1
+          "hour"
         else
           "hour"
         end
@@ -49,7 +51,7 @@ module AhoyCaptain
 
           diff = (range[1] - range[0]).seconds.in_days
 
-          if diff == 0
+          if diff < 1
             INTERVAL_PERIOD["day"]
           elsif diff <= 7
             INTERVAL_PERIOD["7d"]
@@ -65,13 +67,13 @@ module AhoyCaptain
 
       def lazy_window(result, value = 0, base = nil)
         if result.is_a?(AhoyCaptain::LazyComparableQuery::LazyComparison)
-          result.result.current = lazy_window(result.result.current, value, range.numeric)
-          result.result.compared_to = lazy_window(result.result.compared_to, value, Range.new(result.compare_range[0].to_datetime.to_i, result.compare_range[1].to_datetime.to_i))
+          result.result.current = lazy_window(result.result.current, value, range)
+          result.result.compared_to = lazy_window(result.result.compared_to, value, result.compare_range)
           return result.result
         end
 
-        base ||= range.numeric
-        window = window_for(selected_interval, result.keys[0].class, base)
+        base ||= range
+        window = window_for(selected_interval, result.keys[0].class, base.numeric)
 
         window.each do |item|
           if result.key?(item)
@@ -91,6 +93,7 @@ module AhoyCaptain
       end
 
       def interval_label_transformation(interval)
+        return nil
         if interval == 'hour'
           return '%H:%M %p'
         end
@@ -101,7 +104,7 @@ module AhoyCaptain
       # base should be a range
       def window_for(interval, type, base = nil)
         function = case type.to_s
-                    when 'Date', 'ActiveSupport::TimeWithZone', 'NilClass'
+                    when 'Date', 'NilClass'
                       ->(value) {
                         date = Time.at(value).utc
                         if interval == 'month'
@@ -120,8 +123,10 @@ module AhoyCaptain
                       }
                     when 'DateTime'
                       ->(value) { Time.at(value).utc.change(sec: 0) }
-                    else
-                      raise ArgumentError
+                   when 'ActiveSupport::TimeWithZone'
+                     ->(value) { Time.at(value).utc }
+                   else
+                        raise ArgumentError
                     end
 
         base
