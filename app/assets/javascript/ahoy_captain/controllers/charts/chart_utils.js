@@ -26,7 +26,7 @@ const buildTooltipData = (controller, tooltip) => {
   const label = data.label[tooltipData.dataIndex];
   let comparisonLabel = false
   let comparisonValue = false
-  if(comparisonData) {
+  if(controller.hasComparedToValue) {
     const tooltipComparisonData = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex);
     comparisonLabel = comparisonData.label[tooltipComparisonData.dataIndex];
     comparisonValue = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == comparisonDataIndex)?.raw || 0
@@ -35,6 +35,7 @@ const buildTooltipData = (controller, tooltip) => {
   const value = tooltip.dataPoints.find((dataPoint) => dataPoint.datasetIndex == dataIndex)?.raw || 0
 
   return {
+    comparison: controller.hasComparedToValue,
     comparisonDifference: calculatePercentageDifference(comparisonValue, value),
     metric: controller.labelValue,
     label: dateFormatter[controller.intervalValue](label, 'long'),
@@ -130,7 +131,7 @@ export const externalTooltipHandler = (controller) => {
         <aside class="flex flex-col text-neutral-content">
           <div class="flex justify-between items-center">
             <span class="text-sm font-bold uppercase whitespace-nowrap flex mr-4">${tooltipData.metric}</span>
-            ${tooltipData.comparisonDifference ?
+            ${tooltipData.comparison ?
         `<div class="inline-flex items-center space-x-1">
               ${tooltipData.comparisonDifference > 0 ? `<span class="font-semibold text-sm text-green-500">&uarr;</span><span>${tooltipData.comparisonDifference}%</span>` : ""}
               ${tooltipData.comparisonDifference < 0 ? `<span class="font-semibold text-sm text-red-400">&darr;</span><span>${tooltipData.comparisonDifference * -1}%</span>` : ""}
@@ -147,7 +148,7 @@ export const externalTooltipHandler = (controller) => {
               <span class="font-bold">${tooltipData.formattedValue}</span>
             </div>` : ''}
 
-            ${tooltipData.comparisonLabel ?
+            ${tooltipData.comparison ?
         `<div class="flex flex-row justify-between items-center">
               <span class="flex items-center mr-4">
                 <span>${tooltipData.comparisonLabel}</span>
