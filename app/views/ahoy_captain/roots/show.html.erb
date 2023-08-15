@@ -88,8 +88,12 @@
     <% end %>
     <%= render AhoyCaptain::TileComponent.new(title: "Goals and Funnels", wide: true, classes: "p-4 m-2") do |component| %>
       <% component.with_display_links do %>
+
         <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link ">
           Goals
+        </a>
+        <a href="<%= properties_path(search_params) %>" data-turbo-frame="goals" class="link ">
+          Properties
         </a>
         <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
           <% AhoyCaptain.config.funnels.each do |id, funnel| %>

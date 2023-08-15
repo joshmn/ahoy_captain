@@ -64,7 +64,7 @@ module AhoyCaptain
           event: (AhoyCaptain.event.ransackable_attributes + AhoyCaptain.event.ransackable_scopes).map(&:to_s),
         }
 
-        pattern = /(?:_not_eq|_eq|_in|_not_in|_cont|_not_cont|_i_cont)$/
+        pattern = /(?:#{Ransack.predicates.sorted_names_with_underscores.to_h.values.join("|")})$/
         params[:q].each do |key, value|
           attribute_name = key.gsub(pattern, '')
           if type == :event && (ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key))

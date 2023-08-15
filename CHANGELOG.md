@@ -15,6 +15,12 @@
     - no "lining up" dates (yet)
 * Configurable interval for realtime
   - was 30 seconds by default
+* Custom properties table
+* Custom property searching
+  - currently only supports searching one key at a time
+
+### Changed
+* How tables with non-standard rows are rendered
 
 ## Version 0.91 (Aug 08, 2023)
 
