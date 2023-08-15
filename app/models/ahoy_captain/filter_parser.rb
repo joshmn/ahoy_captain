@@ -26,6 +26,8 @@ module AhoyCaptain
 
     def parse
       @filter_params.each do |key, values|
+        next if ::AhoyCaptain.event.ransackable_scopes.include?(key.to_sym)
+
         if key == "properties_json_cont"
           json = JSON.parse(@params[:q][key])
           json.each do |k,v|
@@ -54,10 +56,10 @@ module AhoyCaptain
       end
 
       label = if item.column == "goal"
-                AhoyCaptain.config.goals[values].title
+                item.values.map { |value| AhoyCaptain.config.goals[value].title }
               else
-                item.values.to_sentence(last_word_connector: " or ")
-              end
+                item.values
+              end.to_sentence(last_word_connector: " or ")
       item.label = label
       item.description = "#{item.column.titleize} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
       item.url = build_url(key, values)
@@ -70,7 +72,7 @@ module AhoyCaptain
       item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
       item.column = "Property"
 
-      item.label = "URL #{values}"
+      item.label = "#{key} contains #{values}"
       search_params = @request.query_parameters.deep_dup
       search_params["q"][root] = JSON.parse(search_params["q"][root])
       if search_params["q"][root][key].is_a?(Array)

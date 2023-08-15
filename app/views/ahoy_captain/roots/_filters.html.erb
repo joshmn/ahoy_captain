@@ -6,12 +6,42 @@
     <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by #{name}", id: "#{filters.modal_name}") do |modal| %>
       <% modal.with_modal_display do %>
         <% filters.each do |filter| %>
-        <%= render AhoyCaptain::Filter::SelectComponent.new(label: filter.label, column: filter.column, url: public_send(filter.url), predicates: filter.predicates, multiple: filter.multiple, form: form) %>
+          <%= render AhoyCaptain::Filter::SelectComponent.new(label: filter.label, column: filter.column, url: public_send(filter.url), predicates: filter.predicates, multiple: filter.multiple, form: form) %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 
+  <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Custom Property", id: "customPropertyFilterModal") do |modal| %>
+    <% modal.with_modal_display do %>
+      <div data-controller="property-filter">
+        <fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
+          <select
+            data-predicate-select-target="select"
+            data-controller="search-select"
+            name="q[with_property_values]"
+            class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
+            data-search-select-url-value="<%= filters_properties_names_path %>"
+            data-property-filter-target="property"
+          ></select>
+            <div class="flex flex-col w-[20%]">
+                <select class='select select-bordered'>
+                  <option value="in">in</option>
+                </select>
+            </div>
+          <select
+            data-predicate-select-target="select"
+            data-controller="search-select"
+            class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
+            data-search-select-url-value="<%= filters_properties_values_path %>"
+            name="q[property_value_i_cont]"
+            data-property-filter-target="value"
+          ></select>
+        </fieldset>
+
+      </div>
+    <% end %>
+  <% end %>
 
   <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Custom Range", id: "customRangeModal") do |modal| %>
     <% modal.with_modal_display do %>

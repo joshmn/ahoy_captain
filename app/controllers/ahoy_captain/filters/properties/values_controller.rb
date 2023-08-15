@@ -3,10 +3,10 @@ module AhoyCaptain
     module Properties
       class ValuesController < BaseController
         def index
-          query = ::Ahoy::Event.with(elements: event_query.select("ahoy_events.properties->>'controller' as element"))
-                               .select("distinct elements.element").from("elements")
-
-
+          query = event_query.all
+          abort
+          things = ::Ahoy::Event.with(elements: query).select("elements.property_value").from("elements")
+          abort
           render json: query.map(&:element).map { |element| serialize(element) }
         end
       end

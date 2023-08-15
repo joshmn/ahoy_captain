@@ -49,6 +49,7 @@ AhoyCaptain::Engine.routes.draw do
       resources :values, only: [:index]
     end
 
+    resources :goals, only: [:index]
     resources :sources, only: [:index]
     resources :screens, only: [:index]
     scope :operating_systems, module: :operating_systems do

@@ -4,7 +4,7 @@ module AhoyCaptain
       private
 
       def serialize(value)
-        { text: value }
+        { text: value, value: value }
       end
 
       def visit_query

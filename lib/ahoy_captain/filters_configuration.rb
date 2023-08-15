@@ -30,12 +30,16 @@ module AhoyCaptain
           filter column: :os_version, label: "OS Version", url: :filters_versions_path, predicates: [:in, :not_in]
         end
 
-        config.register("UTM Tag") do
+        config.register("UTM Tags") do
           filter column: :utm_medium, label: "UTM Medium", url: :filters_utm_mediums_path, predicates: [:in, :not_in]
           filter column: :utm_source, label: "UTM Source", url: :filters_utm_sources_path, predicates: [:in, :not_in]
           filter column: :utm_campaign, label: "UTM Campaign", url: :filters_utm_campaigns_path, predicates: [:in, :not_in]
           filter column: :utm_term, label: "UTM Term", url: :filters_utm_terms_path, predicates: [:in, :not_in]
           filter column: :utm_content, label: "UTM Content", url: :filters_utm_contents_path, predicates: [:in, :not_in]
+        end
+
+        config.register("Goal") do
+          filter column: :goal, label: "Goal", url: :filters_goals_path, predicates: [:in]
         end
       end
     end

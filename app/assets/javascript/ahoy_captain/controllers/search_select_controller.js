@@ -35,7 +35,7 @@ export default class extends Controller {
     });
 
     if(this.selectedValue.length) {
-      this.select.setData(this.selectedValue.map(item => ({ "text": item, "value": item })))
+      this.select.setData(this.selectedValue.map(item => { item }))
       this.select.setSelected(this.selectedValue)
     }
   }
