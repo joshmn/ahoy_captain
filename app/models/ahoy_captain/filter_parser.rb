@@ -53,39 +53,17 @@ module AhoyCaptain
               else
                 item.values
               end.to_sentence(last_word_connector: " or ")
-      item.label = label
-      description_item = if key.start_with?("properties.")
-                           item.column.dup.delete_prefix("properties.")
+
+      item.label = if key.start_with?("properties.")
                            item.modal = "customPropertyFilterModal"
+                           item.column = item.column.dup.delete_prefix("properties.")
+                           label
                          else
-                           item.column
-                         end
+                           label
+                          end
 
-      item.description = "#{description_item} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
+      item.description = "#{item.label} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
       item.url = build_url(key, values)
-      item
-    end
-
-    def build_json_item(root, key, values)
-      item = Item.new
-      item.values = Array(values)
-      item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
-      item.column = "Property"
-
-      item.label = "#{key} contains #{values}"
-      search_params = @request.query_parameters.deep_dup
-      search_params["q"][root] = JSON.parse(search_params["q"][root])
-      if search_params["q"][root][key].is_a?(Array)
-        search_params["q"][root][key].delete(values)
-      else
-        search_params["q"][root].delete(key)
-      end
-      if search_params["q"][root].empty?
-        search_params["q"].delete(root)
-      else
-        search_params["q"][root] = search_params["q"][root].to_json
-      end
-      item.url = @request.path + "?" + search_params.to_query
       item
     end
 

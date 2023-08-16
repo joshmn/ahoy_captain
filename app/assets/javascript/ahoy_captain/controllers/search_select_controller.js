@@ -34,8 +34,9 @@ export default class extends Controller {
       }
     });
 
+    document.dispatchEvent(new CustomEvent('slim:init', { detail: { id: this.select.id } }))
     if(this.selectedValue.length) {
-      this.select.setData(this.selectedValue.map(item => { item }))
+      this.select.setData(this.selectedValue.map(item => ({ "text": item, "value": item })))
       this.select.setSelected(this.selectedValue)
     }
   }
@@ -55,8 +56,13 @@ export default class extends Controller {
     }
 
     searchParams.delete(this.element.name);
-    searchParams.set(this.queryValue || this.element.name, query);
-
+    if(this.urlValue.includes("properties/values")) {
+      searchParams.delete(`q[properties.${document.querySelector('#property-name').dataset.column}_in]`)
+      searchParams.set(`q[properties.${document.querySelector('#property-name').dataset.column}_i_cont]`, query)
+    } else {
+      searchParams.set(this.queryValue || this.element.name, query);
+    }
+    console.log(searchParams.toString())
     const response = await fetch(`${this.urlValue}?${searchParams.toString()}`);
     const data = await response.json();
     return data;

@@ -17,24 +17,33 @@
       <div data-controller="property-filter">
         <fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
           <select
+            id="property-name"
             data-predicate-select-target="select"
             data-controller="search-select"
             class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
             data-search-select-url-value="<%= filters_properties_names_path %>"
+            <% if current_property_filter %>
+            data-column="<%= current_property_filter[:key].delete_prefix("properties.") %>"
+            data-search-select-selected-value="<%= [current_property_filter[:key].delete_prefix("properties.")].to_json %>"
+            <% end %>
             data-property-filter-target="property"
-          ></select>
+          >
+          </select>
             <div class="flex flex-col w-[20%]">
                 <select class='select select-bordered'>
                   <option value="in">in</option>
                 </select>
             </div>
           <select
+            id="property-value"
             data-predicate-select-target="select"
             data-controller="search-select"
             class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
             data-search-select-url-value="<%= filters_properties_values_path %>"
-            name="q[property_value_i_cont]"
             data-property-filter-target="value"
+            <% if current_property_filter %>
+            data-search-select-selected-value="<%= [current_property_filter[:value]].to_json %>"
+            <% end %>
           ></select>
         </fieldset>
 
