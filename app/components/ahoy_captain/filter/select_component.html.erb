@@ -10,14 +10,6 @@
     </select>
   </div>
 
-  <select
-    data-predicate-select-target="select"
-    data-controller="search-select"
-    class='w-[50%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-    name="<%= column_name_with_predicate %>"
-    <% if multiple %>multiple<% end %>
-    data-search-select-query-value="q[<%= column %>_i_cont]"
-    data-search-select-url-value="<%= url %>"
-    data-search-select-selected-value="<%= values %>"
-  ></select>
+  <%= render ::AhoyCaptain::ComboboxComponent.new(name: column_name_with_predicate, multiple: multiple, column: column, url: url, value: values) %>
+
 </fieldset>
