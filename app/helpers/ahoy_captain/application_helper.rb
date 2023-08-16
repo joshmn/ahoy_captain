@@ -59,15 +59,8 @@ module AhoyCaptain
         :compare_to_end_date
       ]
 
+      # properties stuff falls into current_property_filter
       ransack = [:goal]
-      if params[:q]
-        properties = params[:q].to_unsafe_h.detect { |k,v| k.starts_with?("properties.") }
-        if properties
-          str = properties[0].dup
-          Ransack::Predicate.detect_and_strip_from_string!(str)
-          #      ransack << str
-        end
-      end
 
       map.each do |key|
         if params[key]
