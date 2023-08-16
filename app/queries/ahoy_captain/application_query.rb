@@ -105,7 +105,7 @@ module AhoyCaptain
         end
       end
 
-      ransackable_params
+      ransackify(ransackable_params, type)
     end
 
     # merge both sets of ransackable params and ensure that they're being set on the correct association
@@ -117,6 +117,43 @@ module AhoyCaptain
         ransack_params_for(:visit)
       else
         raise ArgumentError, "use ransack_params_for(type)"
+      end
+    end
+
+    def ransackify(query, type)
+      return unless query
+
+      query = query.try(:permit!).try(:to_h) unless query.is_a?(Hash)
+      obj = query.each_with_object({}) do |(k, v), obj|
+        if k.starts_with?('properties.')
+          field = k.split('properties.').last
+          operation = Ransack::Predicate.detect_and_strip_from_string!(field)
+
+          raise ArgumentError, "No valid predicate for #{field}" unless operation
+
+          prefix = type == :event ? "" : "events_"
+          obj[:c] ||= []
+
+          obj[:c] << {
+            a: {
+              '0' => {
+                name: "#{prefix}properties",
+                ransacker_args: field
+              }
+            },
+            p: operation,
+            v: [v]
+          }
+
+        else
+          obj[k] = v
+        end
+      end
+
+      if type == :event
+        return obj
+      else
+        return obj
       end
     end
 

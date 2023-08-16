@@ -54,7 +54,7 @@ module AhoyCaptain
     end
 
     def none
-      @none ||= OpenStruct.new(label: "None", value: "!none!")
+      @none ||= OpenStruct.new(text: "(none)", value: "!none!")
     end
   end
 end

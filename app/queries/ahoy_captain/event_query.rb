@@ -12,7 +12,7 @@ module AhoyCaptain
         ransack_params_for(:event).reject { |k,v| k.start_with?("visit_") }, context: shared_context
       )
 
-      visit_params = ransack_params_for(:visit).reject { |k,v| k.start_with?("event_") || k.start_with?("events_") }.transform_keys { |key| "visit_#{key}" }
+      visit_params = ransack_params_for(:visit).reject { |k,v| k.start_with?("event_") || k.start_with?("events_") || k == :c  }.transform_keys { |key| "visit_#{key}" }
       search_children = AhoyCaptain.visit.ransack(
         visit_params, context: shared_context
       )

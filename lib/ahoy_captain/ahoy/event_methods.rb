@@ -39,19 +39,11 @@ module AhoyCaptain
         }
 
         scope :with_property_values, ->(value) {
-          with(property_values: self.select("ahoy_events.id, ahoy_events.properties->>'appointment_uuid' as property_value").group("ahoy_events.id"))
-            .joins("INNER JOIN property_values ON property_values.id = ahoy_events.id")
+          where("JSONB_EXISTS(properties, '#{value}')")
         }
 
-        scope :property_value_i_cont, ->(value) {
-          where("property_values.property_value ilike ?", "%#{value}%")
-        }
-        ransacker :property_name,
-                  formatter: ->(value) {
-                    quoted = connection.quote(value)
-                    Arel.sql("(select id from ahoy_events where JSONB_EXISTS(properties, #{quoted}))")
-                  } do |parent|
-          parent.table[:id]
+        ransacker :properties, args: [:parent, :ransacker_args] do |parent, args|
+          Arel::Nodes::InfixOperation.new('->>', parent.table[:properties], Arel::Nodes.build_quoted(args))
         end
 
         ransacker :goal,
@@ -66,7 +58,7 @@ module AhoyCaptain
 
       class_methods do
         def ransackable_attributes(auth_object = nil)
-          super + [ "action", "controller", "id",  "name", "page", "property_name", "properties", "time", "url", "user_id", "visit_id", "goal"] + self._ransackers.keys
+          super + [ "action", "controller", "id",  "name", "page", "properties", "time", "url", "user_id", "visit_id", "goal"] + self._ransackers.keys
         end
 
         def ransackable_scopes(auth_object = nil)

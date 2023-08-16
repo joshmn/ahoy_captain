@@ -55,7 +55,7 @@ export default class extends Controller {
     }
 
     searchParams.delete(this.element.name);
-    searchParams.set(this.queryValue, query);
+    searchParams.set(this.queryValue || this.element.name, query);
 
     const response = await fetch(`${this.urlValue}?${searchParams.toString()}`);
     const data = await response.json();

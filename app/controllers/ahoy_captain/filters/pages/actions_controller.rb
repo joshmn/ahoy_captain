@@ -5,7 +5,7 @@ module AhoyCaptain
         def index
           query = event_query.all.with_url.distinct_url
 
-          render json: query.map { |row| { text: row.url } }
+          render json: query.map { |row| serialize(row.url) }
         end
       end
     end

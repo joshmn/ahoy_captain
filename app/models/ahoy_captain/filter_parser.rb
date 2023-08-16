@@ -28,15 +28,7 @@ module AhoyCaptain
       @filter_params.each do |key, values|
         next if ::AhoyCaptain.event.ransackable_scopes.include?(key.to_sym)
 
-        if key == "properties_json_cont"
-          json = JSON.parse(@params[:q][key])
-          json.each do |k,v|
-            @items[key] = build_json_item("properties_json_cont", k, v)
-          end
-          next
-        else
-          item = build_item(key, values)
-        end
+        item = build_item(key, values)
         @items[key] = item
       end
 
@@ -48,6 +40,7 @@ module AhoyCaptain
     def build_item(key, values)
       item = Item.new
       item.values = Array(values)
+
       item.predicate = Ransack::Predicate.detect_and_strip_from_string!(key.dup)
       item.column = key.delete_suffix("_#{item.predicate}")
       modal_name = AhoyCaptain.config.filters.detect { |_, filters| filters.include?(item.column) }
@@ -61,7 +54,14 @@ module AhoyCaptain
                 item.values
               end.to_sentence(last_word_connector: " or ")
       item.label = label
-      item.description = "#{item.column.titleize} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
+      description_item = if key.start_with?("properties.")
+                           item.column.dup.delete_prefix("properties.")
+                           item.modal = "customPropertyFilterModal"
+                         else
+                           item.column
+                         end
+
+      item.description = "#{description_item} #{::AhoyCaptain::PredicateLabel[item.predicate]} #{label}"
       item.url = build_url(key, values)
       item
     end
