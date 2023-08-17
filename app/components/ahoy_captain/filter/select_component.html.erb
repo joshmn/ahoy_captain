@@ -1,19 +1,24 @@
-<fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
-  <% if label || @predicates.any? %>
-    <div class="flex flex-col w-[20%]">
-      <% if label.present? %>
-        <label class="label"><%= label %></label>
-      <% end %>
-      <% if @predicates.any? %>
-        <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
-          <% @predicates.each do |predicate| %>
-            <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
-              <%= predicate_label(predicate) %>
-            </option>
+<fieldset class="grid grid-cols-11 mt-1" data-controller="predicate-select">
+  <div class="col-span-3 mr-2">
+    <div class="w-full">
+      <div class="relative inline-block text-left w-full">
+        <div class="w-full">
+          <% if @predicates.any? %>
+            <select class='inline-flex justify-between items-center w-full rounded-md border px-4 py-2 text-sm' data-action='change->predicate-select#handleChange'>
+              <% @predicates.each do |predicate| %>
+                <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
+                  <%= predicate_label(predicate) %>
+                </option>
+              <% end %>
+            </select>
           <% end %>
-        </select>
-      <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-  <%= render ::AhoyCaptain::ComboboxComponent.new(name: column_name_with_predicate, multiple: multiple, column: column, url: url, value: values) %>
+  </div>
+  <div class="col-span-8">
+    <div class="relative w-full">
+      <%= render ::AhoyCaptain::ComboboxComponent.new(name: column_name_with_predicate, multiple: multiple, column: column, url: url, value: values) %>
+    </div>
+  </div>
 </fieldset>
