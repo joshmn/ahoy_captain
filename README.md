@@ -3,7 +3,7 @@
 
 A full-featured, mountable analytics dashboard for your Rails app, shamelessly inspired by Plausible Analytics, powered by the Ahoy gem.
 
-<a href="https://github.com/joshmn/ahoy_captain/blob/main/ss.png"><img src="ss.png" style="max-width:300px" /></a>
+<a href="https://github.com/joshmn/ahoy_captain/blob/main/ss.jpg"><img src="ss.jpg" style="max-width:300px" /></a>
 ## Notice
 
 Currently requires using PG and a JSONB column for your data.
@@ -63,11 +63,13 @@ If you have a large dataset (> 1GB) you probably want some indexes. `rails g aho
     * OS
     * UTM tags
     * Goal
+    * Event Property
 * CSV exports
+* Date comparison
 
 ## Coming soon ™️
 
-* Date comparison
+* Bug fixes and performance improvements
 
 ## Contributors
 
