@@ -6,6 +6,7 @@ export default class extends Controller {
   connect() {
     this.found = [];
     const init = () => {
+      console.log("init")
       this.propertySelect = this.propertyTarget;
       this.valueSelect = this.valueTarget;
       this.propertySelect.addEventListener("change", (event) => {
@@ -22,11 +23,12 @@ export default class extends Controller {
         }
       })
     }
-    document.addEventListener('slim:init', (event) => {
+    window.addEventListener('slim:init', (event) => {
       if(event.detail.id === "property-value" || event.detail.id === "property-name") {
         this.found.push(event.detail.id);
       }
 
+      console.log(this.found)
       if(this.found.length === 2) {
         init()
       }

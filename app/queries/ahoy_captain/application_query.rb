@@ -77,6 +77,28 @@ module AhoyCaptain
         end
       end
 
+      merge_params = {}
+      ransackable_params.each do |k,v|
+        transform = false
+        if v == AhoyCaptain.none.value
+          transform = true
+        elsif v.is_a?(Array) && v[0] == AhoyCaptain.none.value
+          transform = true
+        end
+
+        if transform
+          key = k.dup
+          ransackable_params.delete(key)
+          predicate = Ransack::Predicate.detect_and_strip_from_string!(key)
+          if predicate.include?("not")
+            merge_params["#{key}_not_null"] = '1'
+          else
+            merge_params["#{key}_null"] = '1'
+          end
+        end
+      end
+
+      ransackable_params.merge!(merge_params)
       # send the right format
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now).result.to_sql
       # is not

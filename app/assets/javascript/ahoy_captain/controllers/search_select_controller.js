@@ -34,7 +34,7 @@ export default class extends Controller {
       }
     });
 
-    document.dispatchEvent(new CustomEvent('slim:init', { detail: { id: this.select.id } }))
+    window.dispatchEvent(new CustomEvent('slim:init', { detail: { id: this.element.id } }))
     if(this.selectedValue.length) {
       this.select.setData(this.selectedValue.map(item => ({ "text": item, "value": item })))
       this.select.setSelected(this.selectedValue)
