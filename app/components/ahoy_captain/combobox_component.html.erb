@@ -16,7 +16,7 @@
     <select data-combobox-target="select" style="display:none;"
             data-predicate-select-target="select"
             name="<%= @name %>"
-            id="filter_<%= @name %>"
+            id="<%= @select_html[:id] || "filter_#{@name}" %>"
             <% @select_html.each do |k,v| %><%=k %>="<%=v %>"<% end %>
     ><% @value.each do |value| %><option value="<%= value %>" selected><%= value %></option><% end %></select>
     <div data-combobox-target="selected" class="" style="display:none;"></div>

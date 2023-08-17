@@ -1,13 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['name'];
-
-  comboboxInit(event) {
-  }
+  static targets = ['name', 'value'];
 
   connect() {
-    this.valueTarget = document.querySelector('#property-value')
+    this.init = this.init.bind(this)
+
+    const interval = setInterval(() => {
+      if(window.comboboxConnected === 2) {
+        clearInterval(interval);
+        this.init()
+      }
+    }, 100)
+
+  }
+
+  init() {
+
     if(this.nameTarget.value) {
       this.valueTarget.combobox.element.dataset.comboboxQueryValue = `q[properties.${this.nameTarget.value}_i_cont]`
     }
@@ -31,6 +40,7 @@ export default class extends Controller {
         this.valueTarget.combobox.element.dataset.comboboxQueryValue = ""
       }
     })
+
   }
 
 }

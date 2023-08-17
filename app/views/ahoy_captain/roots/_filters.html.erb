@@ -14,12 +14,12 @@
 
   <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Custom Property", id: "customPropertyFilterModal") do |modal| %>
     <% modal.with_modal_display do %>
-      <div data-controller="property-filter" data-action="combobox:init@window->property-filter#comboboxInit">
+      <div data-controller="property-filter">
         <fieldset class="flex space-x-4 items-end">
           <% if current_property_filter %>
-            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, value: [current_property_filter[:key].delete_prefix("properties.")], select_html: { "data-property-filter-target" => 'name' }) %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, value: [current_property_filter[:key].delete_prefix("properties.")], select_html: { "data-property-filter-target" => 'name', id: "property-name" }) %>
           <% else %>
-            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, select_html: { "data-property-filter-target" => 'name' } ) %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, select_html: { "data-property-filter-target" => 'name', id: "property-name" } ) %>
           <% end %>
 
           <div class="flex flex-col w-[20%]">
