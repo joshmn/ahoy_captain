@@ -92,7 +92,7 @@ export default class extends Controller {
     fetch(`${this.urlValue}?${searchParams.toString()}`).then(resp => resp.json()).then(loadedOptions => {
       this.isLoadingValue = false;
       this.highlightedIndexValue = 0;
-      this.optionsValue = loadedOptions.map(option => ({ text: option.text, value: option.text }));
+      this.optionsValue = loadedOptions.map(option => ({ text: option.text, value: option.value }));
     });
   }
 

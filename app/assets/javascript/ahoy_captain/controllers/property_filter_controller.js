@@ -12,7 +12,6 @@ export default class extends Controller {
         this.init()
       }
     }, 100)
-
   }
 
   init() {
