@@ -18,7 +18,9 @@
 * Custom properties table
 * Custom property searching
   - currently only supports searching one key at a time
-
+* Better handling of null values in a query 
+  - will now use the Ransack is_null and is_not_null 
+  
 ### Changed
 * How tables with non-standard rows are rendered
 

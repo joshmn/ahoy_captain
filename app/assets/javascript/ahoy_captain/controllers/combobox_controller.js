@@ -1,6 +1,16 @@
 import { Controller } from "@hotwired/stimulus";
 import "classnames"
 
+const debounce = (func, delay) => {
+  let debounceTimer
+  return function() {
+    const context = this
+    const args = arguments
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => func.apply(context, args), delay)
+  }
+}
+
 export default class extends Controller {
   static targets = ["input", "list", "option", "container", "select", "highlighted", "box", "selected"];
   static classes = ["boxOpen"]
@@ -24,7 +34,7 @@ export default class extends Controller {
     this.highlightedIndexValue = 0;
 
     this.inputTarget.addEventListener('keydown', this.onKeyDown.bind(this))
-    this.debouncedFetchOptions = this.fetchOptions.bind(this);
+    this.debouncedFetchOptions = debounce(this.fetchOptions.bind(this), 250);
     this.checkDisabledState();
     if(this.singleOptionValue) {
       this.selectTarget.removeAttribute('multiple')
@@ -41,7 +51,7 @@ export default class extends Controller {
 
   onInput(event) {
     this.inputValue = event.target.value;
-    this.fetchOptions(this.inputValue);
+    this.debouncedFetchOptions(this.inputValue);
   }
 
   fetchOptions(query) {
@@ -150,7 +160,7 @@ export default class extends Controller {
 
   toggleOpen() {
     if (!this.isOpenValue) {
-      this.fetchOptions(this.inputValue);
+      this.debouncedFetchOptions(this.inputValue);
       this.inputTarget.focus();
     } else {
       this.inputValue = '';
