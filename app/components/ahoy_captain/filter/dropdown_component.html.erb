@@ -18,7 +18,7 @@
                     class="flex w-full justify-between link no-underline items-center group <% if filter.modal %>cursor-pointer<% else %>cursor-text<% end %> text-left"
                     onclick="<% if filter.modal %><%= filter.modal %>.showModal() <% end %>">
               <span class="truncate w-48  ">
-                <%= filter.column.titleize %> <%= filter.predicate %>
+                <%= filter.column.titleize %> <%= filter.predicate.titleize %>
                 <%= filter.values.to_sentence %>
               </span>
               <% if filter.modal %>

@@ -5,6 +5,7 @@ export default class extends Controller {
 
   comboboxInit(event) {
   }
+
   connect() {
     this.valueTarget = document.querySelector('#property-value')
     if(this.nameTarget.value) {

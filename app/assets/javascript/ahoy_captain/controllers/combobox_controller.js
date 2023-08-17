@@ -33,6 +33,7 @@ export default class extends Controller {
     this.isOpenValue = false;
     this.inputValue = '';
     this.highlightedIndexValue = 0;
+    this.clickHandler = this.clickHandler.bind(this)
 
     this.inputTarget.addEventListener('keydown', this.onKeyDown.bind(this))
     this.debouncedFetchOptions = debounce(this.fetchOptions.bind(this), 250);
@@ -183,9 +184,20 @@ export default class extends Controller {
     if (!this.isOpenValue) {
       this.debouncedFetchOptions(this.inputValue);
       this.inputTarget.focus();
+      document.addEventListener('click', this.clickHandler)
     } else {
       this.inputValue = '';
       this.isOpenValue = false;
+      document.removeEventListener('click', this.clickHandler)
+    }
+  }
+
+  clickHandler(event) {
+    if(event.target.classList.contains('combobox-option')) {
+      return
+    } else {
+      this.toggleOpen()
+      return
     }
   }
 
@@ -240,7 +252,7 @@ export default class extends Controller {
       const optionElement = document.createElement("li");
       const isHighlighted = this.highlightedIndexValue === index;
       optionElement.innerHTML = `<span class="block truncate" data-index="${index}">${option.text}</span>`;
-      optionElement.className = classNames('relative cursor-pointer select-none py-2 px-3 hover:bg-primary-600 hover:text-white', {
+      optionElement.className = classNames('combobox-option relative cursor-pointer select-none py-2 px-3 hover:bg-primary-600 hover:text-white', {
         'text-accent-900': !isHighlighted,
         'bg-primary-600 text-white': isHighlighted,
       });
@@ -251,7 +263,7 @@ export default class extends Controller {
       optionElement.dataset.action = "click->combobox#selectOption"
       optionElement.dataset.index = index;
       optionElement.dataset.value = option.value
-      optionElement.id = `plausible-combobox-option-${index}`;
+      optionElement.id = `combobox-option-${index}`;
 
       this.listTarget.appendChild(optionElement);
     });
