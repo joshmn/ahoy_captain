@@ -113,7 +113,6 @@ export default class extends Controller {
   }
 
   setSelected(values) {
-    console.log("set selected")
     this.selectedValue = values;
   }
 

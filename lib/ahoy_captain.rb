@@ -28,7 +28,6 @@ module AhoyCaptain
         pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
         pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
         pin "application", to: "ahoy_captain/application.js", preload: true
-        pin "slim-select", to: "https://ga.jspm.io/npm:slim-select@2.6.0/dist/slimselect.es.js", preload: true
         pin "chartkick", to: "chartkick.js"
         pin "Chart.bundle", to: "Chart.bundle.js"
         pin "chartjs-plugin-datalabels", to: "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2", preload: true

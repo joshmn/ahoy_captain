@@ -4,7 +4,7 @@
       <div class="relative inline-block text-left w-full">
         <div class="w-full">
           <% if @predicates.any? %>
-            <select class='select select-primary bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none inline-flex justify-between items-center w-full rounded-md border' data-action='change->predicate-select#handleChange'>
+            <select id="<%= column %>_predicate" class='select border-0 select-primary bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none inline-flex justify-between items-center w-full rounded-md ' data-action='change->predicate-select#handleChange'>
               <% @predicates.each do |predicate| %>
                 <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
                   <%= predicate_label(predicate) %>
