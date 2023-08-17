@@ -18,9 +18,17 @@
 * Custom properties table
 * Custom property searching
   - currently only supports searching one key at a time
+* Better handling of null values in a query 
+  - will now use the Ransack is_null and is_not_null 
+* New combobox/select component 
+  - it's just better 
+* When closing a filter modal, it'll revert the original values if you didn't click apply 
 
 ### Changed
 * How tables with non-standard rows are rendered
+
+### Removed
+* SlimSelect 
 
 ## Version 0.91 (Aug 08, 2023)
 

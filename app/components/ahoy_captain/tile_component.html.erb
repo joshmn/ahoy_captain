@@ -1,8 +1,10 @@
-<div class="card card-compact <%= 'lg:col-span-2' if wide %> col-span-1 shadow-xl rounded-md lg:mx-0 bg-base-200 <%= @classes %>">
+<div
+  data-controller="tile"
+  class="card card-compact <%= 'lg:col-span-2' if wide %> col-span-1 shadow-xl rounded-md lg:mx-0 bg-base-200 <%= @classes %>">
   <% if title.present? || display_links.present? %>
     <div class="flex justify-between">
       <% if title.present? %>
-        <h2 class="card-title"><%= title %></h2>
+        <h2 class="card-title" data-tile-target="title"><%= title %></h2>
       <% end %>
       <% if display_links.present? %>
         <div class="flex self-center lg:gap-3">

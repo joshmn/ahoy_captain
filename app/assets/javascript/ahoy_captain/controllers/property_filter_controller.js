@@ -1,36 +1,43 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['property', "value"];
+  static targets = ['name', 'value'];
 
   connect() {
-    this.found = [];
-    const init = () => {
-      console.log("init")
-      this.propertySelect = this.propertyTarget;
-      this.valueSelect = this.valueTarget;
-      this.propertySelect.addEventListener("change", (event) => {
-        if(event.target.value) {
-          event.target.dataset.column = event.target.value;
-          this.valueSelect.name = `q[properties.${event.target.value}_i_cont]`
-          this.valueSelect.slim.setData([])
-          this.valueSelect.slim.setSelected(null)
-        }
-      })
-      this.valueSelect.addEventListener("change", (event) => {
-        if(event.target.value.length > 0) {
-          this.valueSelect.name = `q[properties.${this.propertySelect.dataset.column}_in]`
-        }
-      })
-    }
-    window.addEventListener('slim:init', (event) => {
-      if(event.detail.id === "property-value" || event.detail.id === "property-name") {
-        this.found.push(event.detail.id);
-      }
+    this.init = this.init.bind(this)
 
-      console.log(this.found)
-      if(this.found.length === 2) {
-        init()
+    const interval = setInterval(() => {
+      if(window.comboboxConnected === 2) {
+        clearInterval(interval);
+        this.init()
+      }
+    }, 100)
+
+  }
+
+  init() {
+
+    if(this.nameTarget.value) {
+      this.valueTarget.combobox.element.dataset.comboboxQueryValue = `q[properties.${this.nameTarget.value}_i_cont]`
+    }
+
+    this.nameTarget.addEventListener("change", (event) => {
+      if(event.target.value) {
+        event.target.dataset.column = event.target.value;
+        this.valueTarget.combobox.element.dataset.comboboxQueryValue = `q[properties.${event.target.value}_i_cont]`
+        this.valueTarget.combobox.setDisabled(false)
+        this.valueTarget.combobox.isOpenValue = false
+      } else {
+        this.valueTarget.combobox.setSelected([])
+        this.valueTarget.combobox.setDisabled(true)
+      }
+    })
+    this.valueTarget.addEventListener("change", (event) => {
+      if(event.target.value.length > 0) {
+        this.valueTarget.name = `q[properties.${this.nameTarget.dataset.column}_in]`
+      } else {
+        this.valueTarget.name = null
+        this.valueTarget.combobox.element.dataset.comboboxQueryValue = ""
       }
     })
 

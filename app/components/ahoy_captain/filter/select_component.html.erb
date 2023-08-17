@@ -1,29 +1,25 @@
-<fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
-  <% if label || @predicates.any? %>
-  <div class="flex flex-col w-[20%]">
-    <% if label.present? %>
-    <label class="label"><%= label %></label>
-      <% end %>
-    <% if @predicates.any? %>
-    <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
-      <% @predicates.each do |predicate| %>
-        <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
-          <%= predicate_label(predicate) %>
-        </option>
-      <% end %>
-    </select>
-      <% end %>
+<div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><%= label %></div>
+<fieldset class="grid grid-cols-11 mb-3" data-controller="predicate-select">
+  <div class="col-span-3 mr-2">
+    <div class="w-full">
+      <div class="relative inline-block text-left w-full">
+        <div class="w-full">
+          <% if @predicates.any? %>
+            <select id="<%= column %>_predicate" class='select border-0 select-primary bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none inline-flex justify-between items-center w-full rounded-md ' data-action='change->predicate-select#handleChange'>
+              <% @predicates.each do |predicate| %>
+                <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
+                  <%= predicate_label(predicate) %>
+                </option>
+              <% end %>
+            </select>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
-  <select
-    data-predicate-select-target="select"
-    data-controller="search-select"
-    class='w-[50%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-    name="<%= column_name_with_predicate %>"
-    <% if multiple %>multiple<% end %>
-    data-search-select-query-value="q[<%= column %>_i_cont]"
-    data-search-select-url-value="<%= url %>"
-    data-search-select-selected-value="<%= values %>"
-  <% @input_html_options.each do |k,v| %><%= k %>="<%= v %>"<% end %>
-  ></select>
+  <div class="col-span-8">
+    <div class="relative w-full">
+      <%= render ::AhoyCaptain::ComboboxComponent.new(name: column_name_with_predicate, multiple: multiple, column: column, url: url, value: values) %>
+    </div>
+  </div>
 </fieldset>

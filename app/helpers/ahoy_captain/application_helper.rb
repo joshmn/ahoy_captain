@@ -9,7 +9,8 @@ module AhoyCaptain
       if prop
         key = prop[0].dup
         Ransack::Predicate.detect_and_strip_from_string!(key)
-        { key: key, value: params[:q][prop] }
+        { key: key, value: prop[1] }
+
       else
         nil
       end

@@ -15,36 +15,25 @@
   <%= render AhoyCaptain::Filter::ModalComponent.new(title: "Filter by Custom Property", id: "customPropertyFilterModal") do |modal| %>
     <% modal.with_modal_display do %>
       <div data-controller="property-filter">
-        <fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
-          <select
-            id="property-name"
-            data-predicate-select-target="select"
-            data-controller="search-select"
-            class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-            data-search-select-url-value="<%= filters_properties_names_path %>"
-            <% if current_property_filter %>
-            data-column="<%= current_property_filter[:key].delete_prefix("properties.") %>"
-            data-search-select-selected-value="<%= [current_property_filter[:key].delete_prefix("properties.")].to_json %>"
-            <% end %>
-            data-property-filter-target="property"
-          >
-          </select>
-            <div class="flex flex-col w-[20%]">
-                <select class='select select-bordered'>
-                  <option value="in">in</option>
-                </select>
-            </div>
-          <select
-            id="property-value"
-            data-predicate-select-target="select"
-            data-controller="search-select"
-            class='w-[30%] border-base-content border-opacity-20 rounded-lg min-h-[3rem]'
-            data-search-select-url-value="<%= filters_properties_values_path %>"
-            data-property-filter-target="value"
-            <% if current_property_filter %>
-            data-search-select-selected-value="<%= [current_property_filter[:value]].to_json %>"
-            <% end %>
-          ></select>
+        <fieldset class="flex space-x-4 items-end">
+          <% if current_property_filter %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, value: [current_property_filter[:key].delete_prefix("properties.")], select_html: { "data-property-filter-target" => 'name', id: "property-name" }) %>
+          <% else %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_names_path, select_html: { "data-property-filter-target" => 'name', id: "property-name" } ) %>
+          <% end %>
+
+          <div class="flex flex-col w-[20%]">
+            <select class='select select-primary bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none inline-flex justify-between items-center w-full rounded-md border px-4 py-2 text-sm'>
+              <option value="in">in</option>
+            </select>
+          </div>
+
+          <% if current_property_filter %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "q[#{current_property_filter[:key]}_in]", multiple: false, column: "", url: filters_properties_values_path, value: [current_property_filter[:value]], select_html: { "data-property-filter-target" => 'value', id: "property-value" } ) %>
+          <% else %>
+            <%= render ::AhoyCaptain::ComboboxComponent.new(name: "", multiple: false, column: "", url: filters_properties_values_path, select_html: { "data-property-filter-target" => 'value', id: "property-value" }, disabled: true) %>
+          <% end %>
+
         </fieldset>
 
       </div>
