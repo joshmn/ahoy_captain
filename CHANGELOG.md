@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version 0.10.0 (Aug 17, 2023)
+
 ### Fixed 
 * Active link clicks become active if you click a child element
 * Persist the interval of the graph when changing graphs
