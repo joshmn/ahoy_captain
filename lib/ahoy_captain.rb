@@ -53,5 +53,9 @@ module AhoyCaptain
     def visit
       @visit ||= config.models[:visit].constantize
     end
+
+    def none
+      @none ||= OpenStruct.new(text: "(none)", value: "!none!")
+    end
   end
 end

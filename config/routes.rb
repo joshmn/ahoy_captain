@@ -12,6 +12,7 @@ AhoyCaptain::Engine.routes.draw do
     get "/devices/#{k}" => 'devices#index', defaults: { devices_type: v }, as: "devices_#{k}"
   end
 
+  resources :properties, only: [:index, :show]
   resource :export, only: [:show]
   resource :realtime, only: [:show]
   resources :funnels, only: [:show]
@@ -48,6 +49,7 @@ AhoyCaptain::Engine.routes.draw do
       resources :values, only: [:index]
     end
 
+    resources :goals, only: [:index]
     resources :sources, only: [:index]
     resources :screens, only: [:index]
     scope :operating_systems, module: :operating_systems do

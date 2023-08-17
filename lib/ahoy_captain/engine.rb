@@ -24,6 +24,10 @@ module Ransack
   end
 end
 
+Ransack.configure do |config|
+  config.add_predicate 'json_cont', arel_predicate: 'contains', formatter: proc { |v| JSON.parse(v) }
+  config.add_predicate 'json_eq', arel_predicate: 'eq', formatter: proc { |v| JSON.parse(v) }
+end
 
 module AhoyCaptain
   class Engine < Rails::Engine

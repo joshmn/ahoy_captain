@@ -27,7 +27,6 @@ module AhoyCaptain
           end
         end
 
-
         def percent_total(item)
           '%.1f' % ((item.unit_amount.to_i * 1.0 / total)*100.0)
         end

@@ -1,15 +1,19 @@
 <fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
-  <div class="flex flex-col w-[20%]">
-    <label class="label"><%= label %></label>
-    <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
-      <% @predicates.each do |predicate| %>
-        <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
-          <%= predicate_label(predicate) %>
-        </option>
+  <% if label || @predicates.any? %>
+    <div class="flex flex-col w-[20%]">
+      <% if label.present? %>
+        <label class="label"><%= label %></label>
       <% end %>
-    </select>
-  </div>
-
+      <% if @predicates.any? %>
+        <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
+          <% @predicates.each do |predicate| %>
+            <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
+              <%= predicate_label(predicate) %>
+            </option>
+          <% end %>
+        </select>
+      <% end %>
+    </div>
+  <% end %>
   <%= render ::AhoyCaptain::ComboboxComponent.new(name: column_name_with_predicate, multiple: multiple, column: column, url: url, value: values) %>
-
 </fieldset>

@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class AhoyCaptain::Filter::SelectComponent < ViewComponent::Base
-  def initialize(label:, column:, url:, predicates:, form:, multiple: true)
+  def initialize(label:, column:, url:, predicates:, form:, multiple: true, input_html: {})
     @label = label
     @column = column
     @url = url
     @predicates = predicates
     @form = form
     @multiple = multiple
+    @input_html_options = input_html
   end
 
   private
