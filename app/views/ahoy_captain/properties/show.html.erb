@@ -1,0 +1,6 @@
+<%= turbo_frame_tag :goals do %>
+  <%= render 'ahoy_captain/properties/form', selected: Base64.strict_decode64(params[:id]) %>
+
+  <%= render AhoyCaptain::TableComponent.new(items: @properties,
+                                             table: ::AhoyCaptain::Tables::PropertiesTableComponent) %>
+<% end %>

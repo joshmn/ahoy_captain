@@ -64,7 +64,7 @@ module AhoyCaptain
           event: (AhoyCaptain.event.ransackable_attributes + AhoyCaptain.event.ransackable_scopes).map(&:to_s),
         }
 
-        pattern = /(?:_not_eq|_eq|_in|_not_in|_cont|_not_cont|_i_cont)$/
+        pattern = /(?:#{Ransack.predicates.sorted_names_with_underscores.to_h.values.join("|")})$/
         params[:q].each do |key, value|
           attribute_name = key.gsub(pattern, '')
           if type == :event && (ransackable_attributes[:visit].include?(attribute_name) || ransackable_attributes[:visit].include?(key))
@@ -77,6 +77,28 @@ module AhoyCaptain
         end
       end
 
+      merge_params = {}
+      ransackable_params.each do |k,v|
+        transform = false
+        if v == AhoyCaptain.none.value
+          transform = true
+        elsif v.is_a?(Array) && v[0] == AhoyCaptain.none.value
+          transform = true
+        end
+
+        if transform
+          key = k.dup
+          ransackable_params.delete(key)
+          predicate = Ransack::Predicate.detect_and_strip_from_string!(key)
+          if predicate.include?("not")
+            merge_params["#{key}_not_null"] = '1'
+          else
+            merge_params["#{key}_null"] = '1'
+          end
+        end
+      end
+
+      ransackable_params.merge!(merge_params)
       # send the right format
       #   ::Ahoy::Visit.ransack(events_time_lt: Time.now).result.to_sql
       # is not
@@ -105,7 +127,7 @@ module AhoyCaptain
         end
       end
 
-      ransackable_params
+      ransackify(ransackable_params, type)
     end
 
     # merge both sets of ransackable params and ensure that they're being set on the correct association
@@ -117,6 +139,43 @@ module AhoyCaptain
         ransack_params_for(:visit)
       else
         raise ArgumentError, "use ransack_params_for(type)"
+      end
+    end
+
+    def ransackify(query, type)
+      return unless query
+
+      query = query.try(:permit!).try(:to_h) unless query.is_a?(Hash)
+      obj = query.each_with_object({}) do |(k, v), obj|
+        if k.starts_with?('properties.')
+          field = k.split('properties.').last
+          operation = Ransack::Predicate.detect_and_strip_from_string!(field)
+
+          raise ArgumentError, "No valid predicate for #{field}" unless operation
+
+          prefix = type == :event ? "" : "events_"
+          obj[:c] ||= []
+
+          obj[:c] << {
+            a: {
+              '0' => {
+                name: "#{prefix}properties",
+                ransacker_args: field
+              }
+            },
+            p: operation,
+            v: [v]
+          }
+
+        else
+          obj[k] = v
+        end
+      end
+
+      if type == :event
+        return obj
+      else
+        return obj
       end
     end
 

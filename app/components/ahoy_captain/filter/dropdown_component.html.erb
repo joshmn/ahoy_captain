@@ -39,10 +39,11 @@
       </div>
     <% end %>
 
-    <div id="core-filters" class="menu <%= 'hidden' if advanced_filter_menu? %> pt-0" data-toggle-target='toggleable'>
+    <ul id="core-filters" class="menu <%= 'hidden' if advanced_filter_menu? %> pt-0" data-toggle-target='toggleable'>
       <% AhoyCaptain.config.filters.each do |label, filter_group| %>
         <li><button onClick="<%= filter_group.modal_name %>.showModal()" class='link no-underline' data-action="click->toggle#trigger"><%= label %></button></li>
       <% end %>
-    </div>
+      <li><button onClick="customPropertyFilterModal.showModal()" class='link no-underline' data-action="click->toggle#trigger">Property</button></li>
+    </ul>
   </ul>
 </div>

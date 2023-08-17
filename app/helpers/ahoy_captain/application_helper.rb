@@ -2,8 +2,18 @@ module AhoyCaptain
   module ApplicationHelper
     include Pagy::Frontend
 
-    # params that are coerced from the ApplicationController#act_like_an_spa
-    SPECIAL_PARAMS = [:campaigns_type, :devices_type]
+    def current_property_filter
+      return nil unless params[:q]
+
+      prop = params[:q].to_unsafe_h.detect { |key, _| key.starts_with?("properties.") }
+      if prop
+        key = prop[0].dup
+        Ransack::Predicate.detect_and_strip_from_string!(key)
+        { key: key, value: params[:q][prop] }
+      else
+        nil
+      end
+    end
 
     def stats_container(value, url, label, formatter, selected = false)
       if value.is_a?(AhoyCaptain::ComparableQuery::Comparison)
@@ -35,10 +45,6 @@ module AhoyCaptain
       request.query_parameters
     end
 
-    def special_params
-      params.to_unsafe_h.slice(*SPECIAL_PARAMS)
-    end
-
     # gets put into the form as a hidden field
     #
     def non_filter_ransack_params
@@ -53,6 +59,7 @@ module AhoyCaptain
         :compare_to_end_date
       ]
 
+      # properties stuff falls into current_property_filter
       ransack = [:goal]
 
       map.each do |key|
@@ -64,8 +71,7 @@ module AhoyCaptain
       ransack.each do |key|
         Ransack.predicates.keys.each do |predicate|
           if value = params.dig(:q, "#{key}_#{predicate}")
-            other_params[:q] ||= {}
-            other_params[:q]["#{key}_#{predicate}"] = value
+            other_params["q[#{key}_#{predicate}]"] = value
           end
         end
       end

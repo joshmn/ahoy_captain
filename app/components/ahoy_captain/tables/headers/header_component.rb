@@ -6,6 +6,10 @@ module AhoyCaptain
           @category_name = category_name
           @unit_name = unit_name
         end
+
+        def fixed_height?
+          true
+        end
       end
     end
   end

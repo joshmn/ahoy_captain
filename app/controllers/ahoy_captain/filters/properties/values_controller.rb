@@ -3,11 +3,11 @@ module AhoyCaptain
     module Properties
       class ValuesController < BaseController
         def index
-          query = ::Ahoy::Event.with(elements: event_query.select("ahoy_events.properties->>'controller' as element"))
-                               .select("distinct elements.element").from("elements")
+          param_key = params[:q].to_unsafe_h.detect { |k,v| k.ends_with?("_i_cont") && k.starts_with?("properties.") }[0]
+          key = param_key.delete_prefix("properties.").delete_suffix("_i_cont")
+          query = event_query.all.distinct.select("properties->>'#{key}'").pluck(Arel.sql "properties->>'#{key}'")
 
-
-          render json: query.map(&:element).map { |element| serialize(element) }
+          render json: query.map { |element| serialize(element) }
         end
       end
     end

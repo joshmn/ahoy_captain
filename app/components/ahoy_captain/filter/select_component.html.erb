@@ -1,6 +1,10 @@
 <fieldset class="flex space-x-4 items-end" data-controller="predicate-select">
+  <% if label || @predicates.any? %>
   <div class="flex flex-col w-[20%]">
+    <% if label.present? %>
     <label class="label"><%= label %></label>
+      <% end %>
+    <% if @predicates.any? %>
     <select class='select select-bordered' data-action='change->predicate-select#handleChange'>
       <% @predicates.each do |predicate| %>
         <option value="<%= option_value(predicate) %>" <%= 'selected' if selected_predicate?(predicate) %>>
@@ -8,8 +12,9 @@
         </option>
       <% end %>
     </select>
+      <% end %>
   </div>
-
+<% end %>
   <select
     data-predicate-select-target="select"
     data-controller="search-select"
@@ -19,5 +24,6 @@
     data-search-select-query-value="q[<%= column %>_i_cont]"
     data-search-select-url-value="<%= url %>"
     data-search-select-selected-value="<%= values %>"
+  <% @input_html_options.each do |k,v| %><%= k %>="<%= v %>"<% end %>
   ></select>
 </fieldset>
