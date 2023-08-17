@@ -28,7 +28,6 @@ export default class extends Controller {
                 if(el.combobox) {
                   el.combobox.setSelected(this.originalValues[el.id])
                 } else {
-                  console.log(this.originalValues[el.id])
                   el.value = this.originalValues[el.id]
                 }
               }
