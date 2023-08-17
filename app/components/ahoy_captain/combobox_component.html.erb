@@ -3,20 +3,25 @@
      data-combobox-placeholder-value="Select an option..."
      data-combobox-is-disabled-value="false"
      data-combobox-url-value="<%= @url %>"
+     data-combobox-disabled-value="<%= @disabled %>"
      data-combobox-query-value="q[<%= @column %>_i_cont]"
-     class="relative w-full"
+     data-combobox-selected-value="<%= @value.map { |value| { text: value, value: value } }.to_json %>"
+     class=" w-full "
 >
   <div data-action="click->combobox#toggleOpen" data-combobox-target="box"
-       class="pl-2 pr-8 py-1 w-full  rounded-md shadow-sm border border-gray-300 focus-within:border-secondary-500 focus-within:ring-1 focus-within:ring-secondary-500"
+       class="
+        bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none w-full rounded-md border px-4 py-2 text-sm
+        w-full"
        data-combobox-box-open-class="border-secondary-500 ring-1 ring-secondary-500">
     <select data-combobox-target="select" style="display:none;"
             data-predicate-select-target="select"
             name="<%= @name %>"
-    ><% @value.each do |value| %><option value="<%= value %>"><%= value %></option><% end %></select>
+            <% @select_html.each do |k,v| %><%=k %>="<%=v %>"<% end %>
+    ><% @value.each do |value| %><option value="<%= value %>" selected><%= value %></option><% end %></select>
     <div data-combobox-target="selected" class="" style="display:none;"></div>
     <input data-combobox-target="input"
            data-action="input->combobox#onInput"
-           class="border-none py-1 px-0 w-full inline-block rounded-md focus:outline-none focus:ring-0 text-sm"
+           class="input input-ghost w-full inline-block rounded-md focus:outline-none focus:ring-0"
            type="text"
            placeholder="Select an option...">
   </div>

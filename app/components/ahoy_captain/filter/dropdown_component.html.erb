@@ -18,7 +18,8 @@
                     class="flex w-full justify-between link no-underline items-center group <% if filter.modal %>cursor-pointer<% else %>cursor-text<% end %> text-left"
                     onclick="<% if filter.modal %><%= filter.modal %>.showModal() <% end %>">
               <span class="truncate w-48  ">
-                <%= filter.description %>
+                <%= filter.column.titleize %> <%= filter.predicate %>
+                <%= filter.values.to_sentence %>
               </span>
               <% if filter.modal %>
               <span class="group-hover:text-primary hover:text-primary ">
@@ -30,8 +31,8 @@
                class="hover:text-primary link no-underline pl-2" href="<%= filter.url %>">
               <%= remove_icon %>
             </a>
-          <li>
-            <div class="divider my-1" data-toggle-target='toggleable'></div>
+          </li>
+          <div class="divider my-1" data-toggle-target='toggleable'></div>
         <% end %>
         <li data-toggle-target='toggleable'>
           <a class="block mx-auto pl-4 pb-1 " href="<%= AhoyCaptain::Engine.app.url_helpers.root_path %>">Clear all filters</a>

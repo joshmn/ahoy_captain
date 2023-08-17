@@ -18,6 +18,7 @@ export default class extends Controller {
     options: Array,
     isLoading: Boolean,
     isOpen: Boolean,
+    disabled: Boolean,
     input: String,
     highlightedIndex: Number,
     singleOption: Boolean,
@@ -41,11 +42,24 @@ export default class extends Controller {
     } else {
       this.selectTarget.multiple = true
     }
+
+    Object.defineProperty(this.selectTarget, "combobox", {
+      enumerable: false,
+      configurable: false,
+      writable: false,
+      value: this,
+    });
+
+    window.dispatchEvent(new CustomEvent('combobox:init', { detail: { combobox: this } }))
+    this.search = new URLSearchParams(window.location.search);
+    this.search.delete(this.selectTarget.name)
   }
 
   checkDisabledState() {
-    if (this.isDisabledValue) {
-      this.containerTarget.classList.add('opacity-30', 'cursor-default', 'pointer-events-none');
+    if (this.disabledValue) {
+      this.element.classList.add('opacity-80', 'cursor-default', 'pointer-events-none');
+    } else {
+      this.element.classList.remove('opacity-80', 'cursor-default', 'pointer-events-none')
     }
   }
 
@@ -55,10 +69,11 @@ export default class extends Controller {
   }
 
   fetchOptions(query) {
+    if(this.disabledValue) { return }
     this.isLoadingValue = true;
     this.isOpenValue = true;
 
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(this.search.toString());
     const formData = new FormData(this.element.form);
 
     let deleted = [];
@@ -67,11 +82,10 @@ export default class extends Controller {
         searchParams.delete(key)
         deleted.push(key)
       }
-
-      searchParams.append(key, value)
     }
 
     searchParams.delete(this.element.name);
+    searchParams.delete(this.queryValue);
     searchParams.set(this.queryValue, query);
 
     fetch(`${this.urlValue}?${searchParams.toString()}`).then(resp => resp.json()).then(loadedOptions => {
@@ -96,6 +110,15 @@ export default class extends Controller {
   highlightIndex(index) {
     this.highlightedIndexValue = index;
     this.scrollToOption(index);
+  }
+
+  setSelected(values) {
+    console.log("set selected")
+    this.selectedValue = values;
+  }
+
+  setDisabled(value) {
+    this.disabledValue = value
   }
 
   onKeyDown(event) {
@@ -148,13 +171,12 @@ export default class extends Controller {
 
     const option = this.optionsValue.filter(option => option.value === value)[0];
     if(this.singleOptionValue) {
-      console.log("only one")
       this.selectedValue = [option]
     } else {
       this.selectedValue = [...this.selectedValue, option]
     }
     this.isOpenValue = false;
-    this.inputValue = '';
+    this.inputTarget.value = '';
     this.highlightedIndexValue = 0
   }
 
@@ -210,12 +232,11 @@ export default class extends Controller {
     }
 
     this.listTarget.innerHTML = `<div class="relative cursor-default select-none py-2 px-4 text-gray-700 dark:text-gray-300">
-        No matches found in the current dashboard. Try selecting a different time range or searching for something different
+        No matches found in the current dashboard. Try selecting a different time range or searching for something different.
       </div>`
 
   }
   renderOptions(options) {
-    console.log("renddering sss")
     options.forEach((option, index) => {
       const optionElement = document.createElement("li");
       const isHighlighted = this.highlightedIndexValue === index;
@@ -228,7 +249,7 @@ export default class extends Controller {
       if(isHighlighted) {
         optionElement.dataset.comboboxTarget = "option"
       }
-      optionElement.dataset.action = "click->combobox#selectOption mouseover->combobox#highlight"
+      optionElement.dataset.action = "click->combobox#selectOption"
       optionElement.dataset.index = index;
       optionElement.dataset.value = option.value
       optionElement.id = `plausible-combobox-option-${index}`;
@@ -262,7 +283,6 @@ export default class extends Controller {
 
   removeOption(e) {
     e.stopPropagation()
-    console.log(e.target.dataset.value)
     const option = this.selectTarget.querySelector(`option[value="${e.target.dataset.value}"]`);
     option.remove()
     const newValues = [];
@@ -276,9 +296,7 @@ export default class extends Controller {
   renderSelectedValues() {
     this.selectTarget.innerHTML = ""
     this.selectedTarget.innerHTML = ""
-    console.log("rendering selected " , this.selectedValue)
     this.selectedValue.forEach(value => {
-      console.log(value)
       const option = document.createElement('option');
       option.text = value.text;
       option.value = value.value;
@@ -286,14 +304,27 @@ export default class extends Controller {
       this.selectTarget.appendChild(option)
 
       const el = document.createElement("div");
-      el.classList.add('bg-primary-100', 'flex', 'justify-between', 'w-full', 'rounded-sm', 'px-2', 'py-0.5', 'm-0.5', 'text-sm');
+      el.classList.add('text-primary-content', 'bg-primary', 'flex', 'justify-between', 'w-full', 'rounded-sm', 'px-2', 'py-0.5', 'm-0.5', 'text-sm');
       el.innerHTML = `<span class="break-all">${option.text}</span><span class="cursor-pointer font-bold ml-1" data-action="click->combobox#removeOption" data-value="${option.value}" >×</span>`;
       this.selectedTarget.appendChild(el)
     })
+    var event = new Event('change');
+    this.selectTarget.dispatchEvent(event);
     if(this.selectedValue.length === 0) {
       this.selectedTarget.style.display = "none"
     } else {
       this.selectedTarget.style.display = ""
+    }
+  }
+
+  disabledValueChanged(current) {
+    if(current) {
+      this.isOpenValue = false
+      this.inputTarget.disabled = true
+      this.checkDisabledState()
+    } else {
+      this.inputTarget.removeAttribute('disabled')
+      this.checkDisabledState()
     }
   }
 }
