@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version 0.10.1 (Aug 17, 2023)
+
 ### Fixed
 * Values loading in combobox for goals were invalid 
 
