@@ -69,18 +69,18 @@
       <% component.with_display_links do %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left" data-controller="active-links">
-
-            <a href="<%= countries_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold" data-active-links-target="link" data-action="click->tile#setTitle">Countries</a>
-            <a href="<%= regions_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-active-links-target="link" data-action="click->tile#setTitle">Regions</a>
-            <a href="<%= cities_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-active-links-target="link" data-action="click->tile#setTitle">Cities</a>
+            <a href="<%= locations_map_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold" data-active-links-target="link" data-action="click->tile#setTitle">Map</a>
+            <a href="<%= locations_countries_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold" data-active-links-target="link" data-action="click->tile#setTitle">Countries</a>
+            <a href="<%= locations_regions_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-active-links-target="link" data-action="click->tile#setTitle">Regions</a>
+            <a href="<%= locations_cities_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-active-links-target="link" data-action="click->tile#setTitle">Cities</a>
           </div>
         </div>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :geography, src: countries_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :geography, src: locations_map_path(search_params), loading: :lazy %>
       <% end %>
       <% component.with_details_cta do %>
-        <button data-action="click->details-modal#openModal" data-controller="details-modal"  data-details-modal-target-value="#geography" class="link no-underline ">Details</button>
+        <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#geography" class="link no-underline ">Details</button>
       <% end %>
     <% end %>
 
