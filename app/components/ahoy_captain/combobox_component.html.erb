@@ -10,7 +10,7 @@
 >
   <div data-action="click->combobox#toggleOpen" data-combobox-target="box"
        class="
-        bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none w-full rounded-md px-4 py-2 text-sm
+        bg-gray-900 ring-0  focus-within:ring-0 focus-within:ring-0 focus:ring-0 focus:outline-none w-full rounded-md py-2 text-sm
         w-full"
        data-combobox-box-open-class="border-secondary-500 ring-1 ring-secondary-500">
     <select data-combobox-target="select" style="display:none;"
@@ -19,7 +19,7 @@
             id="<%= @select_html[:id] || "filter_#{@name}" %>"
             <% @select_html.each do |k,v| %><%=k %>="<%=v %>"<% end %>
     ><% @value.each do |value| %><option value="<%= value %>" selected><%= value %></option><% end %></select>
-    <div data-combobox-target="selected" class="" style="display:none;"></div>
+    <div data-combobox-target="selected" class="px-2" style="display:none;"></div>
     <input data-combobox-target="input"
            data-action="input->combobox#onInput"
            class="input input-sm input-ghost w-full inline-block rounded-md focus:outline-none focus:ring-0 focus:bg-gray-900"

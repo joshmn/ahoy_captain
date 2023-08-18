@@ -36,4 +36,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sassc"
   spec.add_development_dependency "puma"
   spec.add_development_dependency "pg"
+  spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry-rails'
+  spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'sqlite3'
 end
