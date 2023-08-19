@@ -16,6 +16,7 @@
 
 ### Fixed
 * Bug when filtering by goal
+* New combobox not taking into consideration other filters not yet applied
 
 ## Version 0.10.1 (Aug 17, 2023)
 

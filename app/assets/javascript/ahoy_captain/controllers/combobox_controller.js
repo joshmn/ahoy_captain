@@ -104,18 +104,10 @@ export default class extends Controller {
       this.isLoadingValue = true;
       this.isOpenValue = true;
 
-      const searchParams = new URLSearchParams(this.search.toString());
-      const formData = new FormData(this.element.form);
+      const formData = new FormData(this.selectTarget.form);
+      const searchParams = new URLSearchParams([...formData.entries()]);
 
-      let deleted = [];
-      for (const [key, value] of formData) {
-        if(!deleted.includes(key)) {
-          searchParams.delete(key)
-          deleted.push(key)
-        }
-      }
-
-      searchParams.delete(this.element.name);
+      searchParams.delete(this.selectTarget.name);
       searchParams.delete(this.queryValue);
       searchParams.set(this.queryValue, query);
 
@@ -125,7 +117,6 @@ export default class extends Controller {
         this.optionsValue = loadedOptions.map(option => ({ text: option.text, value: option.value }));
       });
     }
-
   }
 
   highlight(element) {
