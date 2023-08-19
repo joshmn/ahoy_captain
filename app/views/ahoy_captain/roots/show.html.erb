@@ -1,4 +1,4 @@
-<main class='' data-controller="application"  data-action="combobox:init@window->application#comboboxInit">
+<main class='w-screen	overflow-hidden' data-action="combobox:init@window->application#comboboxInit">
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
       <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime", "realtime-interval-value" => AhoyCaptain.config.realtime_interval.to_i }, loading: :lazy %>
