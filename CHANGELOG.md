@@ -10,6 +10,7 @@
 ### Changed
 * Sublinks for a container now are highlighted on load 
 * Styling for properties select container is now consistent with other select 
+* Better "active link" handling
 
 ## Version 0.10.1 (Aug 17, 2023)
 
