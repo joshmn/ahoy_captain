@@ -33,6 +33,7 @@ export default class extends Controller {
 
   connect() {
     const onClick = (e) => {
+      if(drag) { return }
       const element = this.chart.getElementsAtEventForMode(e, 'index', { intersect: false })[0];
       const searchParams = new URLSearchParams(window.location.search);
 
@@ -76,8 +77,7 @@ export default class extends Controller {
     }
 
     const typeForDate = this.comparisonValue === 'year' ? 'long' : "short"
-    this.chart = new Chart(this.element,
-      {
+    const options = {
         type: 'line',
         data: {
           labels: Object.keys(this.currentValue),
@@ -139,8 +139,68 @@ export default class extends Controller {
             }
           }
         }
-      },
-    );
+      }
+    this.chart = new Chart(this.element, options);
+
+
+    var canvas = this.element;
+    var overlay = document.getElementById('overlay');
+    var startIndex = 0;
+    overlay.width = canvas.width;
+    overlay.height = canvas.height;
+    var selectionContext = overlay.getContext('2d');
+    var selectionRect = {
+      w: 0,
+      startX: 0,
+      startY: 0
+    };
+    var drag = false;
+    canvas.addEventListener('pointerdown', evt => {
+      const points = this.chart.getElementsAtEventForMode(evt, 'index', {
+        intersect: false
+      });
+
+      startIndex = points[0].index;
+      const rect = canvas.getBoundingClientRect();
+      selectionRect.startX = evt.clientX - rect.left;
+      selectionRect.startY = this.chart.chartArea.top;
+      drag = true;
+    });
+    canvas.addEventListener('pointermove', evt => {
+      const rect = canvas.getBoundingClientRect();
+      if (drag) {
+        const rect = canvas.getBoundingClientRect();
+        selectionRect.w = (evt.clientX - rect.left) - selectionRect.startX;
+        selectionContext.globalAlpha = 0.5;
+        selectionContext.clearRect(0, 0, canvas.width, canvas.height);
+        selectionContext.fillRect(selectionRect.startX,
+          selectionRect.startY,
+          selectionRect.w,
+          this.chart.chartArea.bottom - this.chart.chartArea.top);
+      } else {
+        selectionContext.clearRect(0, 0, canvas.width, canvas.height);
+        var x = evt.clientX - rect.left;
+        if (x > this.chart.chartArea.left) {
+          selectionContext.fillRect(x,
+            this.chart.chartArea.top,
+            1,
+            this.chart.chartArea.bottom - this.chart.chartArea.top);
+        }
+      }
+    });
+    canvas.addEventListener('pointerup', evt => {
+      const points = this.chart.getElementsAtEventForMode(evt, 'index', {
+        intersect: false
+      });
+      const dates = [options.data.labels[startIndex], options.data.labels[points[0].index]].sort()
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('start_date', dates[0])
+      searchParams.set('end_date', dates[1])
+      searchParams.delete('period')
+      searchParams.delete('compare_to_start_date')
+      searchParams.delete('compare_to_end_date')
+      Turbo.visit(window.location.pathname + "?" + searchParams.toString())
+    });
   }
 
   formatLabel(label) {

@@ -5,7 +5,7 @@ module AhoyCaptain
       @multiple = multiple
       @column = column
       @url = url
-      @value = value
+      @value = Array(value)
       @select_html = select_html
       @disabled = disabled
     end

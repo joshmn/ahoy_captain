@@ -1,4 +1,4 @@
-<select class="select text-accent-content bg-accent" data-controller="properties" data-action="change->properties#handleChange">
+<select class="select text-accent select-sm w-full max-w-sm" data-controller="properties" data-action="change->properties#handleChange">
   <option></option>
   <% @options.each do |key, value| %>
     <option value="<%= property_path(id: key) %>" <%= 'selected' if local_assigns[:selected] == value %>><%= value %></option>

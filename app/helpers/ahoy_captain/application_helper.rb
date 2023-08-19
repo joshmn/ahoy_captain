@@ -56,8 +56,6 @@ module AhoyCaptain
         :period,
         :interval,
         :comparison,
-        :compare_to_start_date,
-        :compare_to_end_date
       ]
 
       # properties stuff falls into current_property_filter

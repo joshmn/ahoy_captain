@@ -2,7 +2,19 @@
 
 ## Unreleased
 
-Nothing, yet. 
+### Added
+* Drag and drop for a date range on the stats line chart
+  - Plausible doesn't have this so I feel less guilty about the project now
+* World map now shows 
+* Free-choice selection for UTM tags when filtering
+
+### Changed
+* Sublinks for a container now are highlighted on load 
+* Styling for properties select container is now consistent with other select 
+* Better "active link" handling
+
+### Fixed
+* Bug when filtering by goal
 
 ## Version 0.10.1 (Aug 17, 2023)
 

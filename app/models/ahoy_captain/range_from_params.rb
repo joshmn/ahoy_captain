@@ -53,6 +53,10 @@ module AhoyCaptain
       @range.end.nil?
     end
 
+    def custom?
+      @raw[:start_date].present? && @raw[:end_date].present?
+    end
+
     def [](value)
       if value == 0
         starts_at

@@ -12,15 +12,19 @@ AhoyCaptain::Engine.routes.draw do
     get "/devices/#{k}" => 'devices#index', defaults: { devices_type: v }, as: "devices_#{k}"
   end
 
+  namespace :locations do
+    resource :map, only: [:show]
+    resources :countries, only: [:index]
+    resources :regions, only: [:index]
+    resources :cities, only: [:index]
+  end
+
   resources :properties, only: [:index, :show]
   resource :export, only: [:show]
   resource :realtime, only: [:show]
   resources :funnels, only: [:show]
   resources :goals, only: [:index]
   resource :stats, only: [:show]
-  resources :countries, only: [:index]
-  resources :regions, only: [:index]
-  resources :cities, only: [:index]
   resources :campaigns, only: [:index]
   resources :sources, only: [:index]
   resources :exit_pages, only: [:index]
