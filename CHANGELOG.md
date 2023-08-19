@@ -2,7 +2,14 @@
 
 ## Unreleased
 
-Nothing, yet. 
+### Added
+* Drag and drop for a date range on the stats line chart
+  - Plausible doesn't have this so I feel less guilty about the project now
+* World map now shows 
+
+### Changed
+* Sublinks for a container now are highlighted on load 
+* Styling for properties select container is now consistent with other select 
 
 ## Version 0.10.1 (Aug 17, 2023)
 

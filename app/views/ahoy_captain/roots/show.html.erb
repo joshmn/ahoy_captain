@@ -19,18 +19,25 @@
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do %>
         <div data-controller="active-links">
-          <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class="" data-active-links-target="link">All</a>
-          <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
-            <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
-              <% dropdown.with_option do %>
-                <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" class=""
-                   data-turbo-frame="sources"
-                   data-active-links-target="link">
-                  <%= source.titleize.gsub("Utm", "UTM") %>
-                </a>
+          <div class="flex text-xs font-medium text-gray-400 space-x-2">
+            <div class="relative inline-block text-left" data-controller="active-links">
+              <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class="inline-block h-5 font-semibold" data-active-links-target="link">All</a>
+              <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
+                <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
+                  <% dropdown.with_option do %>
+                    <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" class=""
+                       data-turbo-frame="sources"
+                       class="text-sm"
+                       data-active-links-target="link">
+                      <%= source.titleize.gsub("Utm", "UTM") %>
+                    </a>
+                  <% end %>
+                <% end %>
               <% end %>
-            <% end %>
-          <% end %>
+            </div>
+          </div>
+
+
         </div>
       <% end %>
       <% component.with_statistic_display do %>
@@ -65,7 +72,7 @@
       <% end %>
     <% end %>
 
-    <%= render AhoyCaptain::TileComponent.new(title: 'Countries') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: 'Map') do |component| %>
       <% component.with_display_links do %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left" data-controller="active-links">
@@ -106,22 +113,22 @@
       <% component.with_display_links do %>
         <div>
           <div  data-controller="active-links">
-
-            <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="link ">
-              Goals
-            </a>
-            <a href="<%= properties_path(search_params) %>" data-turbo-frame="goals" class="link ">
-              Properties
-            </a>
-            <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
-              <% AhoyCaptain.config.funnels.each do |id, funnel| %>
-                <% dropdown.with_option do %>
-                  <a href="<%= funnel_path(id, search_params) %>" data-turbo-frame="goals" class="link ">
-                    <%= funnel.title %>
-                  </a>
+            <div class="flex text-xs font-medium text-gray-400 space-x-2">
+              <div class="relative inline-block text-left" data-controller="active-links">
+                <a href="<%= goals_path(search_params) %>" data-turbo-frame="goals" class="inline-block h-5 font-semibold" data-active-links-target="link" data-action="click->tile#setTitle">Goals</a>
+                <a href="<%= properties_path(search_params) %>" data-turbo-frame="goals" class="inline-block h-5 font-semibold" data-active-links-target="link" data-action="click->tile#setTitle">Properties</a>
+                <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Funnels") do |dropdown| %>
+                  <% AhoyCaptain.config.funnels.each do |id, funnel| %>
+                    <% dropdown.with_option do %>
+                      <a href="<%= funnel_path(id, search_params) %>" data-turbo-frame="goals" class="link " data-action="click->tile#setTitle" title="<%= funnel.title %> Funnel">
+                        <%= funnel.title %>
+                      </a>
+                    <% end %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            <% end %>
+              </div>
+            </div>
+
           </div>
         </div>
       <% end %>

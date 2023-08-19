@@ -21,7 +21,7 @@ module AhoyCaptain
                    ActiveSupport::Cache::NullStore.new
                  end
     end
-    link_to
+
     def importmap
       Importmap::Map.new.draw do
         pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
