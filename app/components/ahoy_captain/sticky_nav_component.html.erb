@@ -12,13 +12,13 @@
   <div class="flex flex-row-reverse col-span-2 items-center gap-3">
     <%= render AhoyCaptain::ComparisonLinkComponent.new %>
 
-    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? "Custom Range" : (AhoyCaptain.config.ranges.find(params[:period] || AhoyCaptain.config.ranges.default).try(:label) || "Period"), classes: 'btn btn-sm btn-base-100 no-underline hover:bg-base-100') do |dropdown| %>
+    <%= render AhoyCaptain::DropdownLinkComponent.new(title: params[:start_date] ? custom_range_label : (AhoyCaptain.config.ranges.find(params[:period] || AhoyCaptain.config.ranges.default).try(:label) || "Period"), classes: 'btn btn-sm btn-base-100 no-underline hover:bg-base-100') do |dropdown| %>
       <% dropdown.with_option do %>
         <% AhoyCaptain.config.ranges.each do |param, range| %>
           <a class='link no-underline' href="<%= request.path %>?<%= request.query_parameters.except("start_date", "end_date", "date", "compare_to_start_date", "compare_to_end_date").merge("period" => param).to_query %>"><%= range.label %></a>
         <% end %>
 
-        <a class='link no-underline ' href='#' onclick="event.preventDefault(); customRangeModal.showModal()">Custom range</a>
+        <a class='link no-underline ' href='#' onclick="event.preventDefault(); customRangeModal.showModal()">Custom Range</a>
         <a class='link no-underline ' href='<%= AhoyCaptain::Engine.routes.url_helpers.root_path(**helpers.search_params.merge(comparison: !compare_mode?)) %>'><%= compare_mode? ? "Disable Comparison" : "Compare" %></a>
       <% end %>
     <% end %>
