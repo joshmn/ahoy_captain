@@ -22,7 +22,7 @@ export default class extends Controller {
     input: String,
     highlightedIndex: Number,
     singleOption: Boolean,
-    freeChoice: Boolean,
+    freeChoice: { type: Boolean, default: false },
     selected: Array,
     url: String,
     query: String
@@ -51,11 +51,33 @@ export default class extends Controller {
       value: this,
     });
 
+    const targetNode = this.selectTarget;
+    const config = { attributes: true };
+
+    const callback = (mutationList, observer) => {
+      for (const mutation of mutationList) {
+        if (mutation.type === "attributes") {
+          this.handleNameChange()
+        }
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+
+
     window.dispatchEvent(new CustomEvent('combobox:init', { detail: { combobox: this } }))
     this.search = new URLSearchParams(window.location.search);
     this.search.delete(this.selectTarget.name)
   }
 
+  handleNameChange() {
+    if(this.selectTarget.name.includes("_cont]")) {
+      this.freeChoiceValue = true
+    } else {
+      this.freeChoiceValue = false
+    }
+  }
   checkDisabledState() {
     if (this.disabledValue) {
       this.element.classList.add('opacity-80', 'cursor-default', 'pointer-events-none');
@@ -71,29 +93,39 @@ export default class extends Controller {
 
   fetchOptions(query) {
     if(this.disabledValue) { return }
-    this.isLoadingValue = true;
-    this.isOpenValue = true;
 
-    const searchParams = new URLSearchParams(this.search.toString());
-    const formData = new FormData(this.element.form);
-
-    let deleted = [];
-    for (const [key, value] of formData) {
-      if(!deleted.includes(key)) {
-        searchParams.delete(key)
-        deleted.push(key)
-      }
-    }
-
-    searchParams.delete(this.element.name);
-    searchParams.delete(this.queryValue);
-    searchParams.set(this.queryValue, query);
-
-    fetch(`${this.urlValue}?${searchParams.toString()}`).then(resp => resp.json()).then(loadedOptions => {
+    if(this.freeChoiceValue) {
       this.isLoadingValue = false;
       this.highlightedIndexValue = 0;
-      this.optionsValue = loadedOptions.map(option => ({ text: option.text, value: option.value }));
-    });
+      this.optionsValue = [{ text: query, value: query }];
+      this.isOpenValue = true;
+
+    } else {
+      this.isLoadingValue = true;
+      this.isOpenValue = true;
+
+      const searchParams = new URLSearchParams(this.search.toString());
+      const formData = new FormData(this.element.form);
+
+      let deleted = [];
+      for (const [key, value] of formData) {
+        if(!deleted.includes(key)) {
+          searchParams.delete(key)
+          deleted.push(key)
+        }
+      }
+
+      searchParams.delete(this.element.name);
+      searchParams.delete(this.queryValue);
+      searchParams.set(this.queryValue, query);
+
+      fetch(`${this.urlValue}?${searchParams.toString()}`).then(resp => resp.json()).then(loadedOptions => {
+        this.isLoadingValue = false;
+        this.highlightedIndexValue = 0;
+        this.optionsValue = loadedOptions.map(option => ({ text: option.text, value: option.value }));
+      });
+    }
+
   }
 
   highlight(element) {
@@ -328,6 +360,13 @@ export default class extends Controller {
     }
   }
 
+  freeChoiceValueChanged(current, prev) {
+    if(this.selectedValue.filter(value => value.freeChoice).length) {
+      console.log("free choice changed")
+      this.setSelected([])
+    }
+
+  }
   disabledValueChanged(current) {
     if(current) {
       this.isOpenValue = false

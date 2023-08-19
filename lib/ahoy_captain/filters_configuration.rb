@@ -31,11 +31,11 @@ module AhoyCaptain
         end
 
         config.register("UTM Tags") do
-          filter column: :utm_medium, label: "UTM Medium", url: :filters_utm_mediums_path, predicates: [:in, :not_in]
-          filter column: :utm_source, label: "UTM Source", url: :filters_utm_sources_path, predicates: [:in, :not_in]
-          filter column: :utm_campaign, label: "UTM Campaign", url: :filters_utm_campaigns_path, predicates: [:in, :not_in]
-          filter column: :utm_term, label: "UTM Term", url: :filters_utm_terms_path, predicates: [:in, :not_in]
-          filter column: :utm_content, label: "UTM Content", url: :filters_utm_contents_path, predicates: [:in, :not_in]
+          filter column: :utm_medium, label: "UTM Medium", url: :filters_utm_mediums_path, predicates: [:in, :not_in, :cont]
+          filter column: :utm_source, label: "UTM Source", url: :filters_utm_sources_path, predicates: [:in, :not_in, :cont]
+          filter column: :utm_campaign, label: "UTM Campaign", url: :filters_utm_campaigns_path, predicates: [:in, :not_in, :cont]
+          filter column: :utm_term, label: "UTM Term", url: :filters_utm_terms_path, predicates: [:in, :not_in, :cont]
+          filter column: :utm_content, label: "UTM Content", url: :filters_utm_contents_path, predicates: [:in, :not_in, :cont]
         end
 
         config.register("Goal") do

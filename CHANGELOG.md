@@ -12,6 +12,9 @@
 * Styling for properties select container is now consistent with other select 
 * Better "active link" handling
 
+### Fixed
+* Bug when filtering by goal
+
 ## Version 0.10.1 (Aug 17, 2023)
 
 ### Fixed
