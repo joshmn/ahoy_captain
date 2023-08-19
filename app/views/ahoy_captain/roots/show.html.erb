@@ -1,11 +1,11 @@
-<main class='min-h-screen pb-4 max-w-6xl mx-auto' data-controller="application"  data-action="combobox:init@window->application#comboboxInit">
+<main class='' data-controller="application"  data-action="combobox:init@window->application#comboboxInit">
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
       <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime", "realtime-interval-value" => AhoyCaptain.config.realtime_interval.to_i }, loading: :lazy %>
     <% end %>
   <% end %>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 min-h-screen pb-4 max-w-6xl mx-auto">
     <%= render AhoyCaptain::TileComponent.new(wide: true, classes: "p-4 m-2") do |component| %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :stats, src: stats_path(search_params), loading: :lazy %>
