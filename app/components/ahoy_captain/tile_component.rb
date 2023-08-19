@@ -11,6 +11,13 @@ class AhoyCaptain::TileComponent < ViewComponent::Base
     @wide = wide
   end
 
+  def link_to(name, url, **options)
+    options[:class] = "inline-block h-5 font-semibold"
+    options[:data] ||= {}
+    options[:data].merge!(controller: "frame-link")
+    view_context.link_to name, url, **options
+  end
+
   private
 
   attr_reader :title, :wide

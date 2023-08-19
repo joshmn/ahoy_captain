@@ -16,28 +16,19 @@
     <% end %>
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
-      <% component.with_display_links do %>
-        <div>
+      <% component.with_display_links do  %>
           <div class="flex text-xs font-medium text-gray-400 space-x-2">
             <div class="relative inline-block text-left">
-              <a href="<%= sources_path(search_params) %>" data-turbo-frame="sources" class="inline-block h-5 font-semibold" data-controller="frame-link">All</a>
+              <%= component.link_to "All", sources_path(search_params), data: { turbo_frame: "sources" } %>
               <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
                 <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
-                  <% dropdown.with_option do %>
-                    <a href="<%= public_send("campaign_#{source}_path".to_sym, **search_params) %>" class=""
-                       data-turbo-frame="sources"
-                       data-controller="frame-link"
-                       class="text-sm">
-                      <%= source.titleize.gsub("Utm", "UTM") %>
-                    </a>
-                  <% end %>
+                  <%= dropdown.link_to source.titleize.gsub("Utm", "UTM"), public_send("campaign_#{source}_path".to_sym, **search_params), data: { turbo_frame: "sources" } %>
                 <% end %>
               <% end %>
             </div>
           </div>
 
 
-        </div>
       <% end %>
       <% component.with_statistic_display do %>
         <%= turbo_frame_tag :sources, src: sources_path(search_params), loading: :lazy %>
@@ -51,13 +42,9 @@
       <% component.with_display_links do %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left"><div>
-            <a href="<%= top_pages_path(search_params) %>"
-               data-turbo-frame="pages"
-               class="inline-block h-5 font-semibold"
-               data-controller="frame-link"
-               data-action="click->tile#setTitle">Top Pages</a>
-            <a href="<%= entry_pages_path(search_params) %>" data-turbo-frame="pages" class="inline-block h-5 font-semibold" data-controller="frame-link" data-action="click->tile#setTitle">Entry Pages</a>
-            <a href="<%= exit_pages_path(search_params) %>" data-turbo-frame="pages" class="inline-block h-5 font-semibold" data-controller="frame-link" data-action="click->tile#setTitle">Exit Pages</a>
+            <%= component.link_to "Top Pages", top_pages_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "pages" } %>
+            <%= component.link_to "Entry Pages", entry_pages_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "pages" } %>
+            <%= component.link_to "Exit Pages", exit_pages_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "pages" } %>
           </div>
           </div>
         </div>
@@ -75,10 +62,10 @@
       <% component.with_display_links do %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left">
-            <a href="<%= locations_map_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold" data-controller="frame-link" data-action="click->tile#setTitle">Map</a>
-            <a href="<%= locations_countries_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold" data-controller="frame-link" data-action="click->tile#setTitle">Countries</a>
-            <a href="<%= locations_regions_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-controller="frame-link" data-action="click->tile#setTitle">Regions</a>
-            <a href="<%= locations_cities_path(search_params) %>" data-turbo-frame="geography" class="inline-block h-5 font-semibold"   data-controller="frame-link" data-action="click->tile#setTitle">Cities</a>
+            <%= component.link_to "Map", locations_map_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "geography" } %>
+            <%= component.link_to "Countries", locations_countries_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "geography" } %>
+            <%= component.link_to "Regions", locations_regions_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "geography" } %>
+            <%= component.link_to "Cities", locations_cities_path(search_params), data: { action: "click->tile#setTitle", turbo_frame: "geography" } %>
           </div>
         </div>
       <% end %>
@@ -94,10 +81,9 @@
       <% component.with_display_links do %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left">
-
-            <a href="<%= devices_browsers_path(search_params) %>" data-turbo-frame="devices" class=" inline-block h-5 font-semibold"   data-controller="frame-link">Browser</a>
-            <a href="<%= devices_operating_systems_path(search_params) %>" data-turbo-frame="devices" class="inline-block h-5 font-semibold"   data-controller="frame-link">OS</a>
-            <a href="<%= devices_device_types_path(search_params) %>" data-turbo-frame="devices"  class="inline-block h-5 font-semibold"  data-controller="frame-link">Size</a>
+            <%= component.link_to "Browser", devices_browsers_path(search_params), data: { turbo_frame: "devices" } %>
+            <%= component.link_to "OS", devices_operating_systems_path(search_params), data: { turbo_frame: "devices" } %>
+            <%= component.link_to "Size", devices_device_types_path(search_params), data: { turbo_frame: "devices" } %>
           </div>
         </div>
       <% end %>

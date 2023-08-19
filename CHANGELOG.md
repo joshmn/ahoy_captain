@@ -12,6 +12,7 @@
 * Sublinks for a container now are highlighted on load 
 * Styling for properties select container is now consistent with other select 
 * Better "active link" handling
+* DRYed up the links
 
 ### Fixed
 * Bug when filtering by goal
