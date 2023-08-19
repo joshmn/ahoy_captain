@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version v0.11.0 (Aug 19, 2023)
+
 ### Added
 * Drag and drop for a date range on the stats line chart
   - Plausible doesn't have this so I feel less guilty about the project now
