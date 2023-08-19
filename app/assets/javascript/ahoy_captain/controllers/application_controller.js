@@ -14,10 +14,13 @@ export default class extends Controller {
     document.querySelectorAll('a[data-turbo-frame]').forEach(link => {
       const frameSelector = link.dataset.turboFrame;
       const frame = document.querySelector(`turbo-frame#${frameSelector}`);
-      const src = frame.src;
-      if(link.href.includes(src)) {
-        link.classList.add('text-primary', 'font-semibold')
+      if(frame) {
+        const src = frame.src;
+        if(link.href.includes(src)) {
+          link.classList.add('text-primary', 'font-semibold')
+        }
       }
+
     })
   }
 
