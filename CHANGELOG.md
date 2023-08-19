@@ -6,6 +6,7 @@
 * Drag and drop for a date range on the stats line chart
   - Plausible doesn't have this so I feel less guilty about the project now
 * World map now shows 
+* Free-choice selection for UTM tags when filtering
 
 ### Changed
 * Sublinks for a container now are highlighted on load 
