@@ -169,7 +169,9 @@ export default class extends Controller {
     canvas.addEventListener('pointermove', evt => {
       const rect = canvas.getBoundingClientRect();
       if (drag) {
+
         const rect = canvas.getBoundingClientRect();
+        selectionContext.fillStyle = getCSS('--p')
         selectionRect.w = (evt.clientX - rect.left) - selectionRect.startX;
         selectionContext.globalAlpha = 0.5;
         selectionContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -181,6 +183,7 @@ export default class extends Controller {
         selectionContext.clearRect(0, 0, canvas.width, canvas.height);
         var x = evt.clientX - rect.left;
         if (x > this.chart.chartArea.left) {
+          selectionContext.fillStyle = getCSS('--p')
           selectionContext.fillRect(x,
             this.chart.chartArea.top,
             1,
