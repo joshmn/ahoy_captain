@@ -1,0 +1,17 @@
+<div class="dropdown dropdown-end" data-controller='dropdown-label'>
+  <label
+    tabindex="0"
+    class="cursor-pointer flex <%= classes %>"
+    data-action='click->dropdown-label#removeHidden'
+    >
+    <span data-dropdown-label-target="label"><%= title %></span>
+
+  </label>
+  <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52" data-dropdown-label-target="close">
+    <% links.each do |link| %>
+      <li data-action="click->dropdown-label#setLabel">
+        <%= link %>
+      <li>
+    <% end %>
+  </ul>
+</div>
