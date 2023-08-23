@@ -1,0 +1,10 @@
+---
+en:
+  ahoy_captain:
+    tiles:
+      titles:
+        top_sources: Top Sources
+    stats:
+      titles:
+        unique_visits: Unique Visits
+

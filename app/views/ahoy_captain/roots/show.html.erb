@@ -42,7 +42,7 @@
 
     <% end %>
 
-    <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
+    <%= render AhoyCaptain::TileComponent.new(title: t('ahoy_captain.tiles.titles.top_sources')) do |component| %>
       <% component.with_display_links do  %>
         <div class="flex text-xs font-medium text-gray-400 space-x-2">
           <div class="relative inline-block text-left">
