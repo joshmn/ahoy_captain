@@ -1,5 +1,5 @@
 <%= turbo_frame_tag :stats, data: { controller: "active-frame-link" } do %>
-  <dl class="grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg grid-cols-2 md:grid-cols-6 md:divide-y-0" data-controller="active-links" data-active-links-classes-value='["text-primary"]'>
+  <div class="grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg grid-cols-2 md:grid-cols-6 md:divide-y-0" data-controller="active-links" data-active-links-classes-value='["text-primary"]'>
     <% if @presenter.send(:range).realtime? %>
       <%= render stats_container(@presenter.unique_visitors, stats_unique_visitors_url(search_params), "Unique Visits (30 min)", :number_with_delimiter, true) %>
       <%= render stats_container(@presenter.total_pageviews, stats_total_pageviews_path(search_params), "Total Pageviews (30 min)", :number_with_delimiter) %>
@@ -11,5 +11,5 @@
       <%= render stats_container(@presenter.bounce_rate, stats_bounce_rates_path(search_params), "Bounce Rate", :number_with_delimiter) %>
       <%= render stats_container(@presenter.visit_duration, stats_visit_durations_url(search_params), "Visit Duration", :number_to_duration) %>
     <% end %>
-  </dl>
+  </div>
 <% end %>

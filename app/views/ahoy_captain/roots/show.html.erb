@@ -1,4 +1,7 @@
 <main class='w-screen	overflow-hidden' data-action="combobox:init@window->application#comboboxInit">
+  <script id="tile-loader-template" type="template/html">
+    <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+  </script>
   <%= render AhoyCaptain::StickyNavComponent.new do |nav| %>
     <% nav.with_realtime_update do %>
       <%= turbo_frame_tag :realtime, src: realtime_path, data: { controller:  "realtime", "realtime-interval-value" => AhoyCaptain.config.realtime_interval.to_i }, loading: :lazy %>
@@ -8,8 +11,32 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-4 min-h-screen pb-4 max-w-6xl mx-auto">
     <%= render AhoyCaptain::TileComponent.new(wide: true, classes: "p-4 m-2") do |component| %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :stats, src: stats_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :stats, src: stats_path(search_params), loading: :lazy, skeleton: false do %>
+          <div class="grid grid-cols-1 divide-y divide-base-200 overflow-hidden rounded-lg grid-cols-2 md:grid-cols-6 md:divide-y-0">
+            <% 6.times do %>
+              <div class="relative px-4 md:px-6 w-1/2 my-4 w-auto group cursor-pointer" >
+                <div role="status" class="max-w-sm animate-pulse">
+                  <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[120px] mb-2.5"></div>
+                  <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 max-w-[60px]"></div>
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
         <%= turbo_frame_tag :chart, src: stats_unique_visitors_path(search_params) do %>
+          <div role="status" class="p-4 animate-pulse md:p-6">
+            <div class="flex items-baseline mt-4 space-x-6">
+              <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
+              <div class="w-full h-56 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
+              <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
+              <div class="w-full h-64 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
+              <div class="w-full bg-gray-200 rounded-t-lg h-80 dark:bg-gray-700"></div>
+              <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
+              <div class="w-full bg-gray-200 rounded-t-lg h-80 dark:bg-gray-700"></div>
+            </div>
+            <span class="sr-only">Loading...</span>
+          </div>
         <% end %>
       <% end %>
 
@@ -17,21 +44,23 @@
 
     <%= render AhoyCaptain::TileComponent.new(title: 'Top Sources') do |component| %>
       <% component.with_display_links do  %>
-          <div class="flex text-xs font-medium text-gray-400 space-x-2">
-            <div class="relative inline-block text-left">
-              <%= component.link_to "All", sources_path(search_params), data: { turbo_frame: "sources" } %>
-              <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
-                <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
-                  <%= dropdown.link_to source.titleize.gsub("Utm", "UTM"), public_send("campaign_#{source}_path".to_sym, **search_params), data: { turbo_frame: "sources" } %>
-                <% end %>
+        <div class="flex text-xs font-medium text-gray-400 space-x-2">
+          <div class="relative inline-block text-left">
+            <%= component.link_to "All", sources_path(search_params), data: { turbo_frame: "sources" } %>
+            <%= render AhoyCaptain::DropdownLinkComponent.new(title: "Campaign") do |dropdown| %>
+              <% %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |source| %>
+                <%= dropdown.link_to source.titleize.gsub("Utm", "UTM"), public_send("campaign_#{source}_path".to_sym, **search_params), data: { turbo_frame: "sources" } %>
               <% end %>
-            </div>
+            <% end %>
           </div>
+        </div>
 
 
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :sources, src: sources_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :sources, src: sources_path(search_params), loading: :lazy do %>
+          <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+        <% end %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#sources" class="link no-underline ">Details</button>
@@ -51,7 +80,9 @@
 
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :pages, src: top_pages_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :pages, src: top_pages_path(search_params), loading: :lazy do %>
+          <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+        <% end %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal"  data-details-modal-target-value="#pages" class="link no-underline ">Details</button>
@@ -70,7 +101,10 @@
         </div>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :geography, src: locations_map_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :geography, src: locations_map_path(search_params), loading: :lazy do %>
+          <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+
+        <% end %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#geography" class="link no-underline ">Details</button>
@@ -88,7 +122,10 @@
         </div>
       <% end %>
       <% component.with_statistic_display do %>
-        <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params), loading: :lazy %>
+        <%= turbo_frame_tag :devices, src: devices_browsers_path(search_params), loading: :lazy do %>
+          <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+
+        <% end %>
       <% end %>
       <% component.with_details_cta do %>
         <button data-action="click->details-modal#openModal" data-controller="details-modal" data-details-modal-target-value="#devices" class="link no-underline ">Details</button>
@@ -119,7 +156,10 @@
       <% end %>
       <% component.with_statistic_display do %>
         <div class="p-4">
-          <%= turbo_frame_tag :goals, src: goals_path(search_params), loading: :lazy %>
+          <%= turbo_frame_tag :goals, src: goals_path(search_params), loading: :lazy do %>
+            <%= render '/ahoy_captain/layouts/shared/tile_loader' %>
+          <% end %>
+
         </div>
       <% end %>
     <% end %>

@@ -1,0 +1,12 @@
+<div class="mt-5" >
+  <div role="status" class="animate-pulse">
+    <div class="flex justify-between w-full mb-2">
+      <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+    </div>
+    <% 10.times do |i| %>
+      <div class="h-6 bg-gray-200 dark:bg-gray-700 max-w-[<%= 100 - (i * 10) %>%] mb-2.5"></div>
+    <% end %>
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>

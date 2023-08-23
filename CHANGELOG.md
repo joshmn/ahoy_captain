@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-Nothing, yet. 
+### Added
+* Skeleton loader for feedback during loading
 
 ## Version 0.11.0 (Aug 19, 2023)
 
