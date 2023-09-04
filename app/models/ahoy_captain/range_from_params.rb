@@ -1,7 +1,6 @@
 module AhoyCaptain
   class RangeFromParams
     def self.from_params(params)
-
       compare = ComparisonMode.new(params)
       new(period: params[:period], start_date: params[:start_date], end_date: params[:end_date], date: params[:date], comparison: compare.enabled?(false), raw: params).tap { |instance| instance.build }
     end

@@ -5,14 +5,6 @@
 ### Added
 * Skeleton loader for feedback during loading
 
-## Version 0.11.0 (Aug 19, 2023)
-
-Nothing, yet. 
-
-## Version 0.11 (Aug 19, 2023)
-
-Nothing, yet. 
-
 ## Version v0.11.0 (Aug 19, 2023)
 
 ### Added
