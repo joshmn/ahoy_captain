@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version 1.0.0 (Sep 04, 2023)
+
 ### Added
 
 * A stable version.
