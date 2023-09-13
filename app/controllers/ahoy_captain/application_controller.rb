@@ -5,6 +5,8 @@ module AhoyCaptain
     include RangeOptions
     include Rangeable
 
+    around_action :use_ahoy_captain_locale
+
     layout 'ahoy_captain/layouts/application'
 
     def period
@@ -22,6 +24,33 @@ module AhoyCaptain
     end
 
     private
+
+    def use_ahoy_captain_locale(&action)
+      @original_i18n_config = I18n.config
+      I18n.config = ::AhoyCaptain::I18nConfig.new
+      I18n.with_locale(current_locale, &action)
+    ensure
+      I18n.config = @original_i18n_config
+      @original_i18n_config = nil
+    end
+
+    def use_original_locale
+      prev_config = I18n.config
+      I18n.config = @original_i18n_config if @original_i18n_config
+      yield
+    ensure
+      I18n.config = prev_config
+    end
+
+    def current_locale
+      if request.GET['locale']
+        request.GET['locale']
+      elsif params[:locale]
+        params[:locale]
+      else
+        I18n.default_locale
+      end
+    end
 
     def use_details_frame
       if request.headers['Turbo-Frame'] == 'details'
