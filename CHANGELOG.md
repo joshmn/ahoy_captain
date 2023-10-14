@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Nothing, yet. 
+
+## Version  (Oct 14, 2023)
+
 ### Fixed
 * Make `disabled_widgets` accessible (closes https://github.com/joshmn/ahoy_captain/issues/32)
 
