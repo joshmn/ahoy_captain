@@ -4,6 +4,10 @@
 
 Nothing, yet. 
 
+## Version 1.0.1 (Oct 14, 2023)
+
+Nothing, yet. 
+
 ## Version  (Oct 14, 2023)
 
 ### Fixed
