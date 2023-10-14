@@ -9,7 +9,7 @@ bundle
 git add Gemfile.lock lib/ahoy_captain/version.rb CHANGELOG.md
 git commit -m "Bump version for $VERSION"
 git push
-git tag -s -m "v$VERSION release" $VERSION
+git tag -m "v$VERSION release" $VERSION
 git push rubygem v$VERSION
 gem build ahoy_captain.gemspec
 gem push "ahoy_captain-$VERSION.gem" --host https://rubygems.org
