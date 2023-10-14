@@ -3,8 +3,8 @@ require 'ahoy_captain/filters_configuration'
 
 module AhoyCaptain
   class Configuration
-    attr_accessor :view_name, :theme, :realtime_interval
-    attr_reader :goals, :funnels, :cache, :ranges, :disabled_widgets, :event, :models, :filters, :predicate_labels
+    attr_accessor :view_name, :theme, :realtime_interval, :disabled_widgets
+    attr_reader :goals, :funnels, :cache, :ranges, :event, :models, :filters, :predicate_labels
     def initialize
       @goals = GoalCollection.new
       @funnels = FunnelCollection.new
