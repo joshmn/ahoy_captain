@@ -2,17 +2,10 @@
 
 ## Unreleased
 
-Nothing, yet. 
-
-## Version 1.0.2 (Oct 14, 2023)
-
-Nothing, yet. 
+### Fixed
+* Template rendering when a widget is disabled (and their details) [#32](https://github.com/joshmn/ahoy_captain/issues/32)
 
 ## Version 1.0.1 (Oct 14, 2023)
-
-Nothing, yet. 
-
-## Version  (Oct 14, 2023)
 
 ### Fixed
 * Make `disabled_widgets` accessible (closes https://github.com/joshmn/ahoy_captain/issues/32)
