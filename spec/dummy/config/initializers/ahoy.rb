@@ -38,4 +38,5 @@ AhoyCaptain.configure do |config|
   end
 
   config.ranges.max = 100.days
+  config.disabled_widgets = ["top_pages"]
 end

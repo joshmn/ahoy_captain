@@ -18,7 +18,14 @@ module AhoyCaptain
     before_action :act_like_an_spa
 
     rescue_from Widget::WidgetDisabled do |e|
-      render template: 'ahoy_captain/shared/widget_disabled', locals: { frame: e.frame }
+      respond_to do |f|
+        f.turbo_stream do
+          render(partial: "ahoy_captain/layouts/shared/widget_disabled", locals: { frame: e.frame })
+        end
+        f.html do
+          render(partial: "ahoy_captain/layouts/shared/widget_disabled", locals: { frame: e.frame })
+        end
+      end
     end
 
     private
