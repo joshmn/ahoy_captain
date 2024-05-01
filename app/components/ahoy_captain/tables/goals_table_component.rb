@@ -5,7 +5,7 @@ module AhoyCaptain
         progress_bar value: :cr, max: 100, title: "Name" do |row|
           search_params = view_context.search_params
           query = search_params.dup.merge(q: { goal_in: row.goal_id}).to_query
-          url = AhoyCaptain::Engine.app.url_helpers.root_path + "?#{query}"
+          url = AhoyCaptain::Engine.routes.url_helpers.root_path + "?#{query}"
           link_to row.item.name, url, target: :_top
         end
         number :unique_visits, title: "Uniques"
