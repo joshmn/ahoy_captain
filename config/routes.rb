@@ -1,7 +1,7 @@
 AhoyCaptain::Engine.routes.draw do
   root to: 'roots#show'
   %w{utm_source utm_medium utm_term utm_content utm_campaign}.each do |utm|
-    get "campaigns/#{utm}" => "campaigns#index", defaults: { campaigns_type: utm }, as: "campaign_#{utm}"
+    get "campaigns/#{utm}", to: "campaigns#index", defaults: { campaigns_type: utm }, as: "campaign_#{utm}"
   end
 
   {
@@ -9,7 +9,7 @@ AhoyCaptain::Engine.routes.draw do
     operating_systems: :os,
     device_types: :device_type
   }.each do |k,v|
-    get "/devices/#{k}" => 'devices#index', defaults: { devices_type: v }, as: "devices_#{k}"
+    get "/devices/#{k}", to: 'devices#index', defaults: { devices_type: v }, as: "devices_#{k}"
   end
 
   namespace :locations do
@@ -41,11 +41,11 @@ AhoyCaptain::Engine.routes.draw do
   end
   namespace :filters do
     %w{source medium term content campaign}.each do |utm|
-      get "utm/#{utm}s" => "utms#index", defaults: { type: "utm_#{utm}" }
+      get "utm/#{utm}s", to: "utms#index", defaults: { type: "utm_#{utm}" }
     end
 
     %w{country region city}.each do |type|
-      get "locations/#{type.pluralize}" => "locations#index", defaults: { type: type }
+      get "locations/#{type.pluralize}", to: "locations#index", defaults: { type: type }
     end
 
     namespace :properties do
