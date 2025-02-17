@@ -3,12 +3,13 @@ require 'ahoy_captain/filters_configuration'
 
 module AhoyCaptain
   class Configuration
-    attr_accessor :view_name, :theme, :realtime_interval, :disabled_widgets
+    attr_accessor :view_name, :theme, :realtime_interval, :disabled_widgets, :basic_auth
     attr_reader :goals, :funnels, :cache, :ranges, :event, :models, :filters, :predicate_labels
     def initialize
       @goals = GoalCollection.new
       @funnels = FunnelCollection.new
       @theme = "dark"
+      @basic_auth = false
       @ranges = ::AhoyCaptain::PeriodCollection.load_default
       @cache = ActiveSupport::OrderedOptions.new.tap do |option|
         option.enabled = false

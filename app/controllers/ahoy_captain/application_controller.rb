@@ -5,6 +5,10 @@ module AhoyCaptain
     include RangeOptions
     include Rangeable
 
+    if AhoyCaptain.config.basic_auth
+      http_basic_authenticate_with name: ENV["AC_USER"], password: ENV["AC_PASSWORD"]
+    end
+
     layout 'ahoy_captain/layouts/application'
 
     def period
