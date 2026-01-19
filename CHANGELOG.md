@@ -4,6 +4,10 @@
 
 Nothing, yet. 
 
+## Version 1.2.0 (Jan 19, 2026)
+
+* Fixed bug with missing `javascript_importmap_shim_tag`
+
 ## Version 1.1.0 (Oct 16, 2023)
 
 ### Fixed
