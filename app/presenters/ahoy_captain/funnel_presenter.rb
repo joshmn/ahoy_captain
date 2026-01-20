@@ -6,6 +6,7 @@ module AhoyCaptain
     def initialize(funnel, event_query)
       @funnel = funnel
       @event_query = event_query.joins(:visit)
+      @strategy = StrategyFactory.build(@funnel.strategy, @event_query)
     end
 
     def build
@@ -15,14 +16,21 @@ module AhoyCaptain
       end
 
       queries = {
-        totals: @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '_internal_total_visits_' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, 0 as sort_order")
+        totals: @strategy.build_total_query(AhoyCaptain.event.table_name)
       }
       selects = ["SELECT unique_visits, name, total_events, sort_order from totals"]
       last_goal = nil
       map = {}.with_indifferent_access
 
       AhoyCaptain.config.goals.each_with_index do |goal, index|
-        queries[goal.id] = @event_query.select("count(distinct(#{AhoyCaptain.event.table_name}.visit_id)) as unique_visits, '#{goal.id}' as name, count(distinct #{AhoyCaptain.event.table_name}.id) as total_events, #{index + 1} as sort_order").merge(goal.event_query.call).group("#{AhoyCaptain.event.table_name}.name")
+        queries[goal.id] = @strategy.build_goal_query(
+            AhoyCaptain.event.table_name,
+            goal.id,
+            index
+          )
+          .merge(goal.event_query.call)
+          .group("#{AhoyCaptain.event.table_name}.name")
+        
         selects << ["SELECT unique_visits, name, total_events, sort_order from #{goal.id}"]
         map[goal.id] = goal
         last_goal = goal
@@ -48,7 +56,6 @@ module AhoyCaptain
       @steps = items.values
       self
     end
-
 
     def total
       @event_query.distinct(:visitor_token).count

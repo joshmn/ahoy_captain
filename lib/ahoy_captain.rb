@@ -7,6 +7,10 @@ require "ahoy_captain/configuration"
 require "ahoy_captain/predicate_label"
 require 'ahoy_captain/ahoy/visit_methods'
 require 'ahoy_captain/ahoy/event_methods'
+require "ahoy_captain/strategies/base"
+require "ahoy_captain/strategies/total_events"
+require "ahoy_captain/strategies/user_participation"
+require "ahoy_captain/strategy_factory"
 
 require 'importmap-rails'
 
